@@ -22,27 +22,27 @@
 		<class>br.com.cds.connecta.presenter.entity.AnalysisViewer</class>
 		<class>br.com.cds.connecta.presenter.entity.Attribute</class>
 		<class>br.com.cds.connecta.presenter.entity.BiAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.BiD</class>
+		<class>br.com.cds.connecta.presenter.entity.BiDS</class>
 		<class>br.com.cds.connecta.presenter.entity.CmbViewer</class>
 		<class>br.com.cds.connecta.presenter.entity.CombinedAnalysi</class>
 		<class>br.com.cds.connecta.presenter.entity.ConfigCstmPrm</class>
 		<class>br.com.cds.connecta.presenter.entity.ConfigViewer</class>
 		<class>br.com.cds.connecta.presenter.entity.CsvData</class>
 		<class>br.com.cds.connecta.presenter.entity.Dashboard</class>
-		<class>br.com.cds.connecta.presenter.entity.DatabaseD</class>
+		<class>br.com.cds.connecta.presenter.entity.DatabaseDS</class>
 		<class>br.com.cds.connecta.presenter.entity.Datasource</class>
 		<class>br.com.cds.connecta.presenter.entity.DbAnalysi</class>
 		<class>br.com.cds.connecta.presenter.entity.EndecaAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.EndecaD</class>
+		<class>br.com.cds.connecta.presenter.entity.EndecaDS</class>
 		<class>br.com.cds.connecta.presenter.entity.File</class>
 		<class>br.com.cds.connecta.presenter.entity.FilterSelector</class>
 		<class>br.com.cds.connecta.presenter.entity.FilterValue</class>
 		<class>br.com.cds.connecta.presenter.entity.Group</class>
 		<class>br.com.cds.connecta.presenter.entity.HdfsAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.HdfsD</class>
+		<class>br.com.cds.connecta.presenter.entity.HdfsDS</class>
 		<class>br.com.cds.connecta.presenter.entity.Layer</class>
 		<class>br.com.cds.connecta.presenter.entity.LayerSource</class>
-		<class>br.com.cds.connecta.presenter.entity.LayerViewer</class>
+		<class>br.com.cds.connecta.presenter.entity.LayerViewer_ta</class>
 		<class>br.com.cds.connecta.presenter.entity.LayerViewerGroup</class>
 		<class>br.com.cds.connecta.presenter.entity.Page</class>
 		<class>br.com.cds.connecta.presenter.entity.PageFilter</class>
@@ -50,15 +50,15 @@
 		<class>br.com.cds.connecta.presenter.entity.RltnCmbAnalysisJoin</class>
 		<class>br.com.cds.connecta.presenter.entity.SingleSource</class>
 		<class>br.com.cds.connecta.presenter.entity.SnglSrcViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.SolrD</class>
+		<class>br.com.cds.connecta.presenter.entity.SolrDS</class>
 		<class>br.com.cds.connecta.presenter.entity.UrlWeb</class>
-		<class>br.com.cds.connecta.presenter.entity.TbViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.TbViewerFilter</class>
-		<class>br.com.cds.connecta.presenter.entity.TbWebserviceAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.TbWebserviceD</class>
-		<class>br.com.cds.connecta.presenter.entity.TdLayerSourceType</class>
-		<class>br.com.cds.connecta.presenter.entity.TdLayerViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.TdLayerViewerImpl</class>
+		<class>br.com.cds.connecta.presenter.entity.Viewer</class>
+		<class>br.com.cds.connecta.presenter.entity.ViewerFilter</class>
+		<class>br.com.cds.connecta.presenter.entity.WebserviceAnalysi</class>
+		<class>br.com.cds.connecta.presenter.entity.WebserviceDS</class>
+		<class>br.com.cds.connecta.presenter.entity.LayerSourceType</class>
+		<class>br.com.cds.connecta.presenter.entity.LayerViewer</class>
+		<class>br.com.cds.connecta.presenter.entity.LayerViewerImpl</class>
 		<class>br.com.cds.connecta.presenter.entity.TxtSolrAnalysi</class>
 		<class>br.com.cds.connecta.presenter.entity.ViewergroupRelation</class>
 		<class>br.com.cds.connecta.presenter.entity.ViewerRelation</class>
