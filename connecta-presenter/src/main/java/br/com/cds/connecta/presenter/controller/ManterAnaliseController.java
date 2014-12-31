@@ -41,13 +41,6 @@ public class ManterAnaliseController extends AbstractBaseController<Analysis>{
 	}
 
 	@Override
-	protected void deleteAll(List<Long> arg0, HttpServletRequest arg1,
-			HttpServletResponse arg2) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected Analysis get(Long id, HttpServletRequest arg1,
 			HttpServletResponse arg2) throws Exception {
 		return getManterAnaliseAS().get(id);
