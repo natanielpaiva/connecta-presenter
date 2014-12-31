@@ -46,7 +46,7 @@ public class HdfsAnalysi extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbAnalysi
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_ANALYSIS")
-	private Analysi tbAnalysi;
+	private Analysis tbAnalysi;
 
 	public HdfsAnalysi() {
 	}
@@ -91,11 +91,11 @@ public class HdfsAnalysi extends AbstractBaseEntity {
 		this.txtPigQuery = txtPigQuery;
 	}
 
-	public Analysi getTbAnalysi() {
+	public Analysis getTbAnalysi() {
 		return this.tbAnalysi;
 	}
 
-	public void setTbAnalysi(Analysi tbAnalysi) {
+	public void setTbAnalysi(Analysis tbAnalysi) {
 		this.tbAnalysi = tbAnalysi;
 	}
 

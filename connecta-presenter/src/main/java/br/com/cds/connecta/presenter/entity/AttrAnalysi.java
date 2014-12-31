@@ -38,7 +38,7 @@ public class AttrAnalysi extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbAnalysi
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PK_ANALYSIS")
-	private Analysi tbAnalysi;
+	private Analysis tbAnalysi;
 
 	//bi-directional one-to-one association to TbAttribute
 	@OneToOne(fetch=FetchType.LAZY)
@@ -64,11 +64,11 @@ public class AttrAnalysi extends AbstractBaseEntity {
 		this.txtValue = txtValue;
 	}
 
-	public Analysi getTbAnalysi() {
+	public Analysis getTbAnalysi() {
 		return this.tbAnalysi;
 	}
 
-	public void setTbAnalysi(Analysi tbAnalysi) {
+	public void setTbAnalysi(Analysis tbAnalysi) {
 		this.tbAnalysi = tbAnalysi;
 	}
 

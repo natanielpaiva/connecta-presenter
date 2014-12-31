@@ -47,7 +47,7 @@ public class Filter extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbAnalysi
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_ANALYSIS")
-	private Analysi tbAnalysi;
+	private Analysis tbAnalysi;
 
 	//bi-directional many-to-one association to TbLayer
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -105,11 +105,11 @@ public class Filter extends AbstractBaseEntity {
 		this.txtSelectedValue = txtSelectedValue;
 	}
 
-	public Analysi getTbAnalysi() {
+	public Analysis getTbAnalysi() {
 		return this.tbAnalysi;
 	}
 
-	public void setTbAnalysi(Analysi tbAnalysi) {
+	public void setTbAnalysi(Analysis tbAnalysi) {
 		this.tbAnalysi = tbAnalysi;
 	}
 

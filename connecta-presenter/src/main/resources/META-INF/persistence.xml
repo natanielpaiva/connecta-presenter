@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-	<persistence-unit name="connecta-presenter" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="connecta-presenterUnit" transaction-type="RESOURCE_LOCAL">
    		<non-jta-data-source>presenterDS</non-jta-data-source>
 		<class>br.com.cds.connecta.presenter.entity.Filter</class>
 		<class>br.com.cds.connecta.presenter.entity.AnalysisVw</class>
@@ -16,7 +16,7 @@
 		<class>br.com.cds.connecta.presenter.entity.SnglSrcGroup</class>
 		<class>br.com.cds.connecta.presenter.entity.SnglSrcVwGroup</class>
 		<class>br.com.cds.connecta.presenter.entity.SnglSrcVwSsrc</class>
-		<class>br.com.cds.connecta.presenter.entity.Analysi</class>
+		<class>br.com.cds.connecta.presenter.entity.Analysis</class>
 		<class>br.com.cds.connecta.presenter.entity.AnalysisColumn</class>
 		<class>br.com.cds.connecta.presenter.entity.AnalysisSource</class>
 		<class>br.com.cds.connecta.presenter.entity.AnalysisViewer</class>
