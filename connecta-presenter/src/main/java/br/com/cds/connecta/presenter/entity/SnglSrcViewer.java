@@ -40,7 +40,7 @@ public class SnglSrcViewer extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbViewer
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_VIEWER")
-	private TbViewer tbViewer;
+	private Viewer tbViewer;
 
 	public SnglSrcViewer() {
 	}
@@ -69,11 +69,11 @@ public class SnglSrcViewer extends AbstractBaseEntity {
 		this.tpViewer = tpViewer;
 	}
 	
-	public TbViewer getTbViewer() {
+	public Viewer getTbViewer() {
 		return this.tbViewer;
 	}
 
-	public void setTbViewer(TbViewer tbViewer) {
+	public void setTbViewer(Viewer tbViewer) {
 		this.tbViewer = tbViewer;
 	}
 

@@ -45,7 +45,7 @@ public class AnalysisViewer extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbViewer
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_VIEWER")
-	private TbViewer tbViewer;
+	private Viewer tbViewer;
 
 	public AnalysisViewer() {
 	}
@@ -82,11 +82,11 @@ public class AnalysisViewer extends AbstractBaseEntity {
 		this.nuMaxLinhas = nuMaxLinhas;
 	}
 
-	public TbViewer getTbViewer() {
+	public Viewer getTbViewer() {
 		return this.tbViewer;
 	}
 
-	public void setTbViewer(TbViewer tbViewer) {
+	public void setTbViewer(Viewer tbViewer) {
 		this.tbViewer = tbViewer;
 	}
 

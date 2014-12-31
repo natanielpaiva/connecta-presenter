@@ -21,8 +21,8 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
  */
 @Entity
 @Table(name="TB_SOLR_DS")
-@NamedQuery(name="SolrD.findAll", query="SELECT t FROM SolrD t")
-public class SolrD extends AbstractBaseEntity {
+@NamedQuery(name="SolrDS.findAll", query="SELECT t FROM SolrDS t")
+public class SolrDS extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -42,7 +42,7 @@ public class SolrD extends AbstractBaseEntity {
 	@JoinColumn(name="FK_DATASOURCE")
 	private Datasource tbDatasource;
 
-	public SolrD() {
+	public SolrDS() {
 	}
 
 	public Long getId() {

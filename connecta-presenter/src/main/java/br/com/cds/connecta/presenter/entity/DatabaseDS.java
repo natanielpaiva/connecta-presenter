@@ -23,8 +23,8 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
  */
 @Entity
 @Table(name="TB_DATABASE_DS")
-@NamedQuery(name="DatabaseD.findAll", query="SELECT t FROM DatabaseD t")
-public class DatabaseD extends AbstractBaseEntity {
+@NamedQuery(name="DatabaseDS.findAll", query="SELECT t FROM DatabaseDS t")
+public class DatabaseDS extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -53,7 +53,7 @@ public class DatabaseD extends AbstractBaseEntity {
 	@JoinColumn(name="FK_DATASOURCE")
 	private Datasource tbDatasource;
 
-	public DatabaseD() {
+	public DatabaseDS() {
 	}
 
 	public Long getId() {

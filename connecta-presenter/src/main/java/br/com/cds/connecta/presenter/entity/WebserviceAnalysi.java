@@ -21,8 +21,8 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
  */
 @Entity
 @Table(name="TB_WEBSERVICE_ANALYSIS")
-@NamedQuery(name="TbWebserviceAnalysi.findAll", query="SELECT t FROM TbWebserviceAnalysi t")
-public class TbWebserviceAnalysi extends AbstractBaseEntity {
+@NamedQuery(name="WebserviceAnalysi.findAll", query="SELECT t FROM WebserviceAnalysi t")
+public class WebserviceAnalysi extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -45,7 +45,7 @@ public class TbWebserviceAnalysi extends AbstractBaseEntity {
 	@JoinColumn(name="FK_ANALYSIS")
 	private Analysi tbAnalysi;
 
-	public TbWebserviceAnalysi() {
+	public WebserviceAnalysi() {
 	}
 
 	public Long getId() {

@@ -62,7 +62,7 @@ public class Container extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbViewer
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PK_VIEWER")
-	private TbViewer tbViewer;
+	private Viewer tbViewer;
 
 	public Container() {
 	}
@@ -139,11 +139,11 @@ public class Container extends AbstractBaseEntity {
 		this.tbPage = tbPage;
 	}
 
-	public TbViewer getTbViewer() {
+	public Viewer getTbViewer() {
 		return this.tbViewer;
 	}
 
-	public void setTbViewer(TbViewer tbViewer) {
+	public void setTbViewer(Viewer tbViewer) {
 		this.tbViewer = tbViewer;
 	}
 

@@ -18,8 +18,8 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
  */
 @Entity
 @Table(name="TD_LAYER_VIEWER_IMPL")
-@NamedQuery(name="TdLayerViewerImpl.findAll", query="SELECT t FROM TdLayerViewerImpl t")
-public class TdLayerViewerImpl extends AbstractBaseEntity {
+@NamedQuery(name="LayerViewerImpl.findAll", query="SELECT t FROM LayerViewerImpl t")
+public class LayerViewerImpl extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,7 +31,7 @@ public class TdLayerViewerImpl extends AbstractBaseEntity {
 	@Column(name="DS_LV_IMPL")
 	private String dsLvImpl;
 
-	public TdLayerViewerImpl() {
+	public LayerViewerImpl() {
 	}
 
 	public Long getId() {

@@ -21,8 +21,8 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
  */
 @Entity
 @Table(name="TB_VIEWER")
-@NamedQuery(name="TbViewer.findAll", query="SELECT t FROM TbViewer t")
-public class TbViewer extends AbstractBaseEntity {
+@NamedQuery(name="Viewer.findAll", query="SELECT t FROM Viewer t")
+public class Viewer extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -40,9 +40,9 @@ public class TbViewer extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbLayerViewer
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_VIEWER")
-	private LayerViewer tbLayerViewer;
+	private LayerViewer_ta tbLayerViewer;
 
-	public TbViewer() {
+	public Viewer() {
 	}
 
 	public Long getId() {
@@ -69,11 +69,11 @@ public class TbViewer extends AbstractBaseEntity {
 		this.nmViewer = nmViewer;
 	}
 
-	public LayerViewer getTbLayerViewer() {
+	public LayerViewer_ta getTbLayerViewer() {
 		return this.tbLayerViewer;
 	}
 
-	public void setTbLayerViewer(LayerViewer tbLayerViewer) {
+	public void setTbLayerViewer(LayerViewer_ta tbLayerViewer) {
 		this.tbLayerViewer = tbLayerViewer;
 	}
 }

@@ -18,8 +18,8 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
  */
 @Entity
 @Table(name="TD_LAYER_SOURCE_TYPE")
-@NamedQuery(name="TdLayerSourceType.findAll", query="SELECT t FROM TdLayerSourceType t")
-public class TdLayerSourceType extends AbstractBaseEntity {
+@NamedQuery(name="LayerSourceType.findAll", query="SELECT t FROM LayerSourceType t")
+public class LayerSourceType extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -31,7 +31,7 @@ public class TdLayerSourceType extends AbstractBaseEntity {
 	@Column(name="DS_SOURCE_TYPE")
 	private String dsSourceType;
 
-	public TdLayerSourceType() {
+	public LayerSourceType() {
 	}
 
 	public Long getId() {

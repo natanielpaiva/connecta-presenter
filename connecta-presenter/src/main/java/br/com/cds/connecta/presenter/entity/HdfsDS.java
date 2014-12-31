@@ -1,5 +1,7 @@
 package br.com.cds.connecta.presenter.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,30 +18,36 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
 
 /**
- * The persistent class for the TB_ENDECA_DS database table.
+ * The persistent class for the TB_HDFS_DS database table.
  * 
  */
 @Entity
-@Table(name="TB_ENDECA_DS")
-@NamedQuery(name="EndecaD.findAll", query="SELECT t FROM EndecaD t")
-public class EndecaD extends AbstractBaseEntity {
+@Table(name="TB_HDFS_DS")
+@NamedQuery(name="HdfsDS.findAll", query="SELECT t FROM HdfsDS t")
+public class HdfsDS extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_ENDECA_DS_PKENDECADS_GENERATOR", sequenceName="TB_ENDECA_DS_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_ENDECA_DS_PKENDECADS_GENERATOR")
-	@Column(name="PK_ENDECA_DS")
+	@SequenceGenerator(name="TB_HDFS_DS_PKHDFSDS_GENERATOR", sequenceName="TB_HDFS_DS_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_HDFS_DS_PKHDFSDS_GENERATOR")
+	@Column(name="PK_HDFS_DS")
 	private Long id;
 
-	@Column(name="TXT_ADDRESS")
-	private String txtAddress;
+	@Column(name="TXT_PATH")
+	private String txtPath;
+
+	@Column(name="TXT_PORT")
+	private BigDecimal txtPort;
+
+	@Column(name="TXT_SERVER")
+	private String txtServer;
 
 	//bi-directional many-to-one association to TbDatasource
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_DATASOURCE")
 	private Datasource tbDatasource;
 
-	public EndecaD() {
+	public HdfsDS() {
 	}
 
 	public Long getId() {
@@ -49,14 +57,29 @@ public class EndecaD extends AbstractBaseEntity {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
 
-	public String getTxtAddress() {
-		return this.txtAddress;
+	public String getTxtPath() {
+		return this.txtPath;
 	}
 
-	public void setTxtAddress(String txtAddress) {
-		this.txtAddress = txtAddress;
+	public void setTxtPath(String txtPath) {
+		this.txtPath = txtPath;
+	}
+
+	public BigDecimal getTxtPort() {
+		return this.txtPort;
+	}
+
+	public void setTxtPort(BigDecimal txtPort) {
+		this.txtPort = txtPort;
+	}
+
+	public String getTxtServer() {
+		return this.txtServer;
+	}
+
+	public void setTxtServer(String txtServer) {
+		this.txtServer = txtServer;
 	}
 
 	public Datasource getTbDatasource() {
