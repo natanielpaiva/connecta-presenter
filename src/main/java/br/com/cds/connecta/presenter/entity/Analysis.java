@@ -14,77 +14,78 @@ import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
-
 /**
  * The persistent class for the TB_ANALYSIS database table.
- * 
+ *
  */
 @Entity
-@Table(name="TB_ANALYSIS")
-@NamedQuery(name="Analysis.findAll", query="SELECT t FROM Analysis t")
+@Table(name = "TB_ANALYSIS")
+@NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t")
 public class Analysis extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="TB_ANALYSIS_PKANALYSIS_GENERATOR", sequenceName="TB_ANALYSIS_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_ANALYSIS_PKANALYSIS_GENERATOR")
-	@Column(name="PK_ANALYSIS")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="DS_ANALYSIS")
-	private String dsAnalysis;
+    @Id
+    @SequenceGenerator(name = "TB_ANALYSIS_PKANALYSIS_GENERATOR", sequenceName = "TB_ANALYSIS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ANALYSIS_PKANALYSIS_GENERATOR")
+    @Column(name = "PK_ANALYSIS")
+    private Long id;
 
-	@Column(name="NM_ANALYSIS")
-	private String nmAnalysis;
+    @Column(name = "DS_ANALYSIS")
+    private String dsAnalysis;
 
-	@Column(name="TP_ANALYSIS")
-	private String tpAnalysis;
+    @Column(name = "NM_ANALYSIS")
+    private String nmAnalysis;
 
-	//bi-directional many-to-one association to TbDatasource
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="FK_DATASOURCE")
-	private Datasource tbDatasource;
+    @Column(name = "TP_ANALYSIS")
+    private String tpAnalysis;
 
-	public Analysis() {
-	}
+    //bi-directional many-to-one association to TbDatasource
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_DATASOURCE")
+    private Datasource tbDatasource;
 
-	public Long getId() {
-		return this.id;
-	}
+    public Analysis() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getDsAnalysis() {
-		return this.dsAnalysis;
-	}
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 
-	public void setDsAnalysis(String dsAnalysis) {
-		this.dsAnalysis = dsAnalysis;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getNmAnalysis() {
-		return this.nmAnalysis;
-	}
+    public String getDsAnalysis() {
+        return this.dsAnalysis;
+    }
 
-	public void setNmAnalysis(String nmAnalysis) {
-		this.nmAnalysis = nmAnalysis;
-	}
+    public void setDsAnalysis(String dsAnalysis) {
+        this.dsAnalysis = dsAnalysis;
+    }
 
-	public String getTpAnalysis() {
-		return this.tpAnalysis;
-	}
+    public String getNmAnalysis() {
+        return this.nmAnalysis;
+    }
 
-	public void setTpAnalysis(String tpAnalysis) {
-		this.tpAnalysis = tpAnalysis;
-	}
+    public void setNmAnalysis(String nmAnalysis) {
+        this.nmAnalysis = nmAnalysis;
+    }
 
-	public Datasource getTbDatasource() {
-		return this.tbDatasource;
-	}
+    public String getTpAnalysis() {
+        return this.tpAnalysis;
+    }
 
-	public void setTbDatasource(Datasource tbDatasource) {
-		this.tbDatasource = tbDatasource;
-	}
+    public void setTpAnalysis(String tpAnalysis) {
+        this.tpAnalysis = tpAnalysis;
+    }
+
+    public Datasource getTbDatasource() {
+        return this.tbDatasource;
+    }
+
+    public void setTbDatasource(Datasource tbDatasource) {
+        this.tbDatasource = tbDatasource;
+    }
 }

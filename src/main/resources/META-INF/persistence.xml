@@ -1,81 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-	<persistence-unit name="connecta-presenterUnit" transaction-type="RESOURCE_LOCAL">
-   		<non-jta-data-source>presenterDS</non-jta-data-source>
-		<class>br.com.cds.connecta.presenter.entity.Filter</class>
-		<class>br.com.cds.connecta.presenter.entity.AnalysisVw</class>
-		<class>br.com.cds.connecta.presenter.entity.AttrAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.AttrGroup</class>
-		<class>br.com.cds.connecta.presenter.entity.AttrSnglSrc</class>
-		<class>br.com.cds.connecta.presenter.entity.ChildViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.ConfigColumn</class>
-		<class>br.com.cds.connecta.presenter.entity.ConfigViewer_ta</class>
-		<class>br.com.cds.connecta.presenter.entity.Container</class>
-		<class>br.com.cds.connecta.presenter.entity.CstmPrmVw</class>
-		<class>br.com.cds.connecta.presenter.entity.LayerViewerGroupLayer</class>
-		<class>br.com.cds.connecta.presenter.entity.SnglSrcGroup</class>
-		<class>br.com.cds.connecta.presenter.entity.SnglSrcVwGroup</class>
-		<class>br.com.cds.connecta.presenter.entity.SnglSrcVwSsrc</class>
-		<class>br.com.cds.connecta.presenter.entity.Analysis</class>
-		<class>br.com.cds.connecta.presenter.entity.AnalysisColumn</class>
-		<class>br.com.cds.connecta.presenter.entity.AnalysisSource</class>
-		<class>br.com.cds.connecta.presenter.entity.AnalysisViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.Attribute</class>
-		<class>br.com.cds.connecta.presenter.entity.BiAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.BiDS</class>
-		<class>br.com.cds.connecta.presenter.entity.CmbViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.CombinedAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.ConfigCstmPrm</class>
-		<class>br.com.cds.connecta.presenter.entity.ConfigViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.CsvData</class>
-		<class>br.com.cds.connecta.presenter.entity.Dashboard</class>
-		<class>br.com.cds.connecta.presenter.entity.DatabaseDS</class>
-		<class>br.com.cds.connecta.presenter.entity.Datasource</class>
-		<class>br.com.cds.connecta.presenter.entity.DbAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.EndecaAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.EndecaDS</class>
-		<class>br.com.cds.connecta.presenter.entity.File</class>
-		<class>br.com.cds.connecta.presenter.entity.FilterSelector</class>
-		<class>br.com.cds.connecta.presenter.entity.FilterValue</class>
-		<class>br.com.cds.connecta.presenter.entity.Group</class>
-		<class>br.com.cds.connecta.presenter.entity.HdfsAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.HdfsDS</class>
-		<class>br.com.cds.connecta.presenter.entity.Layer</class>
-		<class>br.com.cds.connecta.presenter.entity.LayerSource</class>
-		<class>br.com.cds.connecta.presenter.entity.LayerViewer_ta</class>
-		<class>br.com.cds.connecta.presenter.entity.LayerViewerGroup</class>
-		<class>br.com.cds.connecta.presenter.entity.Page</class>
-		<class>br.com.cds.connecta.presenter.entity.PageFilter</class>
-		<class>br.com.cds.connecta.presenter.entity.RelationCmbAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.RltnCmbAnalysisJoin</class>
-		<class>br.com.cds.connecta.presenter.entity.SingleSource</class>
-		<class>br.com.cds.connecta.presenter.entity.SnglSrcViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.SolrDS</class>
-		<class>br.com.cds.connecta.presenter.entity.UrlWeb</class>
-		<class>br.com.cds.connecta.presenter.entity.Viewer</class>
-		<class>br.com.cds.connecta.presenter.entity.ViewerFilter</class>
-		<class>br.com.cds.connecta.presenter.entity.WebserviceAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.WebserviceDS</class>
-		<class>br.com.cds.connecta.presenter.entity.LayerSourceType</class>
-		<class>br.com.cds.connecta.presenter.entity.LayerViewer</class>
-		<class>br.com.cds.connecta.presenter.entity.LayerViewerImpl</class>
-		<class>br.com.cds.connecta.presenter.entity.TxtSolrAnalysi</class>
-		<class>br.com.cds.connecta.presenter.entity.ViewergroupRelation</class>
-		<class>br.com.cds.connecta.presenter.entity.ViewerRelation</class>
-		<exclude-unlisted-classes>true</exclude-unlisted-classes>
-		<properties>
-		  <property name="hibernate.hbm2ddl.auto" value="validate"/>
-	      <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
-	      <property name="hibernate.show_sql" value="true"/>
-	      <property name="hibernate.format_sql" value="true"/>
-	      <property name="hibernate.use_sql_comments" value="false"/>
-	      <property name="hibernate.c3p0.min_size" value="5"/>
-	      <property name="hibernate.c3p0.max_size" value="35"/>
-	      <property name="hibernate.c3p0.timeout" value="30000"/>
-	      <property name="hibernate.c3p0.max_statements" value="180"/>
-	      <property name="hibernate.c3p0.idle_test_period" value="30000"/>
-	      <!-- <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/> -->
-	      <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.WeblogicTransactionManagerLookup"/>
-		</properties>
-	</persistence-unit>
+    <persistence-unit name="connecta-presenterUnit" transaction-type="RESOURCE_LOCAL">
+        <non-jta-data-source>ConnectaPresenterDS</non-jta-data-source>
+        <class>br.com.cds.connecta.presenter.entity.Filter</class>
+        <class>br.com.cds.connecta.presenter.entity.AnalysisVw</class>
+        <class>br.com.cds.connecta.presenter.entity.AttrAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.AttrGroup</class>
+        <class>br.com.cds.connecta.presenter.entity.AttrSnglSrc</class>
+        <class>br.com.cds.connecta.presenter.entity.ChildViewer</class>
+        <class>br.com.cds.connecta.presenter.entity.ConfigColumn</class>
+        <class>br.com.cds.connecta.presenter.entity.ConfigViewer_ta</class>
+        <class>br.com.cds.connecta.presenter.entity.Container</class>
+        <class>br.com.cds.connecta.presenter.entity.CstmPrmVw</class>
+        <class>br.com.cds.connecta.presenter.entity.LayerViewerGroupLayer</class>
+        <class>br.com.cds.connecta.presenter.entity.SnglSrcGroup</class>
+        <class>br.com.cds.connecta.presenter.entity.SnglSrcVwGroup</class>
+        <class>br.com.cds.connecta.presenter.entity.SnglSrcVwSsrc</class>
+        <class>br.com.cds.connecta.presenter.entity.Analysis</class>
+        <class>br.com.cds.connecta.presenter.entity.AnalysisColumn</class>
+        <class>br.com.cds.connecta.presenter.entity.AnalysisSource</class>
+        <class>br.com.cds.connecta.presenter.entity.AnalysisViewer</class>
+        <class>br.com.cds.connecta.presenter.entity.Attribute</class>
+        <class>br.com.cds.connecta.presenter.entity.BiAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.BiDS</class>
+        <class>br.com.cds.connecta.presenter.entity.CmbViewer</class>
+        <class>br.com.cds.connecta.presenter.entity.CombinedAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.ConfigCstmPrm</class>
+        <class>br.com.cds.connecta.presenter.entity.ConfigViewer</class>
+        <class>br.com.cds.connecta.presenter.entity.CsvData</class>
+        <class>br.com.cds.connecta.presenter.entity.Dashboard</class>
+        <class>br.com.cds.connecta.presenter.entity.DatabaseDS</class>
+        <class>br.com.cds.connecta.presenter.entity.Datasource</class>
+        <class>br.com.cds.connecta.presenter.entity.DbAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.EndecaAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.EndecaDS</class>
+        <class>br.com.cds.connecta.presenter.entity.File</class>
+        <class>br.com.cds.connecta.presenter.entity.FilterSelector</class>
+        <class>br.com.cds.connecta.presenter.entity.FilterValue</class>
+        <class>br.com.cds.connecta.presenter.entity.Group</class>
+        <class>br.com.cds.connecta.presenter.entity.HdfsAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.HdfsDS</class>
+        <class>br.com.cds.connecta.presenter.entity.Layer</class>
+        <class>br.com.cds.connecta.presenter.entity.LayerSource</class>
+        <class>br.com.cds.connecta.presenter.entity.LayerViewer_ta</class>
+        <class>br.com.cds.connecta.presenter.entity.LayerViewerGroup</class>
+        <class>br.com.cds.connecta.presenter.entity.Page</class>
+        <class>br.com.cds.connecta.presenter.entity.PageFilter</class>
+        <class>br.com.cds.connecta.presenter.entity.RelationCmbAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.RltnCmbAnalysisJoin</class>
+        <class>br.com.cds.connecta.presenter.entity.SingleSource</class>
+        <class>br.com.cds.connecta.presenter.entity.SnglSrcViewer</class>
+        <class>br.com.cds.connecta.presenter.entity.SolrDS</class>
+        <class>br.com.cds.connecta.presenter.entity.UrlWeb</class>
+        <class>br.com.cds.connecta.presenter.entity.Viewer</class>
+        <class>br.com.cds.connecta.presenter.entity.ViewerFilter</class>
+        <class>br.com.cds.connecta.presenter.entity.WebserviceAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.WebserviceDS</class>
+        <class>br.com.cds.connecta.presenter.entity.LayerSourceType</class>
+        <class>br.com.cds.connecta.presenter.entity.LayerViewer</class>
+        <class>br.com.cds.connecta.presenter.entity.LayerViewerImpl</class>
+        <class>br.com.cds.connecta.presenter.entity.TxtSolrAnalysi</class>
+        <class>br.com.cds.connecta.presenter.entity.ViewergroupRelation</class>
+        <class>br.com.cds.connecta.presenter.entity.ViewerRelation</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="false"/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="35"/>
+            <property name="hibernate.c3p0.timeout" value="30000"/>
+            <property name="hibernate.c3p0.max_statements" value="180"/>
+            <property name="hibernate.c3p0.idle_test_period" value="30000"/>
+            <!-- <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/> -->
+            <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.WeblogicTransactionManagerLookup"/>
+        </properties>
+    </persistence-unit>
 </persistence>
