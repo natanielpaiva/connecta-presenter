@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Controller
-@RequestMapping("analysis")
+@RequestMapping("/analysis")
 public class ManterAnaliseController extends AbstractBaseController<Analysis> {
 
     @Autowired
@@ -54,8 +54,8 @@ public class ManterAnaliseController extends AbstractBaseController<Analysis> {
     @Override
     protected ResponseEntity<List<Analysis>> list(HttpServletRequest arg0,
             HttpServletResponse arg1) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+        List<Analysis> list = manterAnaliseAS.list();
+        return new ResponseEntity<List<Analysis>>(list, HttpStatus.OK);
     }
 
     @Override

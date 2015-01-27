@@ -9,15 +9,13 @@ import br.com.cds.connecta.presenter.entity.Analysis;
 import br.com.cds.connecta.presenter.persistence.IAnalysiDAO;
 
 //APENAS OS MÉTODOS SALVA,ALTERAR,EXCLUIR SÃO PUBLICS ,OS OUTROS DEVEM SER IMPLEMENTADOS AQUI
-
 @Repository
 public class AnalysiDAO extends AbstractBaseJpaDAO<Analysis> implements IAnalysiDAO {
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<Analysis> list() {
-		return getEntityManager().createNamedQuery("Analysi.findAll").getResultList();
-	}
-	
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Analysis> list() {
+        return getEntityManager().createNamedQuery("Analysis.findAll").getResultList();
+    }
 
 }

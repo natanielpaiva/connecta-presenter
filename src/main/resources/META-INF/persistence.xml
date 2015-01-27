@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="connecta-presenterUnit" transaction-type="RESOURCE_LOCAL">
+<persistence version="2.0"
+    xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="ConnectaPresenterPU" transaction-type="RESOURCE_LOCAL">
         <non-jta-data-source>ConnectaPresenterDS</non-jta-data-source>
-        <class>br.com.cds.connecta.presenter.entity.Filter</class>
+<!--        <class>br.com.cds.connecta.presenter.entity.Filter</class>
         <class>br.com.cds.connecta.presenter.entity.AnalysisVw</class>
         <class>br.com.cds.connecta.presenter.entity.AttrAnalysi</class>
         <class>br.com.cds.connecta.presenter.entity.AttrGroup</class>
@@ -61,13 +64,14 @@
         <class>br.com.cds.connecta.presenter.entity.LayerViewerImpl</class>
         <class>br.com.cds.connecta.presenter.entity.TxtSolrAnalysi</class>
         <class>br.com.cds.connecta.presenter.entity.ViewergroupRelation</class>
-        <class>br.com.cds.connecta.presenter.entity.ViewerRelation</class>
-        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <class>br.com.cds.connecta.presenter.entity.ViewerRelation</class>-->
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.archive.autodetection" value="class, hbm" />
             <property name="hibernate.use_sql_comments" value="false"/>
             <property name="hibernate.c3p0.min_size" value="5"/>
             <property name="hibernate.c3p0.max_size" value="35"/>

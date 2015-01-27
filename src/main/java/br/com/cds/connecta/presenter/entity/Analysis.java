@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import javax.persistence.NamedQueries;
 
 /**
  * The persistent class for the TB_ANALYSIS database table.
@@ -20,7 +21,9 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
  */
 @Entity
 @Table(name = "TB_ANALYSIS")
-@NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t")
+@NamedQueries({
+    @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t")
+})
 public class Analysis extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
