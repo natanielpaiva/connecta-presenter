@@ -28,7 +28,7 @@
         <dependency>
             <groupId>br.com.cds.connecta.framework</groupId>
             <artifactId>connecta-core</artifactId>
-            <version>0.0.3-SNAPSHOT</version>
+            <version>${project.parent.version}</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
