@@ -29,27 +29,23 @@ public class Analysis extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_ANALYSIS_PKANALYSIS_GENERATOR", sequenceName = "TB_ANALYSIS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ANALYSIS_PKANALYSIS_GENERATOR")
+    @SequenceGenerator(name = "TB_ANALYSIS_SEQ", sequenceName = "TB_ANALYSIS_SEQ", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ANALYSIS_SEQ")
     @Column(name = "PK_ANALYSIS")
     private Long id;
 
     @Column(name = "DS_ANALYSIS")
-    private String dsAnalysis;
+    private String description;
 
     @Column(name = "NM_ANALYSIS")
-    private String nmAnalysis;
+    private String name;
 
     @Column(name = "TP_ANALYSIS")
-    private String tpAnalysis;
+    private String type;
 
-    //bi-directional many-to-one association to TbDatasource
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_DATASOURCE")
-    private Datasource tbDatasource;
-
-    public Analysis() {
-    }
+    private Datasource datasource;
 
     @Override
     public Long getId() {
@@ -60,35 +56,37 @@ public class Analysis extends AbstractBaseEntity {
         this.id = id;
     }
 
-    public String getDsAnalysis() {
-        return this.dsAnalysis;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDsAnalysis(String dsAnalysis) {
-        this.dsAnalysis = dsAnalysis;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getNmAnalysis() {
-        return this.nmAnalysis;
+    public String getName() {
+        return name;
     }
 
-    public void setNmAnalysis(String nmAnalysis) {
-        this.nmAnalysis = nmAnalysis;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTpAnalysis() {
-        return this.tpAnalysis;
+    public String getType() {
+        return type;
     }
 
-    public void setTpAnalysis(String tpAnalysis) {
-        this.tpAnalysis = tpAnalysis;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Datasource getTbDatasource() {
-        return this.tbDatasource;
+    public Datasource getDatasource() {
+        return datasource;
     }
 
-    public void setTbDatasource(Datasource tbDatasource) {
-        this.tbDatasource = tbDatasource;
+    public void setDatasource(Datasource datasource) {
+        this.datasource = datasource;
     }
+
+    
 }

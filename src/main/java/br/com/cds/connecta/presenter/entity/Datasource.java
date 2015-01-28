@@ -10,87 +10,92 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-
+import java.io.Serializable;
+import javax.persistence.NamedQueries;
 
 /**
  * The persistent class for the TB_DATASOURCE database table.
- * 
+ *
  */
 @Entity
-@Table(name="TB_DATASOURCE")
-@NamedQuery(name="Datasource.findAll", query="SELECT t FROM Datasource t")
-public class Datasource extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
+@Table(name = "TB_DATASOURCE")
+@NamedQueries({
+    @NamedQuery(name = "Datasource.findAll", query = "SELECT t FROM Datasource t")
+})
+public class Datasource extends AbstractBaseEntity implements Serializable {
 
-	@Id
-	@SequenceGenerator(name="TB_DATASOURCE_PKDATASOURCE_GENERATOR", sequenceName="TB_DATASOURCE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_DATASOURCE_PKDATASOURCE_GENERATOR")
-	@Column(name="PK_DATASOURCE")
-	private Long id;
+    @Id
+    @SequenceGenerator(
+        name = "TB_DATASOURCE_SEQ",
+        sequenceName = "TB_DATASOURCE_SEQ",
+        initialValue = 1,
+        allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_DATASOURCE_SEQ")
+    @Column(name = "PK_DATASOURCE")
+    private Long id;
 
-	@Column(name="DS_DATASOURCE")
-	private String dsDatasource;
+    @Column(name = "DS_DATASOURCE")
+    private String description;
 
-	@Column(name="NM_DATASOURCE")
-	private String nmDatasource;
+    @Column(name = "NM_DATASOURCE")
+    private String name;
 
-	@Column(name="TP_DATASOURCE")
-	private String tpDatasource;
+    @Column(name = "TP_DATASOURCE")
+    private String type;
 
-	@Column(name="TXT_SENHA")
-	private String txtSenha;
+    @Column(name = "TXT_SENHA")
+    private String password;
 
-	@Column(name="TXT_USUARIO")
-	private String txtUsuario;
+    @Column(name = "TXT_USUARIO")
+    private String user;
 
-	public Datasource() {
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public Long getId() {
-		return this.id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getDsDatasource() {
-		return this.dsDatasource;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setDsDatasource(String dsDatasource) {
-		this.dsDatasource = dsDatasource;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getNmDatasource() {
-		return this.nmDatasource;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setNmDatasource(String nmDatasource) {
-		this.nmDatasource = nmDatasource;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public String getTpDatasource() {
-		return this.tpDatasource;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setTpDatasource(String tpDatasource) {
-		this.tpDatasource = tpDatasource;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getTxtSenha() {
-		return this.txtSenha;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setTxtSenha(String txtSenha) {
-		this.txtSenha = txtSenha;
-	}
+    public String getUser() {
+        return user;
+    }
 
-	public String getTxtUsuario() {
-		return this.txtUsuario;
-	}
+    public void setUser(String user) {
+        this.user = user;
+    }
 
-	public void setTxtUsuario(String txtUsuario) {
-		this.txtUsuario = txtUsuario;
-	}
 }
