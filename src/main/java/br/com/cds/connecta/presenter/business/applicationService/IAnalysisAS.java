@@ -14,6 +14,6 @@ public interface IAnalysisAS {
 
     public abstract void delete(Long id) throws Exception;
 
-    public abstract void delete(Analysis analysi) throws Exception;
+    public abstract void delete(Analysis analysis) throws Exception;
 
 }

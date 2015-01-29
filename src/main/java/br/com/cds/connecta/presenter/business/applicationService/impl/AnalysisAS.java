@@ -9,10 +9,7 @@ import br.com.cds.connecta.framework.core.business.aplicationService.common.Abst
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.entity.Analysis;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
-import org.hibernate.Hibernate;
-import org.springframework.transaction.annotation.Transactional;
 
-//REGRAS DE NEGÓCIO DO CASO DE USO
 @Service
 public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS {
 
