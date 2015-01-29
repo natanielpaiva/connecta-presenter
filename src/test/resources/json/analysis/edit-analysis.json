@@ -1,3 +1,9 @@
 {
-    "name": "nataniel"
+    "id"            : 2,
+    "name"          : "Edited Analysis",
+    "description"   : "Analysis Description",
+    "type"          : "TESTING",
+    "datasource"    : {
+        "id": 1
+    }
 }

@@ -20,11 +20,23 @@
     
     <import resource="classpath:META-INF/br.com.cds.connecta.framework.core.xml" />
     
-    
-    
     <context:component-scan base-package="br.com.cds.connecta.presenter" />
     
+    <!-- MESSAGE SOURCES -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages" />
+        <property name="defaultEncoding" value="UTF-8" />
+    </bean>
+
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
     
+    <bean id="sharedTransactionTemplate"
+          class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="isolationLevelName" value="ISOLATION_READ_UNCOMMITTED" />
+        <property name="timeout" value="30" />
+    </bean>
+    
+    <!--PERSISTENCE-->
     
     <!-- FIXME Remover quando o banco novo do Presenter de desenvolvimento for criado! -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -59,55 +71,13 @@
         <property name="persistenceUnitName" value="ConnectaPresenterPU" />
     </bean>-->
     
-    
-    
+    <!--TRANSACTION-->
     
     <bean name="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" autowire="byName">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
     
+    <!--TODO Mover para o core e voltar à versão de AOP-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    
-    <!-- MESSAGE SOURCES -->
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basename" value="classpath:messages" />
-        <property name="defaultEncoding" value="UTF-8" />
-    </bean>
-
-<!--    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="lang" />
-    </bean>-->
-
-    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-    
-    <bean id="sharedTransactionTemplate"
-          class="org.springframework.transaction.support.TransactionTemplate">
-        <property name="isolationLevelName" value="ISOLATION_READ_UNCOMMITTED" />
-        <property name="timeout" value="30" />
-    </bean>
-
-<!--    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-         one of the properties available; the maximum file size in bytes 
-        <property name="maxUploadSize" value="100000000" />
-    </bean>-->
-    
-
-    <!--
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="save*" propagation="NESTED"/>
-            <tx:method name="delete*" propagation="NESTED"/>
-            <tx:method name="update*" propagation="NESTED"/>
-            <tx:method name="get*" read-only="true" isolation="DEFAULT" propagation="SUPPORTS"/>
-            <tx:method name="list*" read-only="true" isolation="DEFAULT" propagation="SUPPORTS"/>
-            <tx:method name="*" propagation="NOT_SUPPORTED" isolation="DEFAULT" />
-        </tx:attributes>
-    </tx:advice>
-    
-    <aop:config>
-        <aop:pointcut id="allServices" expression="execution(* br.com.cds.presenter.businnes.*.*.*(..))" />
-        <aop:advisor pointcut-ref="allServices"   advice-ref="txAdvice" />
-    </aop:config>
-    -->
 
 </beans>

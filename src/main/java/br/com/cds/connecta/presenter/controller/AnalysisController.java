@@ -46,9 +46,9 @@ public class AnalysisController extends AbstractBaseController<Analysis> {
     @Override
     protected ResponseEntity<Analysis> get(Long id, HttpServletRequest arg1,
             HttpServletResponse arg2) throws Exception {
-        Analysis analisys = analysisService.get(id);
+        Analysis analysis = analysisService.get(id);
         
-        return new ResponseEntity<Analysis>(analisys, HttpStatus.OK);
+        return new ResponseEntity<Analysis>(analysis, HttpStatus.OK);
     }
 
     @Override

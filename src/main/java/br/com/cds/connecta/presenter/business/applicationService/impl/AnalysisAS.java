@@ -9,38 +9,39 @@ import br.com.cds.connecta.framework.core.business.aplicationService.common.Abst
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.entity.Analysis;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
+import org.hibernate.Hibernate;
+import org.springframework.transaction.annotation.Transactional;
 
 //REGRAS DE NEGÓCIO DO CASO DE USO
-
 @Service
-public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS{
-	
-	@Autowired
-	private IAnalysisDAO analysisDAO;
+public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS {
 
-	@Override
-	public Analysis get(Long id) throws Exception {
-		return analysisDAO.get(id);
-	}
+    @Autowired
+    private IAnalysisDAO analysisDAO;
 
-	@Override
-	public List<Analysis> list() throws Exception {
-		return analysisDAO.list();
-	}
+    @Override
+    public Analysis get(Long id) throws Exception {
+        return analysisDAO.get(id);
+    }
+    
+    @Override
+    public List<Analysis> list() throws Exception {
+        return analysisDAO.list();
+    }
 
-	@Override
-	public Analysis saveOrUpdate(Analysis analysi) throws Exception {
-		return analysisDAO.saveOrUpdate(analysi);
-	}
+    @Override
+    public Analysis saveOrUpdate(Analysis analysi) throws Exception {
+        return analysisDAO.saveOrUpdate(analysi);
+    }
 
-	@Override
-	public void delete(Long id) throws Exception {
-		analysisDAO.delete(id);
-	}
-	
-	@Override
-	public void delete(Analysis analysi) throws Exception {
-		analysisDAO.delete(analysi);
-	}
+    @Override
+    public void delete(Long id) throws Exception {
+        analysisDAO.delete(id);
+    }
+
+    @Override
+    public void delete(Analysis analysi) throws Exception {
+        analysisDAO.delete(analysi);
+    }
 
 }

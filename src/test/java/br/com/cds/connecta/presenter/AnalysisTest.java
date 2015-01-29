@@ -29,11 +29,11 @@ public class AnalysisTest extends BaseTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", notNullValue()))
-            .andExpect(jsonPath("$[*]", hasSize(greaterThan(1))))
+            .andExpect(jsonPath("$[*]", hasSize(greaterThan(0))))
             .andExpect(jsonPath("$[*].description", todosOsItens(notNullValue())))
             .andExpect(jsonPath("$[*].name", todosOsItens(notNullValue())))
             .andExpect(jsonPath("$[*].type", todosOsItens(notNullValue())))
-            .andExpect(jsonPath("$[*].datasource", todosOsItens(notNullValue())));
+            .andExpect(jsonPath("$[*].datasource", todosOsItens(nullValue())));
     }
     
     @Test
@@ -44,9 +44,10 @@ public class AnalysisTest extends BaseTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", notNullValue()))
-            .andExpect(jsonPath("$.host", allOf(notNullValue(), containsString("http://"), containsString("presenter"))))
-            .andExpect(jsonPath("$.name", allOf(notNullValue(), equalTo("presenter"))))
-            .andExpect(jsonPath("$.title", allOf(notNullValue(), equalToIgnoringCase("presenter"))));
+            .andExpect(jsonPath("$.name", equalTo("Teste")))
+            .andExpect(jsonPath("$.description", equalTo("Teste descricao")))
+            .andExpect(jsonPath("$.type", equalTo("TESTE")))
+            .andExpect(jsonPath("$.datasource", nullValue()));
     }
     
     @Test
@@ -58,25 +59,27 @@ public class AnalysisTest extends BaseTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$", notNullValue()))
-            .andExpect(jsonPath("$.host", equalTo("http://speaknow.connecta.com")))
-            .andExpect(jsonPath("$.name", equalTo("speaknow")))
-            .andExpect(jsonPath("$.title", equalTo("SpeakNow")))
-            .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
+            .andExpect(jsonPath("$.name", equalTo("New Analysis")))
+            .andExpect(jsonPath("$.description", equalTo("Analysis Description")))
+            .andExpect(jsonPath("$.type", equalTo("TEST")))
+            .andExpect(jsonPath("$.datasource", notNullValue()))
+            .andExpect(jsonPath("$.datasource.id", equalTo(1)));
     }
     
     @Test
     public void sucessoAlterarAnalise() throws Exception {
-        mockMvc().perform(put(RESOURCE_ID, 1)
+        mockMvc().perform(put(RESOURCE_ID, 2)
             .contentType(MediaType.APPLICATION_JSON)
             .content(getJson("analysis/edit-analysis"))
         ).andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$", notNullValue()))
-            .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), equalTo(1))))
-            .andExpect(jsonPath("$.host", equalTo("http://connectad.cds.com.br/presenter")))
-            .andExpect(jsonPath("$.name", equalTo("presenter")))
-            .andExpect(jsonPath("$.title", equalTo("Presentacion de Pelota")));
+            .andExpect(jsonPath("$.id", equalTo(2)))
+            .andExpect(jsonPath("$.name", equalTo("Edited Analysis")))
+            .andExpect(jsonPath("$.description", equalTo("Analysis Description")))
+            .andExpect(jsonPath("$.type", equalTo("TESTING")))
+            .andExpect(jsonPath("$.datasource", nullValue()));
     }
     
     @Test
