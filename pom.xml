@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.warname>presenter-${project.version}</build.warname>
         <hibernate.version>4.2.16.Final</hibernate.version>
-        <context-web-portal>/presenter</context-web-portal>
+        <context-root>/presenter</context-root>
     </properties>
 
     <dependencies>
@@ -230,6 +230,7 @@
                             <includes>
                                 <include>index.html</include>
                                 <include>**/web.xml</include>
+                                <include>**/weblogic.xml</include>
                             </includes>
                         </resource>
                     </webResources>

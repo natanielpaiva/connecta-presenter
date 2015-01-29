@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Controller
-@RequestMapping("/analysis")
+@RequestMapping("analysis")
 public class AnalysisController extends AbstractBaseController<Analysis> {
 
     @Autowired
