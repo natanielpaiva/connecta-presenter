@@ -27,8 +27,6 @@ public class WebserviceDatasource extends AbstractBaseEntity implements ITypedDa
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_WEBSERVICE_DS_PKWEBSERVICEDS_GENERATOR", sequenceName = "TB_WEBSERVICE_DS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_WEBSERVICE_DS_PKWEBSERVICEDS_GENERATOR")
     @Column(name = "FK_DATASOURCE")
     private Long id;
 

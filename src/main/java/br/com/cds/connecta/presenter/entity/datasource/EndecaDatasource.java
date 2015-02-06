@@ -27,8 +27,6 @@ public class EndecaDatasource extends AbstractBaseEntity implements ITypedDataso
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_ENDECA_DS_PKENDECADS_GENERATOR", sequenceName = "TB_ENDECA_DS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ENDECA_DS_PKENDECADS_GENERATOR")
     @Column(name = "FK_DATASOURCE")
     private Long id;
 

@@ -27,8 +27,6 @@ public class BIDatasource extends AbstractBaseEntity implements ITypedDatasource
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_BI_DS_PKBIDS_GENERATOR", sequenceName = "TB_BI_DS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_BI_DS_PKBIDS_GENERATOR")
     @Column(name = "FK_DATASOURCE")
     private Long id;
 

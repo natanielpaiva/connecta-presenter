@@ -27,8 +27,6 @@ public class SolrDatasource extends AbstractBaseEntity implements ITypedDatasour
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_SOLR_DS_PKSOLRDS_GENERATOR", sequenceName = "TB_SOLR_DS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_SOLR_DS_PKSOLRDS_GENERATOR")
     @Column(name = "FK_DATASOURCE")
     private Long id;
 

@@ -27,14 +27,14 @@ public class AnalysisController extends AbstractBaseController<Analysis> {
     protected ResponseEntity<Analysis> save(Analysis analysis, HttpServletRequest arg1,
             HttpServletResponse arg2) throws Exception {
         Analysis newAnalysis = analysisService.saveOrUpdate(analysis);
-        return new ResponseEntity<Analysis>(newAnalysis, HttpStatus.CREATED);
+        return new ResponseEntity<>(newAnalysis, HttpStatus.CREATED);
     }
 
     @Override
     protected ResponseEntity<Analysis> update(Long arg0, Analysis analysis, HttpServletRequest arg2,
             HttpServletResponse arg3) throws Exception {
         Analysis updatedAnalysis = analysisService.saveOrUpdate(analysis);
-        return new ResponseEntity<Analysis>(updatedAnalysis, HttpStatus.OK);
+        return new ResponseEntity<>(updatedAnalysis, HttpStatus.OK);
     }
 
     @Override
@@ -48,14 +48,14 @@ public class AnalysisController extends AbstractBaseController<Analysis> {
             HttpServletResponse arg2) throws Exception {
         Analysis analysis = analysisService.get(id);
         
-        return new ResponseEntity<Analysis>(analysis, HttpStatus.OK);
+        return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
 
     @Override
     protected ResponseEntity<List<Analysis>> list(HttpServletRequest arg0,
             HttpServletResponse arg1) throws Exception {
         List<Analysis> list = analysisService.list();
-        return new ResponseEntity<List<Analysis>>(list, HttpStatus.OK);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @Override

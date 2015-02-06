@@ -32,8 +32,6 @@ public class DatabaseDatasource extends AbstractBaseEntity implements ITypedData
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_DATABASE_DS_PKDATABASEDS_GENERATOR", sequenceName = "TB_DATABASE_DS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_DATABASE_DS_PKDATABASEDS_GENERATOR")
     @Column(name = "FK_DATASOURCE")
     private Long id;
 

@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import javax.persistence.CascadeType;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
@@ -25,8 +26,6 @@ import javax.persistence.OneToOne;
 public class HDFSDatasource extends AbstractBaseEntity implements ITypedDatasource {
 
     @Id
-    @SequenceGenerator(name = "TB_HDFS_DS_SEQ", sequenceName = "TB_HDFS_DS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_HDFS_DS_SEQ")
     @Column(name = "FK_DATASOURCE")
     private Long id;
 
@@ -39,7 +38,7 @@ public class HDFSDatasource extends AbstractBaseEntity implements ITypedDatasour
     @Column(name = "TXT_SERVER")
     private String server;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "FK_DATASOURCE")
     @MapsId
     private Datasource datasource;
