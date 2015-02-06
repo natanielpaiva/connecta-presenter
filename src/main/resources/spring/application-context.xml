@@ -12,14 +12,14 @@
     
     <!--PERSISTENCE-->
     
-    <!-- FIXME Retornar esse código quando o schema for criado! -->
-    <!--    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+<!--     FIXME Retornar esse código quando o schema for criado! -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="ConnectaPresenterPU" />
-    </bean>-->
+    </bean>
     
     <!-- FIXME Remover quando o banco novo do Presenter de desenvolvimento for criado! -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <!--<property name="jndiName" value="ConnectaPortalDS" />-->
+<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="jndiName" value="ConnectaPortalDS" />
         <property name="driverClassName" value="org.h2.Driver" />
         <property name="url" value="jdbc:h2:mem:portalDB;INIT=create schema if not exists PRESENTER;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"/>
         <property name="username" value="PRESENTER"/>
@@ -44,7 +44,7 @@
                 <entry key="hibernate.default_schema" value="PRESENTER"/>
             </map>
         </property>
-    </bean>
+    </bean>-->
     
     <!--TRANSACTION-->
     <import resource="classpath:META-INF/br.com.cds.connecta.framework.transaction.xml" />
