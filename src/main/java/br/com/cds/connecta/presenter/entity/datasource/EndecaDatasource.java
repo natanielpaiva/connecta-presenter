@@ -7,13 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 /**
  * The persistent class for the TB_ENDECA_DS database table.
@@ -29,14 +29,13 @@ public class EndecaDatasource extends AbstractBaseEntity implements ITypedDataso
     @Id
     @SequenceGenerator(name = "TB_ENDECA_DS_PKENDECADS_GENERATOR", sequenceName = "TB_ENDECA_DS_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ENDECA_DS_PKENDECADS_GENERATOR")
-    @Column(name = "PK_ENDECA_DS")
+    @Column(name = "FK_DATASOURCE")
     private Long id;
 
     @Column(name = "TXT_ADDRESS")
     private String address;
 
-    //bi-directional many-to-one association to TbDatasource
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_DATASOURCE")
     @MapsId
     private Datasource datasource;
@@ -58,6 +57,7 @@ public class EndecaDatasource extends AbstractBaseEntity implements ITypedDataso
         this.address = address;
     }
 
+    @Override
     public Datasource getDatasource() {
         return datasource;
     }

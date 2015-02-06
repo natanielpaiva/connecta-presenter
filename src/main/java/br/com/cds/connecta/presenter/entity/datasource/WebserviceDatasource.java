@@ -7,13 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import javax.persistence.CascadeType;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 /**
  * The persistent class for the TB_WEBSERVICE_DS database table.
@@ -29,7 +29,7 @@ public class WebserviceDatasource extends AbstractBaseEntity implements ITypedDa
     @Id
     @SequenceGenerator(name = "TB_WEBSERVICE_DS_PKWEBSERVICEDS_GENERATOR", sequenceName = "TB_WEBSERVICE_DS_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_WEBSERVICE_DS_PKWEBSERVICEDS_GENERATOR")
-    @Column(name = "PK_WEBSERVICE_DS")
+    @Column(name = "FK_DATASOURCE")
     private Long id;
 
     @Column(name = "TXT_ADDRESS")
@@ -38,8 +38,9 @@ public class WebserviceDatasource extends AbstractBaseEntity implements ITypedDa
     @Column(name = "TXT_METHOD")
     private String method;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_DATASOURCE")
+    @MapsId
     private Datasource datasource;
 
     @Override
@@ -67,6 +68,7 @@ public class WebserviceDatasource extends AbstractBaseEntity implements ITypedDa
         this.method = method;
     }
 
+    @Override
     public Datasource getDatasource() {
         return datasource;
     }

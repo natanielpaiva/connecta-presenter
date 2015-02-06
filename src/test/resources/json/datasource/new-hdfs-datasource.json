@@ -1,10 +1,11 @@
 {
-    "address": "endereco",
     "path": "caminho",
+    "port": 666,
+    "server": "server",
     "datasource": {
         "name": "Novodatasource",
         "description": "s",
-        "type": "SOLR",
+        "type": "HDFS",
         "user": "s",
         "password": "s"
     }

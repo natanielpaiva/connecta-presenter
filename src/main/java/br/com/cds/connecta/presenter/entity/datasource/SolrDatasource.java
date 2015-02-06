@@ -7,13 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 /**
  * The persistent class for the TB_SOLR_DS database table.
@@ -29,7 +29,7 @@ public class SolrDatasource extends AbstractBaseEntity implements ITypedDatasour
     @Id
     @SequenceGenerator(name = "TB_SOLR_DS_PKSOLRDS_GENERATOR", sequenceName = "TB_SOLR_DS_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_SOLR_DS_PKSOLRDS_GENERATOR")
-    @Column(name = "PK_SOLR_DS")
+    @Column(name = "FK_DATASOURCE")
     private Long id;
 
     @Column(name = "TXT_ADDRESS")
@@ -39,7 +39,7 @@ public class SolrDatasource extends AbstractBaseEntity implements ITypedDatasour
     private String path;
 
     //bi-directional many-to-one association to TbDatasource
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_DATASOURCE")
     @MapsId
     private Datasource datasource;
@@ -69,6 +69,7 @@ public class SolrDatasource extends AbstractBaseEntity implements ITypedDatasour
         this.path = path;
     }
 
+    @Override
     public Datasource getDatasource() {
         return datasource;
     }

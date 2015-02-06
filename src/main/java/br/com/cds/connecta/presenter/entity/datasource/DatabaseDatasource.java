@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -35,7 +34,7 @@ public class DatabaseDatasource extends AbstractBaseEntity implements ITypedData
     @Id
     @SequenceGenerator(name = "TB_DATABASE_DS_PKDATABASEDS_GENERATOR", sequenceName = "TB_DATABASE_DS_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_DATABASE_DS_PKDATABASEDS_GENERATOR")
-    @Column(name = "PK_DATABASE_DS")
+    @Column(name = "FK_DATASOURCE")
     private Long id;
 
     @Column(name = "CD_DRIVER")
@@ -55,7 +54,7 @@ public class DatabaseDatasource extends AbstractBaseEntity implements ITypedData
     private String schema;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PK_DATABASE_DS")
+    @JoinColumn(name = "FK_DATASOURCE")
     @MapsId
     private Datasource datasource;
 
@@ -108,6 +107,7 @@ public class DatabaseDatasource extends AbstractBaseEntity implements ITypedData
         this.sid = sid;
     }
 
+    @Override
     public Datasource getDatasource() {
         return datasource;
     }

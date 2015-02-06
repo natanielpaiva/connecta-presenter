@@ -1,7 +1,5 @@
 package br.com.cds.connecta.presenter.entity.datasource;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,12 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 /**
  * The persistent class for the TB_HDFS_DS database table.
@@ -25,26 +24,24 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 @NamedQuery(name = "HDFSDatasource.findAll", query = "FROM HDFSDatasource t")
 public class HDFSDatasource extends AbstractBaseEntity implements ITypedDatasource {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @SequenceGenerator(name = "TB_HDFS_DS_PKHDFSDS_GENERATOR", sequenceName = "TB_HDFS_DS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_HDFS_DS_PKHDFSDS_GENERATOR")
-    @Column(name = "PK_HDFS_DS")
+    @SequenceGenerator(name = "TB_HDFS_DS_SEQ", sequenceName = "TB_HDFS_DS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_HDFS_DS_SEQ")
+    @Column(name = "FK_DATASOURCE")
     private Long id;
 
     @Column(name = "TXT_PATH")
     private String path;
 
     @Column(name = "TXT_PORT")
-    private BigDecimal port;
+    private Integer port;
 
     @Column(name = "TXT_SERVER")
     private String server;
 
-    //bi-directional many-to-one association to TbDatasource
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_DATASOURCE")
+    @MapsId
     private Datasource datasource;
 
     @Override
@@ -64,11 +61,11 @@ public class HDFSDatasource extends AbstractBaseEntity implements ITypedDatasour
         this.path = path;
     }
 
-    public BigDecimal getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(BigDecimal port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
@@ -80,6 +77,7 @@ public class HDFSDatasource extends AbstractBaseEntity implements ITypedDatasour
         this.server = server;
     }
 
+    @Override
     public Datasource getDatasource() {
         return datasource;
     }

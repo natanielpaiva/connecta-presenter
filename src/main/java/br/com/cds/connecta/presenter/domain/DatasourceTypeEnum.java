@@ -5,16 +5,13 @@
  */
 package br.com.cds.connecta.presenter.domain;
 
-import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
-import br.com.cds.connecta.presenter.entity.datasource.BIDatasource;
-import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.impl.BIDatasourceDAO;
 import br.com.cds.connecta.presenter.persistence.impl.DatabaseDatasourceDAO;
 import br.com.cds.connecta.presenter.persistence.impl.EndecaDatasourceDAO;
 import br.com.cds.connecta.presenter.persistence.impl.HDFSDatasourceDAO;
 import br.com.cds.connecta.presenter.persistence.impl.SolrDatasourceDAO;
-import br.com.cds.connecta.presenter.persistence.impl.WebserviceDSDAO;
+import br.com.cds.connecta.presenter.persistence.impl.WebserviceDatasourceDAO;
 
 /**
  *
@@ -27,7 +24,7 @@ public enum DatasourceTypeEnum {
     HDFS(HDFSDatasourceDAO.class),
     BI(BIDatasourceDAO.class),
     SOLR(SolrDatasourceDAO.class),
-    WEBSERVICE(WebserviceDSDAO.class);
+    WEBSERVICE(WebserviceDatasourceDAO.class);
     
     private final Class<? extends AbstractBaseJpaDAO> daoClass;
     

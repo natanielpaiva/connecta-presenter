@@ -1,6 +1,5 @@
 package br.com.cds.connecta.presenter.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,7 @@ public class DatasourceController {
     private IDatasourceAS service;
     
     @RequestMapping(
-            value="database",
+        value="database",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ITypedDatasource> save(@RequestBody DatabaseDatasource datasource) {
@@ -54,20 +53,16 @@ public class DatasourceController {
     }
      
     @RequestMapping(
-            value="solr",
+        value="solr",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ITypedDatasource> save(@RequestBody SolrDatasource datasource) {
         ITypedDatasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
-    
-     
-    
-    
      
     @RequestMapping(
-            value="webservice",
+        value="webservice",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ITypedDatasource> save(@RequestBody WebserviceDatasource datasource) {
@@ -75,12 +70,12 @@ public class DatasourceController {
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
     
-     
     @RequestMapping(
-            value="hdfs",
+        value="hdfs",
         method = RequestMethod.POST,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ITypedDatasource> save(HDFSDatasource datasource) {
+    public ResponseEntity<ITypedDatasource> save(@RequestBody HDFSDatasource datasource) {
         ITypedDatasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
