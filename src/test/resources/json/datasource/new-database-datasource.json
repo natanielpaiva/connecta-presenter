@@ -1,0 +1,14 @@
+{
+    "driver": "POSTGRES",
+    "server": "teste",
+    "port": 666,
+    "sid": "teste",
+    "schema": "teste",
+    "datasource": {
+        "name": "Novodatasource",
+        "description": "s",
+        "type": "DATABASE",
+        "user": "s",
+        "password": "s"
+    }
+}

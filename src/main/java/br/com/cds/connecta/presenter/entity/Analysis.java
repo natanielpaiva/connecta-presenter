@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.entity;
 
+import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

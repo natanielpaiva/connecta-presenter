@@ -1,4 +1,4 @@
-package br.com.cds.connecta.presenter.entity;
+package br.com.cds.connecta.presenter.entity.datasource;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import br.com.cds.connecta.presenter.domain.DatasourceTypeEnum;
 import java.io.Serializable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 
 /**
@@ -41,7 +44,8 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
     private String name;
 
     @Column(name = "TP_DATASOURCE")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private DatasourceTypeEnum type;
 
     @Column(name = "TXT_SENHA")
     private String password;
@@ -74,11 +78,11 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
         this.name = name;
     }
 
-    public String getType() {
+    public DatasourceTypeEnum getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(DatasourceTypeEnum type) {
         this.type = type;
     }
 

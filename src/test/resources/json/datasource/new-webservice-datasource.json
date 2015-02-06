@@ -1,0 +1,10 @@
+{
+    "address": "endereco",
+    "method": "metodo",
+    "datasource": {
+        "name": "Novodatasource",
+        "description": "s",
+        "type": "WEBSERVICE"
+      
+    }
+}

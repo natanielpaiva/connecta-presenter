@@ -1,0 +1,9 @@
+{
+    "address": "endereco",
+    "datasource": {
+        "name": "Novodatasource",
+        "description": "s",
+        "type": "ENDECA"
+        
+    }
+}
