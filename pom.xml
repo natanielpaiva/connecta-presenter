@@ -20,7 +20,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.warname>presenter-${project.version}</build.warname>
         <hibernate.version>4.2.16.Final</hibernate.version>
-        <context-root>/presenter</context-root>
     </properties>
 
     <dependencies>
