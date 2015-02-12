@@ -25,18 +25,18 @@ public class AnalysisAttribute extends AbstractBaseEntity {
     @Id
     @SequenceGenerator(name = "TA_ATTR_ANALYSIS_PKATTRIBUTE_GENERATOR", sequenceName = "TA_ATTR_ANALYSIS_SEQ")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_ATTR_ANALYSIS_PKATTRIBUTE_GENERATOR")
-    @Column(name = "FK_ATTR_ANALYSIS")
+    @Column(name = "PK_ATTR_ANALYSIS")
     private Long id;
 
     @Column(name = "TXT_VALUE")
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PK_ANALYSIS")
+    @JoinColumn(name = "FK_ANALYSIS")
     private Analysis analysis;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PK_ATTRIBUTE")
+    @JoinColumn(name = "FK_ATTRIBUTE")
     private Attribute attribute;
 
     @Override

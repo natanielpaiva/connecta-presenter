@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.entity;
 
+import br.com.cds.connecta.presenter.domain.SingleSourceTypeEnum;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,54 +11,69 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  * The persistent class for the TB_SINGLE_SOURCE database table.
- * 
+ *
  */
 @Entity
-@Table(name="TB_SINGLE_SOURCE")
-@NamedQuery(name="SingleSource.findAll", query="SELECT t FROM SingleSource t")
+@Table(name = "TB_SINGLE_SOURCE")
+@Inheritance(strategy = InheritanceType.JOINED)
+@NamedQuery(name = "SingleSource.findAll", query = "SELECT s FROM SingleSource s")
 public class SingleSource extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="TB_SINGLE_SOURCE_PKSINGLESOURCE_GENERATOR", sequenceName="TB_SINGLE_SOURCE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_SINGLE_SOURCE_PKSINGLESOURCE_GENERATOR")
-	@Column(name="PK_SINGLE_SOURCE")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="DS_SINGLE_SOURCE")
-	private String dsSingleSource;
+    @Id
+    @SequenceGenerator(name = "TB_SINGLE_SOURCE_SEQ", sequenceName = "TB_SINGLE_SOURCE_SEQ", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_SINGLE_SOURCE_SEQ")
+    @Column(name = "PK_SINGLE_SOURCE")
+    private Long id;
 
-	@Column(name="NM_SINGLE_SOURCE")
-	private String nmSingleSource;
+    @Column(name = "DS_SINGLE_SOURCE")
+    private String description;
 
-	public SingleSource() {
-	}
-	
-	public Long getId() {
-		return this.id;
-	}
+    @Column(name = "NM_SINGLE_SOURCE")
+    private String name;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "TP_SINGLE_SOURCE")
+    @Enumerated(EnumType.STRING)
+    private SingleSourceTypeEnum type;
 
-	public String getDsSingleSource() {
-		return this.dsSingleSource;
-	}
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 
-	public void setDsSingleSource(String dsSingleSource) {
-		this.dsSingleSource = dsSingleSource;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getNmSingleSource() {
-		return this.nmSingleSource;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setNmSingleSource(String nmSingleSource) {
-		this.nmSingleSource = nmSingleSource;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public SingleSourceTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(SingleSourceTypeEnum type) {
+        this.type = type;
+    }
 }

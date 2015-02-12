@@ -1,0 +1,9 @@
+{
+    "name"          : "New Midia",
+    "description"   : "Midia Description",
+    "type"          : "FILE",
+    "filename"      : "Batata",
+    "fileType"      : "VD",
+    "url"           : "http://bolinha/batata"
+    
+}
