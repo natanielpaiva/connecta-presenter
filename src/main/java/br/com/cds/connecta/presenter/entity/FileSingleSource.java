@@ -1,8 +1,10 @@
 package br.com.cds.connecta.presenter.entity;
 
-import br.com.cds.connecta.presenter.domain.SingleSourceTypeEnum;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -11,7 +13,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "TB_FILE")
+@Table(name = "TB_FILE_SINGLE_SOURCE")
 @NamedQuery(name = "FileSingleSource.findAll", query = "SELECT t FROM FileSingleSource t")
 public class FileSingleSource extends SingleSource {
 
@@ -31,6 +33,18 @@ public class FileSingleSource extends SingleSource {
 
     @Column(name = "URL_FILE")
     private String url;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_BINARY_FILE")
+    private BinaryFile binaryFile;
+
+    public BinaryFile getBinaryFile() {
+        return binaryFile;
+    }
+
+    public void setBinaryFile(BinaryFile binaryFile) {
+        this.binaryFile = binaryFile;
+    }
 
     public String getFilename() {
         return filename;
