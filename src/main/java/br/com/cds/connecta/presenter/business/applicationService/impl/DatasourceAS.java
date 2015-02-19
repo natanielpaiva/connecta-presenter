@@ -5,12 +5,8 @@
  */
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
-import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
 import br.com.cds.connecta.presenter.business.applicationService.IDatasourceAS;
-import br.com.cds.connecta.presenter.domain.DatasourceTypeEnum;
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
-import br.com.cds.connecta.presenter.entity.datasource.ITypedDatasource;
 import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +27,14 @@ public class DatasourceAS implements IDatasourceAS {
     private DatasourceDAO dao;
 
     @Override
-    public ITypedDatasource save(ITypedDatasource datasource) {
-        DatasourceTypeEnum type = datasource.getDatasource().getType();
-        AbstractBaseJpaDAO Dao = context.getBean(type.getDaoClass());
-
-        AbstractBaseEntity datasourceEntity = (AbstractBaseEntity) datasource;
-
-        return (ITypedDatasource) Dao.saveOrUpdate(datasourceEntity);
+    public Datasource save(Datasource datasource) {
+//        DatasourceTypeEnum type = datasource.getType();
+//        AbstractBaseJpaDAO Dao = context.getBean(type.getDaoClass());
+//
+//        AbstractBaseEntity datasourceEntity = (AbstractBaseEntity) datasource;
+//
+//        return Dao.saveOrUpdate(datasourceEntity);
+        return dao.saveOrUpdate(datasource);
     }
 
     @Override
@@ -53,15 +50,15 @@ public class DatasourceAS implements IDatasourceAS {
     @Override
     public void delete(Long id) {
         Datasource ds = get(id);
-       
-        DatasourceTypeEnum type = ds.getType();
-        AbstractBaseJpaDAO Dao = context.getBean(type.getDaoClass());
-        
-         AbstractBaseEntity datasourceEntity = (AbstractBaseEntity) Dao.get(ds.getId());;
-         
-        Dao.delete(datasourceEntity);
-       // datasourceEntity.delete(ds);
-        //dao.delete(ds);
+//       
+//        DatasourceTypeEnum type = ds.getType();
+//        AbstractBaseJpaDAO Dao = context.getBean(type.getDaoClass());
+//        
+//         AbstractBaseEntity datasourceEntity = (AbstractBaseEntity) Dao.get(ds.getId());;
+//         
+//        Dao.delete(datasourceEntity);
+//        datasourceEntity.delete(ds);
+        dao.delete(ds);
     }
 
 }

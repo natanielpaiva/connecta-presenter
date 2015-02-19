@@ -45,7 +45,7 @@ public class WebserviceDatasourceParameter extends AbstractBaseEntity {
     private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_WEBSERVICE_DS", referencedColumnName = "FK_DATASOURCE")
+    @JoinColumn(name = "FK_WEBSERVICE_DS", referencedColumnName = "PK_DATASOURCE")
     private WebserviceDatasource webservice;
 
     @Override

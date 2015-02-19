@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "TB_HDFS_DS")
 @NamedQuery(name = "HDFSDatasource.findAll", query = "FROM HDFSDatasource t")
-public class HDFSDatasource extends Datasource implements ITypedDatasource{
+public class HDFSDatasource extends Datasource {
 
     @Column(name = "TXT_PATH")
     private String path;
@@ -46,15 +46,6 @@ public class HDFSDatasource extends Datasource implements ITypedDatasource{
 
     public void setServer(String server) {
         this.server = server;
-    }
-
-    /**
-     * FIXME
-     * @return 
-     */
-    @Override
-    public Datasource getDatasource() {
-        return null;
     }
 
 }

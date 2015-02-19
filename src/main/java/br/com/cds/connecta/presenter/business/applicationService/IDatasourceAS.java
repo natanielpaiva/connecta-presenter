@@ -7,7 +7,6 @@ package br.com.cds.connecta.presenter.business.applicationService;
 
 
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
-import br.com.cds.connecta.presenter.entity.datasource.ITypedDatasource;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public interface IDatasourceAS {
 
-    ITypedDatasource save(ITypedDatasource datasource);
+    Datasource save(Datasource datasource);
     
     List<Datasource> list();
     

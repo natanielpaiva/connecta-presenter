@@ -10,7 +10,6 @@ import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 import br.com.cds.connecta.presenter.entity.datasource.EndecaDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.HDFSDatasource;
-import br.com.cds.connecta.presenter.entity.datasource.ITypedDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import java.util.List;
@@ -35,8 +34,8 @@ public class DatasourceController {
             value = "database",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ITypedDatasource> save(@RequestBody DatabaseDatasource datasource) {
-        ITypedDatasource newDatasource = service.save(datasource);
+    public ResponseEntity<Datasource> save(@RequestBody DatabaseDatasource datasource) {
+        Datasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 
@@ -44,8 +43,8 @@ public class DatasourceController {
             value = "endeca",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ITypedDatasource> save(@RequestBody EndecaDatasource datasource) {
-        ITypedDatasource newDatasource = service.save(datasource);
+    public ResponseEntity<Datasource> save(@RequestBody EndecaDatasource datasource) {
+        Datasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 
@@ -53,8 +52,8 @@ public class DatasourceController {
             value = "bi",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ITypedDatasource> save(@RequestBody BIDatasource bi) {
-        ITypedDatasource newDatasource = service.save(bi);
+    public ResponseEntity<Datasource> save(@RequestBody BIDatasource bi) {
+        Datasource newDatasource = service.save(bi);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 
@@ -62,8 +61,8 @@ public class DatasourceController {
             value = "solr",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ITypedDatasource> save(@RequestBody SolrDatasource datasource) {
-        ITypedDatasource newDatasource = service.save(datasource);
+    public ResponseEntity<Datasource> save(@RequestBody SolrDatasource datasource) {
+        Datasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 
@@ -71,9 +70,9 @@ public class DatasourceController {
             value = "webservice",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ITypedDatasource> save(@RequestBody WebserviceDatasource datasource) {
+    public ResponseEntity<Datasource> save(@RequestBody WebserviceDatasource datasource) {
 
-        ITypedDatasource newDatasource = service.save(datasource);
+        Datasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 
@@ -82,8 +81,8 @@ public class DatasourceController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ITypedDatasource> save(@RequestBody HDFSDatasource datasource) {
-        ITypedDatasource newDatasource = service.save(datasource);
+    public ResponseEntity<Datasource> save(@RequestBody HDFSDatasource datasource) {
+        Datasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 

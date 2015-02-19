@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author pires
  */
+@Ignore
 public class DatasourceTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("datasource");
