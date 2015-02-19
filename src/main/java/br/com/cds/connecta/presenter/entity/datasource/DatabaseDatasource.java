@@ -5,16 +5,14 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
+import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MapsId;
@@ -51,7 +49,7 @@ public class DatabaseDatasource extends AbstractBaseEntity implements ITypedData
     @Column(name = "TXT_SCHEMA")
     private String schema;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "FK_DATASOURCE")
     @MapsId
     private Datasource datasource;

@@ -2,19 +2,9 @@ package br.com.cds.connecta.presenter.entity.datasource;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import javax.persistence.CascadeType;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 
 /**
  * The persistent class for the TB_HDFS_DS database table.
@@ -23,11 +13,7 @@ import javax.persistence.OneToOne;
 @Entity
 @Table(name = "TB_HDFS_DS")
 @NamedQuery(name = "HDFSDatasource.findAll", query = "FROM HDFSDatasource t")
-public class HDFSDatasource extends AbstractBaseEntity implements ITypedDatasource {
-
-    @Id
-    @Column(name = "FK_DATASOURCE")
-    private Long id;
+public class HDFSDatasource extends Datasource implements ITypedDatasource{
 
     @Column(name = "TXT_PATH")
     private String path;
@@ -37,20 +23,6 @@ public class HDFSDatasource extends AbstractBaseEntity implements ITypedDatasour
 
     @Column(name = "TXT_SERVER")
     private String server;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "FK_DATASOURCE")
-    @MapsId
-    private Datasource datasource;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getPath() {
         return path;
@@ -76,13 +48,13 @@ public class HDFSDatasource extends AbstractBaseEntity implements ITypedDatasour
         this.server = server;
     }
 
+    /**
+     * FIXME
+     * @return 
+     */
     @Override
     public Datasource getDatasource() {
-        return datasource;
-    }
-
-    public void setDatasource(Datasource datasource) {
-        this.datasource = datasource;
+        return null;
     }
 
 }

@@ -18,7 +18,9 @@ public class DatasourceDAO extends AbstractBaseJpaDAO<Datasource> {
     public List<Datasource> list() {
         Query query = em.createNamedQuery("Datasource.findAll");
         
-        return query.getResultList();
+        List datasources = query.getResultList();
+        
+        return datasources;
     }
 
     

@@ -14,6 +14,8 @@ import br.com.cds.connecta.presenter.domain.DatasourceTypeEnum;
 import java.io.Serializable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 
 /**
@@ -22,6 +24,7 @@ import javax.persistence.NamedQueries;
  */
 @Entity
 @Table(name = "TB_DATASOURCE")
+@Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
     @NamedQuery(name = "Datasource.findAll", query = "SELECT t FROM Datasource t")
 })

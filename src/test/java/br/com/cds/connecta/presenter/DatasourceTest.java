@@ -5,11 +5,13 @@
  */
 package br.com.cds.connecta.presenter;
 
+import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.*;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
 import br.com.cds.connecta.presenter.domain.DatasourceTypeEnum;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
+import org.junit.Ignore;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,6 +33,18 @@ public class DatasourceTest extends BaseTest {
 
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
 
+//     @Test
+//    public void getDatasourceID() throws Exception {
+//        mockMvc().perform(get(RESOURCE_ID, 1)
+//            .contentType(MediaType.APPLICATION_JSON)
+//        ).andDo(print())
+//            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//            .andExpect(status().isOk())
+//            .andExpect(jsonPath("$", notNullValue()))
+//            .andExpect(jsonPath("$.name", equalTo("")))
+//            .andExpect(jsonPath("$.datasource", nullValue()));
+//    }
+//    
     @Test
     public void saveDatabaseDatasource() throws Exception {
         mockMvc().perform(post(RESOURCE_DATABASE)
@@ -130,11 +144,20 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.datasource.description", equalTo("s")))
                 .andExpect(jsonPath("$.datasource.type", equalTo(DatasourceTypeEnum.WEBSERVICE.name())))
                 .andExpect(jsonPath("$.datasource.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
-                .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
+                .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
+                .andExpect(jsonPath("$.parameters[*].params", allOf(
+                    peloMenosUmItem(equalTo("ww")),
+                    peloMenosUmItem(equalTo("ddd"))
+                )))
+                .andExpect(jsonPath("$.parameters[*].value", allOf(
+                    peloMenosUmItem(equalTo("ww")),
+                    peloMenosUmItem(equalTo("aaa"))
+                )));
 
     }
 
     @Test
+    @Ignore
     public void saveHDFSDatasource() throws Exception {
         mockMvc().perform(post(RESOURCE_HDFS)
                 .contentType(MediaType.APPLICATION_JSON)

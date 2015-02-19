@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import javax.persistence.CascadeType;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
@@ -36,7 +37,7 @@ public class BIDatasource extends AbstractBaseEntity implements ITypedDatasource
     @Column(name = "TXT_PATH")
     private String path;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "FK_DATASOURCE")
     @MapsId
     private Datasource datasource;

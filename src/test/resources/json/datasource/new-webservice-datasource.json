@@ -5,5 +5,15 @@
         "name": "Novodatasource",
         "description": "s",
         "type": "WEBSERVICE"
-    }
+    },
+    "parameters": [
+        {
+            "params": "ww",
+            "value": "ww"
+        },
+        {
+            "params": "ddd",
+            "value": "aaa"
+        }
+    ]
 }

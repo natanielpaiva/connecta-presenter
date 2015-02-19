@@ -5,7 +5,10 @@
  */
 package br.com.cds.connecta.presenter.business.applicationService;
 
+
+import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 import br.com.cds.connecta.presenter.entity.datasource.ITypedDatasource;
+import java.util.List;
 
 /**
  * 
@@ -13,6 +16,12 @@ import br.com.cds.connecta.presenter.entity.datasource.ITypedDatasource;
  */
 public interface IDatasourceAS {
 
-    public ITypedDatasource save(ITypedDatasource datasource);
+    ITypedDatasource save(ITypedDatasource datasource);
+    
+    List<Datasource> list();
+    
+    Datasource get(Long id);
+
+    void delete(Long id);
     
 }
