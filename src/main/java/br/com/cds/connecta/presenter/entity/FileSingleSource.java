@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,7 +35,7 @@ public class FileSingleSource extends SingleSource {
     @Column(name = "URL_FILE")
     private String url;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "FK_BINARY_FILE")
     private BinaryFile binaryFile;
 

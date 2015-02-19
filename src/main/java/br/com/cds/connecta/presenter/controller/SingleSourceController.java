@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.controller;
 
+import br.com.cds.connecta.framework.core.context.HibernateAwareObjectMapper;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.cds.connecta.framework.core.controller.AbstractBaseController;
 import br.com.cds.connecta.presenter.business.applicationService.IMidiaAS;
+import br.com.cds.connecta.presenter.entity.BinaryFile;
 import br.com.cds.connecta.presenter.entity.FileSingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
@@ -20,6 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("media")
@@ -27,6 +31,9 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
 
     @Autowired
     private IMidiaAS midiaService;
+    
+    @Autowired
+    private HibernateAwareObjectMapper hibernateAwareObjectMapper;
 
     @Override
     protected ResponseEntity<SingleSource> get(Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -42,14 +49,25 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
 
     @Override
     protected ResponseEntity<SingleSource> save(SingleSource singleSource, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+             HttpServletResponse response) throws Exception {
         SingleSource newSingleSource = midiaService.saveOrUpdate(singleSource);
         return new ResponseEntity<>(newSingleSource, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "file", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SingleSource> saveFile(@RequestBody FileSingleSource file) throws Exception {
-        SingleSource newSingleSource = midiaService.saveOrUpdate(file);
+    
+    @RequestMapping(value = "file", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SingleSource> saveFile( 
+            @RequestParam("file")  MultipartFile file,
+            @RequestParam("singlesource") String singleSource
+             ) throws Exception {
+        
+        FileSingleSource fileSingleSource = hibernateAwareObjectMapper.readValue(singleSource, FileSingleSource.class);
+        
+        fileSingleSource.setBinaryFile(new BinaryFile());
+        fileSingleSource.getBinaryFile().setBinaryFile(file.getBytes());
+        
+        SingleSource newSingleSource = midiaService.saveOrUpdate(fileSingleSource);
+        
         return new ResponseEntity<>(newSingleSource, HttpStatus.CREATED);
     }
 
