@@ -1,11 +1,9 @@
 {
     "address": "endereco",
     "method": "metodo",
-    "datasource": {
-        "name": "Novodatasource",
-        "description": "s",
-        "type": "WEBSERVICE"
-    },
+    "name": "Novodatasource",
+    "description": "s",
+    "type": "WEBSERVICE",
     "parameters": [
         {
             "params": "ww",

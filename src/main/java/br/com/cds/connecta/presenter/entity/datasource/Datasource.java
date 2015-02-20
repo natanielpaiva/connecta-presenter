@@ -38,7 +38,7 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
         allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_DATASOURCE_SEQ")
     @Column(name = "PK_DATASOURCE")
-    private Long id;
+    public Long id;
 
     @Column(name = "DS_DATASOURCE")
     private String description;

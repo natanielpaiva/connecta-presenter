@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author pires
  */
-@Ignore
 public class DatasourceTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("datasource");
@@ -34,18 +33,19 @@ public class DatasourceTest extends BaseTest {
 
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
 
-//     @Test
-//    public void getDatasourceID() throws Exception {
-//        mockMvc().perform(get(RESOURCE_ID, 1)
-//            .contentType(MediaType.APPLICATION_JSON)
-//        ).andDo(print())
-//            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//            .andExpect(status().isOk())
-//            .andExpect(jsonPath("$", notNullValue()))
-//            .andExpect(jsonPath("$.name", equalTo("")))
-//            .andExpect(jsonPath("$.datasource", nullValue()));
-//    }
-//    
+    @Test
+    @Ignore
+    public void getDatasourceID() throws Exception {
+        mockMvc().perform(get(RESOURCE_ID, 1)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.name", equalTo("")))
+                .andExpect(jsonPath("$.datasource", nullValue()));
+    }
+
     @Test
     public void saveDatabaseDatasource() throws Exception {
         mockMvc().perform(post(RESOURCE_DATABASE)
@@ -60,12 +60,11 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.port", equalTo(666)))
                 .andExpect(jsonPath("$.sid", equalTo("teste")))
                 .andExpect(jsonPath("$.schema", equalTo("teste")))
-                .andExpect(jsonPath("$.datasource.name", equalTo("Novodatasource")))
-                .andExpect(jsonPath("$.datasource.description", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.type", equalTo(DatasourceTypeEnum.DATABASE.name())))
-                .andExpect(jsonPath("$.datasource.user", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.password", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
+                .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
+                .andExpect(jsonPath("$.description", equalTo("s")))
+                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.DATABASE.name())))
+                .andExpect(jsonPath("$.user", equalTo("s")))
+                .andExpect(jsonPath("$.password", equalTo("s")))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
 
     }
@@ -80,10 +79,9 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.address", equalTo("endereco")))
-                .andExpect(jsonPath("$.datasource.name", equalTo("Novodatasource")))
-                .andExpect(jsonPath("$.datasource.description", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.type", equalTo(DatasourceTypeEnum.ENDECA.name())))
-                .andExpect(jsonPath("$.datasource.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
+                .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
+                .andExpect(jsonPath("$.description", equalTo("s")))
+                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.ENDECA.name())))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
 
     }
@@ -99,12 +97,11 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.address", equalTo("endereco")))
                 .andExpect(jsonPath("$.path", equalTo("caminho")))
-                .andExpect(jsonPath("$.datasource.name", equalTo("Novodatasource")))
-                .andExpect(jsonPath("$.datasource.description", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.type", equalTo(DatasourceTypeEnum.BI.name())))
-                .andExpect(jsonPath("$.datasource.user", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.password", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
+                .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
+                .andExpect(jsonPath("$.description", equalTo("s")))
+                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.BI.name())))
+                .andExpect(jsonPath("$.user", equalTo("s")))
+                .andExpect(jsonPath("$.password", equalTo("s")))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
 
     }
@@ -120,12 +117,11 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.address", equalTo("endereco")))
                 .andExpect(jsonPath("$.path", equalTo("caminho")))
-                .andExpect(jsonPath("$.datasource.name", equalTo("Novodatasource")))
-                .andExpect(jsonPath("$.datasource.description", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.type", equalTo(DatasourceTypeEnum.SOLR.name())))
-                .andExpect(jsonPath("$.datasource.user", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.password", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
+                .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
+                .andExpect(jsonPath("$.description", equalTo("s")))
+                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.SOLR.name())))
+                .andExpect(jsonPath("$.user", equalTo("s")))
+                .andExpect(jsonPath("$.password", equalTo("s")))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
 
     }
@@ -141,24 +137,22 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.address", equalTo("endereco")))
                 .andExpect(jsonPath("$.method", equalTo("metodo")))
-                .andExpect(jsonPath("$.datasource.name", equalTo("Novodatasource")))
-                .andExpect(jsonPath("$.datasource.description", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.type", equalTo(DatasourceTypeEnum.WEBSERVICE.name())))
-                .andExpect(jsonPath("$.datasource.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
+                .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
+                .andExpect(jsonPath("$.description", equalTo("s")))
+                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.WEBSERVICE.name())))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
                 .andExpect(jsonPath("$.parameters[*].params", allOf(
-                    peloMenosUmItem(equalTo("ww")),
-                    peloMenosUmItem(equalTo("ddd"))
-                )))
+                                        peloMenosUmItem(equalTo("ww")),
+                                        peloMenosUmItem(equalTo("ddd"))
+                                )))
                 .andExpect(jsonPath("$.parameters[*].value", allOf(
-                    peloMenosUmItem(equalTo("ww")),
-                    peloMenosUmItem(equalTo("aaa"))
-                )));
+                                        peloMenosUmItem(equalTo("ww")),
+                                        peloMenosUmItem(equalTo("aaa"))
+                                )));
 
     }
 
     @Test
-    @Ignore
     public void saveHDFSDatasource() throws Exception {
         mockMvc().perform(post(RESOURCE_HDFS)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -170,10 +164,9 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.server", equalTo("server")))
                 .andExpect(jsonPath("$.path", equalTo("caminho")))
                 .andExpect(jsonPath("$.port", equalTo(666)))
-                .andExpect(jsonPath("$.datasource.name", equalTo("Novodatasource")))
-                .andExpect(jsonPath("$.datasource.description", equalTo("s")))
-                .andExpect(jsonPath("$.datasource.type", equalTo(DatasourceTypeEnum.HDFS.name())))
-                .andExpect(jsonPath("$.datasource.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
+                .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
+                .andExpect(jsonPath("$.description", equalTo("s")))
+                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.HDFS.name())))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
 
     }

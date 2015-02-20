@@ -72,7 +72,7 @@ public class DatasourceController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Datasource> save(@RequestBody WebserviceDatasource datasource) {
 
-        Datasource newDatasource = service.save(datasource);
+        Datasource newDatasource = service.saveWebservice(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 
@@ -110,7 +110,10 @@ public class DatasourceController {
     )
     public ResponseEntity delete(@PathVariable("id") Long id) {
         service.delete(id);
+
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+    
+    
 
 }

@@ -1,12 +1,9 @@
 {
     "address": "endereco",
     "path": "caminho",
-    "datasource": {
-        "name": "Novodatasource",
-        "description": "s",
-        "type": "BI",
-         "user": "s",
-        "password": "s"
-        
-    }
+    "name": "Novodatasource",
+    "description": "s",
+    "type": "BI",
+    "user": "s",
+    "password": "s"
 }

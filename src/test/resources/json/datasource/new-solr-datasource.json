@@ -1,11 +1,9 @@
 {
     "address": "endereco",
     "path": "caminho",
-    "datasource": {
-        "name": "Novodatasource",
-        "description": "s",
-        "type": "SOLR",
-        "user": "s",
-        "password": "s"
-    }
+    "name": "Novodatasource",
+    "description": "s",
+    "type": "SOLR",
+    "user": "s",
+    "password": "s"
 }

@@ -2,11 +2,9 @@
     "path": "caminho",
     "port": 666,
     "server": "server",
-    "datasource": {
-        "name": "Novodatasource",
-        "description": "s",
-        "type": "HDFS",
-        "user": "s",
-        "password": "s"
-    }
+    "name": "Novodatasource",
+    "description": "s",
+    "type": "HDFS",
+    "user": "s",
+    "password": "s"
 }

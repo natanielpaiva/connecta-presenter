@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 /**
  * The persistent class for the TB_WEBSERVICE_PARAMETER database table.
@@ -24,6 +26,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "TB_WEBSERVICE_PARAMETER")
+@NamedQueries({
+    @NamedQuery(
+        name = "WebserviceDatasourceParameter.findByDatasource",
+        query = "FROM WebserviceDatasourceParameter p WHERE datasource = :ds"
+    )
+})
 public class WebserviceDatasourceParameter extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -46,7 +54,7 @@ public class WebserviceDatasourceParameter extends AbstractBaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_WEBSERVICE_DS", referencedColumnName = "PK_DATASOURCE")
-    private WebserviceDatasource webservice;
+    private WebserviceDatasource datasource;
 
     @Override
     public Long getId() {
@@ -73,12 +81,12 @@ public class WebserviceDatasourceParameter extends AbstractBaseEntity {
         this.value = value;
     }
 
-    public WebserviceDatasource getWebservice() {
-        return webservice;
+    public WebserviceDatasource getDatasource() {
+        return datasource;
     }
 
-    public void setWebservice(WebserviceDatasource webservice) {
-        this.webservice = webservice;
+    public void setDatasource(WebserviceDatasource datasource) {
+        this.datasource = datasource;
     }
 
 }

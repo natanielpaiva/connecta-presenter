@@ -1,13 +1,19 @@
 package br.com.cds.connecta.presenter.entity.datasource;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+
+
 
 /**
  * The persistent class for the TB_WEBSERVICE_DS database table.
@@ -23,9 +29,9 @@ public class WebserviceDatasource extends Datasource {
 
     @Column(name = "TXT_METHOD")
     private String method;
-
+    
     @Transient
-    @JsonIgnoreProperties(value = "webservice")
+    @JsonIgnoreProperties({"datasource"})
     private List<WebserviceDatasourceParameter> parameters;
 
     public String getAddress() {

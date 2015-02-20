@@ -7,6 +7,7 @@ package br.com.cds.connecta.presenter.business.applicationService;
 
 
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
+import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import java.util.List;
 
 /**
@@ -22,5 +23,7 @@ public interface IDatasourceAS {
     Datasource get(Long id);
 
     void delete(Long id);
-    
+
+    Datasource saveWebservice(WebserviceDatasource datasource);
+   
 }

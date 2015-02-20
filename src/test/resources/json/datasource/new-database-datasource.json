@@ -4,11 +4,9 @@
     "port": 666,
     "sid": "teste",
     "schema": "teste",
-    "datasource": {
-        "name": "Novodatasource",
-        "description": "s",
-        "type": "DATABASE",
-        "user": "s",
-        "password": "s"
-    }
+    "name": "Novodatasource",
+    "description": "s",
+    "type": "DATABASE",
+    "user": "s",
+    "password": "s"
 }
