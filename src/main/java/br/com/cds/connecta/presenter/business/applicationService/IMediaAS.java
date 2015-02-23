@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.cds.connecta.presenter.entity.SingleSource;
 
-public interface IMidiaAS {
+public interface IMediaAS {
 
     public abstract SingleSource get(Long id) throws Exception;
 

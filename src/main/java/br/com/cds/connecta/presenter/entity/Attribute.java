@@ -23,20 +23,17 @@ public class Attribute extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_ATTRIBUTE_PKATTRIBUTE_GENERATOR", sequenceName="TB_ATTRIBUTE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_ATTRIBUTE_PKATTRIBUTE_GENERATOR")
+	@SequenceGenerator(name="TB_ATTRIBUTE_SEQ", sequenceName="TB_ATTRIBUTE_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_ATTRIBUTE_SEQ")
 	@Column(name="PK_ATTRIBUTE")
 	private Long id;
 
 	@Column(name="DS_ATTRIBUTE")
-	private String dsAttribute;
+	private String description;
 
-	@Column(name="NM_ATTRIBUTE")
-	private String nmAttribute;
+	@Column(name="NM_ATTRIBUTE", unique = true)
+	private String name;
 	
-	public Attribute() {
-	}
-
 	public Long getId() {
 		return this.id;
 	}
@@ -45,19 +42,19 @@ public class Attribute extends AbstractBaseEntity {
 		this.id = id;
 	}
 
-	public String getDsAttribute() {
-		return this.dsAttribute;
+	public String getDescription() {
+		return this.description;
 	}
 
-	public void setDsAttribute(String dsAttribute) {
-		this.dsAttribute = dsAttribute;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getNmAttribute() {
-		return this.nmAttribute;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setNmAttribute(String nmAttribute) {
-		this.nmAttribute = nmAttribute;
+	public void setName(String name) {
+		this.name = name;
 	}
 }

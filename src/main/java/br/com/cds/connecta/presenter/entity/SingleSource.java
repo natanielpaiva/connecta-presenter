@@ -11,10 +11,15 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 /**
  * The persistent class for the TB_SINGLE_SOURCE database table.
@@ -43,6 +48,10 @@ public class SingleSource extends AbstractBaseEntity {
     @Column(name = "TP_SINGLE_SOURCE")
     @Enumerated(EnumType.STRING)
     private SingleSourceTypeEnum type;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_SINGLE_SOURCE")
+    private List<SingleSourceAttribute> singleSourceAttributes;
 
     @Override
     public Long getId() {
@@ -76,4 +85,14 @@ public class SingleSource extends AbstractBaseEntity {
     public void setType(SingleSourceTypeEnum type) {
         this.type = type;
     }
+
+    public List<SingleSourceAttribute> getSingleSourceAttributes() {
+        return singleSourceAttributes;
+    }
+
+    public void setSingleSourceAttributes(List<SingleSourceAttribute> singleSourceAttributes) {
+        this.singleSourceAttributes = singleSourceAttributes;
+    }
+
+
 }

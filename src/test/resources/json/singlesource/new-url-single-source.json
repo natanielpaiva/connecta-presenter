@@ -3,6 +3,6 @@
     "description"   : "Midia Description",
     "type"          : "URL",
     "url"           : "http://bolinha/batata",
-    "urlType"      : "VD"
+    "urlType"      : "jpg"
     
 }

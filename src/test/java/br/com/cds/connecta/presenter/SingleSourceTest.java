@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  *
- * @author paiva
+ * @author Nataniel Paiva
  */
 public class SingleSourceTest extends BaseTest {
     
@@ -24,23 +24,8 @@ public class SingleSourceTest extends BaseTest {
     static final String RESOURCE_FILE = RESOURCE.concat("/file");
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
     
-    @Test
-    @Ignore
-    public void saveFile() throws Exception {
-        mockMvc().perform(post(RESOURCE_FILE)
-            //.contentType(MediaType.APPLICATION_JSON)
-            .content(getJson("singlesource/new-file-single-source"))
-        ).andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$", notNullValue()))
-            .andExpect(jsonPath("$.name", equalTo("New Midia")))
-            .andExpect(jsonPath("$.description", equalTo("Midia Description")))
-            .andExpect(jsonPath("$.id", equalTo(1)));
-    }
     
     @Test
-    @Ignore
     public void saveUrl() throws Exception {
         mockMvc().perform(post(RESOURCE_URL)
             .contentType(MediaType.APPLICATION_JSON)
@@ -51,7 +36,33 @@ public class SingleSourceTest extends BaseTest {
             .andExpect(jsonPath("$", notNullValue()))
             .andExpect(jsonPath("$.name", equalTo("New Midia")))
             .andExpect(jsonPath("$.description", equalTo("Midia Description")))
-            .andExpect(jsonPath("$.id", equalTo(2)));
+            .andExpect(jsonPath("$.urlType", equalTo("jpg")))
+            .andExpect(jsonPath("$.url", equalTo("http://bolinha/batata")));
+    }
+    
+    @Test
+    public void updateUrl() throws Exception {
+        mockMvc().perform(put(RESOURCE_URL, 1)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(getJson("singlesource/edit-url-single-source"))
+        ).andDo(print())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$", notNullValue()))
+            .andExpect(jsonPath("$.id", equalTo(1)))
+            .andExpect(jsonPath("$.name", equalTo("Edited name")))
+            .andExpect(jsonPath("$.description", equalTo("Edited Description")))
+            .andExpect(jsonPath("$.type", equalTo("URL")))
+            .andExpect(jsonPath("$.urlType", equalTo("jpg")));
+    }
+    
+    @Test
+    public void deleteSingleSource() throws Exception {
+        mockMvc().perform(delete(RESOURCE_ID, 1)
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+            .andExpect(status().isNoContent())
+            .andExpect(content().string(""));
     }
     
 }

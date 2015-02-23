@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
-import br.com.cds.connecta.presenter.business.applicationService.IMidiaAS;
+import br.com.cds.connecta.presenter.business.applicationService.IMediaAS;
 import br.com.cds.connecta.presenter.entity.SingleSource;
+import br.com.cds.connecta.presenter.entity.SingleSourceAttribute;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
-public class MidiaAS extends AbstractBaseAS<SingleSource> implements IMidiaAS {
+public class MediaAS extends AbstractBaseAS<SingleSource> implements IMediaAS {
 
     @Autowired
     private ISingleSourceDAO singleSourceDAO;
@@ -28,7 +30,7 @@ public class MidiaAS extends AbstractBaseAS<SingleSource> implements IMidiaAS {
 
     @Override
     public void delete(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        singleSourceDAO.delete(id);
     }
 
     @Override
@@ -38,7 +40,13 @@ public class MidiaAS extends AbstractBaseAS<SingleSource> implements IMidiaAS {
 
     @Override
     public SingleSource get(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final SingleSource singleSource = singleSourceDAO.get(id);
+        final List<SingleSourceAttribute> singleSourceAttributes = singleSource.getSingleSourceAttributes();
+        Hibernate.initialize(singleSourceAttributes);
+        for (SingleSourceAttribute singleSourceAttribute : singleSourceAttributes) {
+            Hibernate.initialize(singleSourceAttribute.getAttribute());
+        }
+        return singleSource;
     }
 
 
