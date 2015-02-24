@@ -110,9 +110,10 @@ public class DatasourceController {
     )
     public ResponseEntity delete(@PathVariable("id") Long id) {
         service.delete(id);
-
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+    
+    
     
     
 

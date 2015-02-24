@@ -29,7 +29,7 @@ public class DatasourceAS implements IDatasourceAS {
 
     @Autowired
     private DatasourceDAO dao;
-    
+
     @Autowired
     private WebserviceDatasourceParameterDAO parameterDAO;
 
@@ -45,21 +45,30 @@ public class DatasourceAS implements IDatasourceAS {
 
     @Override
     public Datasource get(Long id) {
-        return dao.get(id);
+        Datasource ds = dao.get(id);
+
+        if (ds instanceof WebserviceDatasource) {
+            WebserviceDatasource wds = (WebserviceDatasource) ds;
+            List<WebserviceDatasourceParameter> parameters = parameterDAO.findAllByWebserviceDatasource(wds);
+            wds.setParameters(parameters);
+            return wds;
+        } else {
+            return ds;
+        }
     }
 
     @Override
     public void delete(Long id) {
         Datasource ds = get(id);
-        
-        if ( ds instanceof WebserviceDatasource ) {
+
+        if (ds instanceof WebserviceDatasource) {
             WebserviceDatasource wds = (WebserviceDatasource) ds;
             _delete(wds);
         } else {
             _delete(ds);
         }
     }
-    
+
     private void _delete(WebserviceDatasource ds) {
         List<WebserviceDatasourceParameter> parameters = parameterDAO.findAllByWebserviceDatasource(ds);
         parameterDAO.deleteAll(parameters);
@@ -73,21 +82,12 @@ public class DatasourceAS implements IDatasourceAS {
     @Override
     public Datasource saveWebservice(WebserviceDatasource datasource) {
         WebserviceDatasource entity = (WebserviceDatasource) save(datasource);
-        
+
         for (WebserviceDatasourceParameter parameter : entity.getParameters()) {
             parameter.setDatasource(entity);
             em.persist(parameter);
         }
-        
         return entity;
     }
-
-
-    
-    
-    
-    
-    
-    
 
 }
