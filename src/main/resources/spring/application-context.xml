@@ -11,40 +11,9 @@
     <context:component-scan base-package="br.com.cds.connecta.presenter" />
     
     <!--PERSISTENCE-->
-    
-<!--     FIXME Retornar esse código quando o schema for criado! -->
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="ConnectaPresenterPU" />
     </bean>
-    
-    <!-- FIXME Remover quando o banco novo do Presenter de desenvolvimento for criado! -->
-<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="jndiName" value="ConnectaPortalDS" />
-        <property name="driverClassName" value="org.h2.Driver" />
-        <property name="url" value="jdbc:h2:mem:portalDB;INIT=create schema if not exists PRESENTER;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE"/>
-        <property name="username" value="PRESENTER"/>
-        <property name="password" value="PRESENTER"/>
-    </bean>
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="packagesToScan" value="br.com.cds.connecta.presenter.entity" />
-        <property name="dataSource" ref="dataSource" />
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="showSql" value="true" />
-                <property name="databasePlatform" value="org.hibernate.dialect.H2Dialect" />
-            </bean>
-        </property>
-        <property name="jpaPropertyMap">
-            <map>
-                <entry key="hibernate.hbm2ddl.auto" value="create-drop" />
-                <entry key="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-                <entry key="hibernate.archive.autodetection" value="class" />
-                <entry key="hibernate.format_sql" value="true" />
-                <entry key="hibernate.default_schema" value="PRESENTER"/>
-            </map>
-        </property>
-    </bean>-->
     
     <!--TRANSACTION-->
     <import resource="classpath:META-INF/br.com.cds.connecta.framework.transaction.xml" />
