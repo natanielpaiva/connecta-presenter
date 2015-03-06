@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * The persistent class for the TB_FILE database table.
@@ -15,7 +17,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "TB_FILE_SINGLE_SOURCE")
-@NamedQuery(name = "FileSingleSource.findAll", query = "SELECT t FROM FileSingleSource t")
+@DynamicUpdate
+@NamedQueries({
+    @NamedQuery(name = "FileSingleSource.findAll", query = "SELECT t FROM FileSingleSource t"),
+    @NamedQuery(name = "FileSingleSource.getWithBinary", query = "SELECT t FROM FileSingleSource t join fetch t.binaryFile WHERE t.id = :id")
+})
 public class FileSingleSource extends SingleSource {
 
     private static final long serialVersionUID = 1L;
@@ -28,14 +34,14 @@ public class FileSingleSource extends SingleSource {
 
     @Column(name = "TXT_USER")
     private String user;
-    
+
     @Column(name = "TXT_PASSWORD")
     private String password;
 
     @Column(name = "URL_FILE")
     private String url;
-    
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_BINARY_FILE")
     private BinaryFile binaryFile;
 
@@ -86,5 +92,5 @@ public class FileSingleSource extends SingleSource {
     public void setUrl(String url) {
         this.url = url;
     }
-    
+
 }

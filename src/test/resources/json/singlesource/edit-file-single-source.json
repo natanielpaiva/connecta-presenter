@@ -1,4 +1,5 @@
 {
+    "id" : 2,
     "name"          : "New Midia",
     "description"   : "Midia Description",
     "type"          : "FILE",

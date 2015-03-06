@@ -20,6 +20,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * The persistent class for the TB_SINGLE_SOURCE database table.
@@ -28,6 +29,7 @@ import javax.persistence.OneToMany;
 @Entity
 @Table(name = "TB_SINGLE_SOURCE")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DynamicUpdate
 @NamedQuery(name = "SingleSource.findAll", query = "SELECT s FROM SingleSource s")
 public class SingleSource extends AbstractBaseEntity {
 
