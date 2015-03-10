@@ -9,13 +9,11 @@ import br.com.cds.connecta.presenter.business.applicationService.IMediaAS;
 import br.com.cds.connecta.presenter.entity.BinaryFile;
 import br.com.cds.connecta.presenter.entity.FileSingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSource;
-import br.com.cds.connecta.presenter.entity.SingleSourceAttribute;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
 import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import java.io.IOException;
 import java.util.Arrays;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +33,7 @@ public class MediaAS extends AbstractBaseAS<SingleSource> implements IMediaAS {
 
     @Override
     public SingleSource saveOrUpdate(SingleSource singleSource) throws Exception {
+        singleSourceDAO.refreshAttribute(singleSource);
         return singleSourceDAO.saveOrUpdate(singleSource);
     }
 
@@ -50,13 +49,7 @@ public class MediaAS extends AbstractBaseAS<SingleSource> implements IMediaAS {
 
     @Override
     public SingleSource get(Long id) {
-        final SingleSource singleSource = singleSourceDAO.get(id);
-        final List<SingleSourceAttribute> singleSourceAttributes = singleSource.getSingleSourceAttributes();
-        Hibernate.initialize(singleSourceAttributes);
-        for (SingleSourceAttribute singleSourceAttribute : singleSourceAttributes) {
-            Hibernate.initialize(singleSourceAttribute.getAttribute());
-        }
-        return singleSource;
+        return singleSourceDAO.get(id);
     }
 
     @Override

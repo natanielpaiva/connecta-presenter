@@ -6,6 +6,8 @@ import br.com.cds.connecta.presenter.entity.SingleSource;
 
 public interface ISingleSourceDAO extends IBaseJpaDAO<SingleSource>{
 
-	public abstract List<SingleSource> list();
+	List<SingleSource> list();
+        
+        void refreshAttribute(SingleSource singleSource);
 
 }

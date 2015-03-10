@@ -24,20 +24,19 @@ public class SingleSourceTest extends BaseTest {
     static final String RESOURCE_URL = RESOURCE.concat("/url");
     static final String RESOURCE_FILE = RESOURCE.concat("/file");
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
-    
+
     @Test
     public void listSingleSources() throws Exception {
         mockMvc().perform(get(RESOURCE)
-            .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", notNullValue()))
-            .andExpect(jsonPath("$[*]", hasSize(greaterThan(0))))
-//            .andExpect(jsonPath("$[*].description", todosOsItens(notNullValue())))
-//            .andExpect(jsonPath("$[*].name", todosOsItens(notNullValue())))
-//            .andExpect(jsonPath("$[*].type", todosOsItens(notNullValue())))
-//            .andExpect(jsonPath("$[*].datasource", todosOsItens(nullValue())))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$[*]", hasSize(greaterThan(0)))) //            .andExpect(jsonPath("$[*].description", todosOsItens(notNullValue())))
+                //            .andExpect(jsonPath("$[*].name", todosOsItens(notNullValue())))
+                //            .andExpect(jsonPath("$[*].type", todosOsItens(notNullValue())))
+                //            .andExpect(jsonPath("$[*].datasource", todosOsItens(nullValue())))
                 ;
     }
 
@@ -61,9 +60,9 @@ public class SingleSourceTest extends BaseTest {
     @Test
     @Ignore
     public void updatedFile() throws Exception {
-        mockMvc().perform( multipart(put(RESOURCE_FILE, 2)
+        mockMvc().perform(multipart(put(RESOURCE_FILE, 2)
                 .param("singlesource", getJson("singlesource/edit-file-single-source")), "pixel.png"))
-        .andDo(print())
+                .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
@@ -90,6 +89,17 @@ public class SingleSourceTest extends BaseTest {
     }
 
     @Test
+    @Ignore
+    public void getById() throws Exception {
+        mockMvc().perform(get(RESOURCE_ID, 1)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()));
+    }
+
+    @Test
     public void updateUrl() throws Exception {
         mockMvc().perform(put(RESOURCE_URL, 1)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -106,6 +116,7 @@ public class SingleSourceTest extends BaseTest {
     }
 
     @Test
+    @Ignore
     public void deleteSingleSource() throws Exception {
         mockMvc().perform(delete(RESOURCE_ID, 1)
                 .contentType(MediaType.APPLICATION_JSON)

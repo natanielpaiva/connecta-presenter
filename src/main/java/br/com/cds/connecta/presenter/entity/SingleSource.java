@@ -19,6 +19,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -30,7 +31,12 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "TB_SINGLE_SOURCE")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
-@NamedQuery(name = "SingleSource.findAll", query = "SELECT s FROM SingleSource s")
+@NamedQueries({
+        @NamedQuery(name = "SingleSource.findAll", query = "SELECT s FROM SingleSource s"),
+        @NamedQuery(name = "SingleSource.getById", query = "SELECT sg FROM SingleSource sg "
+                + "join fetch sg.singleSourceAttributes sa "
+                + "join fetch sa.attribute l WHERE sg.id = :id")
+})
 public class SingleSource extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -95,6 +101,5 @@ public class SingleSource extends AbstractBaseEntity {
     public void setSingleSourceAttributes(List<SingleSourceAttribute> singleSourceAttributes) {
         this.singleSourceAttributes = singleSourceAttributes;
     }
-
 
 }

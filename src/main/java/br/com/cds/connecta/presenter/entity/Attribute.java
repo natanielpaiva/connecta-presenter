@@ -10,6 +10,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import br.com.cds.connecta.presenter.domain.AttributeTypeEnum;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
 
 /**
@@ -37,6 +40,10 @@ public class Attribute extends AbstractBaseEntity {
 
     @Column(name = "NM_ATTRIBUTE", unique = true)
     private String name;
+    
+    @Column(name = "TP_ATTRIBUTE")
+    @Enumerated(EnumType.STRING)
+    private AttributeTypeEnum type;
 
     @Override
     public Long getId() {
@@ -62,4 +69,13 @@ public class Attribute extends AbstractBaseEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public AttributeTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(AttributeTypeEnum type) {
+        this.type = type;
+    }
+    
 }
