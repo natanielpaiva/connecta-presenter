@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
+import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.IMediaAS;
+import br.com.cds.connecta.presenter.domain.FileExtensionEnum;
 import br.com.cds.connecta.presenter.entity.BinaryFile;
 import br.com.cds.connecta.presenter.entity.FileSingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSource;
@@ -14,6 +16,7 @@ import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import java.io.IOException;
 import java.util.Arrays;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,12 +66,17 @@ public class MediaAS extends AbstractBaseAS<SingleSource> implements IMediaAS {
     @Override
     public void preValidate(FileSingleSource fileSingleSource, MultipartFile file) throws IOException {
 
-        //Verifica se é edição, caso sim ele faz outras verificações
+        //Verifica se é edição, caso si\m ele faz outras verificações
         if (fileSingleSource.getId() != null) {
             FileSingleSource fileSingleSourceBD = fileSingleSourceDAO
                     .getWithBinary(fileSingleSource.getId());
             //Verifica se o usuário colocou algum arquivo na edição
             if (file != null) {
+
+                fileSingleSource.setFileType(FileExtensionEnum.valueOf(
+                        FilenameUtils.getExtension(fileSingleSource.getFilename()).toUpperCase()
+                ));
+
                 //Verifica se o arqruivo que o usuário tem no banco é o mesmo que ele colocou para upar
                 if (Arrays.equals(fileSingleSourceBD.getBinaryFile().getBinaryFile(), file.getBytes())) {
                     fileSingleSource.setBinaryFile(fileSingleSourceBD.getBinaryFile());
@@ -82,6 +90,10 @@ public class MediaAS extends AbstractBaseAS<SingleSource> implements IMediaAS {
             }
 
         } else {
+            fileSingleSource.setFileType(FileExtensionEnum.valueOf(
+                    FilenameUtils.getExtension(fileSingleSource.getFilename()).toUpperCase()
+            ));
+
             fileSingleSource.setBinaryFile(new BinaryFile());
             fileSingleSource.getBinaryFile().setBinaryFile(file.getBytes());
         }

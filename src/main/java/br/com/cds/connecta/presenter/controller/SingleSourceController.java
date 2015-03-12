@@ -114,10 +114,10 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
 
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"",
-                "arquivobatata");
+                singleSource.getName() + "." + singleSource.getFileType().toString().toLowerCase() );
 
         response.setContentLength(singleSource.getBinaryFile().getBinaryFile().length);
-        response.setContentType(singleSource.getFileType());
+        response.setContentType(singleSource.getFileType().getMimeTypes());
         response.setHeader(headerKey, headerValue);
         
 //        response.addHeader("Content-Range", "bytes " + 0 + "-"

@@ -1,8 +1,11 @@
 package br.com.cds.connecta.presenter.entity;
 
+import br.com.cds.connecta.presenter.domain.FileExtensionEnum;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,7 +33,8 @@ public class FileSingleSource extends SingleSource {
     private String filename;
 
     @Column(name = "TP_FILE")
-    private String fileType;
+    @Enumerated(EnumType.STRING)
+    private FileExtensionEnum fileType;
 
     @Column(name = "TXT_USER")
     private String user;
@@ -61,14 +65,15 @@ public class FileSingleSource extends SingleSource {
         this.filename = filename;
     }
 
-    public String getFileType() {
+    public FileExtensionEnum getFileType() {
         return fileType;
     }
 
-    public void setFileType(String fileType) {
+    public void setFileType(FileExtensionEnum fileType) {
         this.fileType = fileType;
     }
 
+    
     public String getUser() {
         return user;
     }

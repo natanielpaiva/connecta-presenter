@@ -53,25 +53,9 @@ public class SingleSourceTest extends BaseTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.name", equalTo("New Midia")))
-                .andExpect(jsonPath("$.description", equalTo("Midia Description")))
-                .andExpect(jsonPath("$.fileType", equalTo("IMAGE")));
+                .andExpect(jsonPath("$.description", equalTo("Midia Description")));
     }
 
-    @Test
-    @Ignore
-    public void updatedFile() throws Exception {
-        mockMvc().perform(multipart(put(RESOURCE_FILE, 2)
-                .param("singlesource", getJson("singlesource/edit-file-single-source")), "pixel.png"))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.id", equalTo(2)))
-                .andExpect(jsonPath("$.name", equalTo("Edited name")))
-                .andExpect(jsonPath("$.description", equalTo("Edited Description")))
-                .andExpect(jsonPath("$.type", equalTo("FILE")))
-                .andExpect(jsonPath("$.fileType", equalTo("IMAGE")));
-    }
 
     @Test
     public void saveUrl() throws Exception {
@@ -89,7 +73,6 @@ public class SingleSourceTest extends BaseTest {
     }
 
     @Test
-    @Ignore
     public void getById() throws Exception {
         mockMvc().perform(get(RESOURCE_ID, 1)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -116,7 +99,6 @@ public class SingleSourceTest extends BaseTest {
     }
 
     @Test
-    @Ignore
     public void deleteSingleSource() throws Exception {
         mockMvc().perform(delete(RESOURCE_ID, 1)
                 .contentType(MediaType.APPLICATION_JSON)
