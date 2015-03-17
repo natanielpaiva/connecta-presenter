@@ -9,12 +9,14 @@ import br.com.cds.connecta.presenter.business.applicationService.IDatasourceAS;
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasourceParameter;
+import br.com.cds.connecta.presenter.filter.DatasourceFilter;
 import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
 import br.com.cds.connecta.presenter.persistence.impl.WebserviceDatasourceParameterDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,17 +37,18 @@ public class DatasourceAS implements IDatasourceAS {
 
     @Override
     public Datasource save(Datasource datasource) {
-        return dao.saveOrUpdate(datasource);
+        return dao.save(datasource);
     }
-
+    
     @Override
-    public List<Datasource> list() {
-        return dao.list();
+    public Iterable<Datasource> list(DatasourceFilter filter) {
+        Pageable pageable = filter.makePageable();
+        return dao.findAll(pageable);
     }
 
     @Override
     public Datasource get(Long id) {
-        Datasource ds = dao.get(id);
+        Datasource ds = dao.findOne(id);
 
         if (ds instanceof WebserviceDatasource) {
             WebserviceDatasource wds = (WebserviceDatasource) ds;

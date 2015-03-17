@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -16,7 +15,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.NamedQueries;
 
 /**
  * The persistent class for the TB_DATASOURCE database table.
@@ -25,9 +23,6 @@ import javax.persistence.NamedQueries;
 @Entity
 @Table(name = "TB_DATASOURCE")
 @Inheritance(strategy = InheritanceType.JOINED)
-@NamedQueries({
-    @NamedQuery(name = "Datasource.findAll", query = "SELECT t FROM Datasource t")
-})
 public class Datasource extends AbstractBaseEntity implements Serializable {
 
     @Id
@@ -38,7 +33,7 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
         allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_DATASOURCE_SEQ")
     @Column(name = "PK_DATASOURCE")
-    public Long id;
+    private Long id;
 
     @Column(name = "DS_DATASOURCE")
     private String description;

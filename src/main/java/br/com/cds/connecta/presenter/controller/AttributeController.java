@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.cds.connecta.presenter.business.applicationService.IAttributeAS;
 import br.com.cds.connecta.presenter.entity.Attribute;
 import br.com.cds.connecta.presenter.filter.AttributeFilter;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

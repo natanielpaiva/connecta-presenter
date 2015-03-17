@@ -38,8 +38,8 @@ public class AttributeTest extends BaseTest {
     @Test
     public void listPaginatedAttributesWithoutParameter() throws Exception {
         mockMvc().perform(get(RESOURCE)
-                .param("page", "0")
-                .param("size", "2")
+                .param("page", "1")
+                .param("count", "2")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -53,8 +53,8 @@ public class AttributeTest extends BaseTest {
     @Test
     public void listPaginatedAttributes() throws Exception {
         mockMvc().perform(get(RESOURCE)
-                .param("page", "0")
-                .param("size", "2")
+                .param("page", "1")
+                .param("count", "2")
                 .param("name", "")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
@@ -69,8 +69,8 @@ public class AttributeTest extends BaseTest {
     @Test
     public void listPaginatedFilteredAttributes() throws Exception {
         mockMvc().perform(get(RESOURCE)
-                .param("page", "0")
-                .param("size", "2")
+                .param("page", "1")
+                .param("count", "2")
                 .param("name", "desc")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
@@ -85,8 +85,8 @@ public class AttributeTest extends BaseTest {
     @Test
     public void listPaginatedFilteredAttributesIgnoreCase() throws Exception {
         mockMvc().perform(get(RESOURCE)
-                .param("page", "0")
-                .param("size", "2")
+                .param("page", "1")
+                .param("count", "2")
                 .param("name", "DeSc")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
@@ -97,5 +97,4 @@ public class AttributeTest extends BaseTest {
                 .andExpect(jsonPath("$[*].id", todosOsItens(notNullValue())))
                 .andExpect(jsonPath("$[*].name", todosOsItens(notNullValue())));
     }
-
 }
