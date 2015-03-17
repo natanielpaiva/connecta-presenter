@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
-import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.IMediaAS;
 import br.com.cds.connecta.presenter.domain.FileExtensionEnum;
 import br.com.cds.connecta.presenter.entity.BinaryFile;

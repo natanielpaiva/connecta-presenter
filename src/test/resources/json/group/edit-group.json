@@ -1,0 +1,7 @@
+{
+    "id": 1,
+    "description": "Group Description Edit",
+    "name": "Edit Group",
+    "type": "GALLERY",
+    "txtQuery": "SELECT..."
+}

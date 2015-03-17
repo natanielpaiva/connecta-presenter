@@ -10,76 +10,126 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-
+import br.com.cds.connecta.presenter.domain.TypeGroupEnum;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.OneToMany;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * The persistent class for the TB_GROUP database table.
- * 
+ *
  */
 @Entity
-@Table(name="TB_GROUP")
-@NamedQuery(name="Group.findAll", query="SELECT t FROM Group t")
+@Table(name = "TB_GROUP")
+@DynamicUpdate
+@NamedQueries({
+    @NamedQuery(name = "Group.findAll", query = "SELECT t FROM Group t"),
+    @NamedQuery(name = "Group.getByWhitSingleSourceId", query = "SELECT g FROM Group g "
+            + "LEFT JOIN FETCH g.singleSourceGroup sgg "
+            + "LEFT JOIN FETCH sgg.singleSource k "
+            + "WHERE g.id = :id"),
+    @NamedQuery(name = "Group.getByWhitAttributeId", query = "SELECT g FROM Group g "
+            + "LEFT JOIN FETCH g.groupAttribute sgg "
+            + "LEFT JOIN FETCH sgg.attribute k "
+            + "WHERE g.id = :id")
+})
 public class Group extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="TB_GROUP_PKGROUP_GENERATOR", sequenceName="TB_GROUP_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_GROUP_PKGROUP_GENERATOR")
-	@Column(name="PK_GROUP")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="DS_GROUP")
-	private String dsGroup;
+    @Id
+    @SequenceGenerator(name = "TB_GROUP_SEQ", sequenceName = "TB_GROUP_SEQ", 
+            allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_GROUP_SEQ")
+    @Column(name = "PK_GROUP")
+    private Long id;
 
-	@Column(name="NM_GROUP")
-	private String nmGroup;
+    @Column(name = "DS_GROUP")
+    private String description;
 
-	@Column(name="TP_GROUP")
-	private String tpGroup;
+    @Column(name = "NM_GROUP")
+    private String name;
 
-	@Column(name="TXT_QUERY")
-	private String txtQuery;
+    @Column(name = "TP_GROUP")
+    @Enumerated(EnumType.STRING)
+    private TypeGroupEnum type;
 
-	public Group() {
-	}
+    @Column(name = "TXT_QUERY")
+    private String txtQuery;
 
-	public Long getId() {
-		return this.id;
-	}
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_GROUP")
+    private List<SingleSourceGroup> singleSourceGroup;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_GROUP")
+    private List<GroupAttribute> groupAttribute;
 
-	public String getDsGroup() {
-		return this.dsGroup;
-	}
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public void setDsGroup(String dsGroup) {
-		this.dsGroup = dsGroup;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getNmGroup() {
-		return this.nmGroup;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setNmGroup(String nmGroup) {
-		this.nmGroup = nmGroup;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getTpGroup() {
-		return this.tpGroup;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setTpGroup(String tpGroup) {
-		this.tpGroup = tpGroup;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getTxtQuery() {
-		return this.txtQuery;
-	}
+    public TypeGroupEnum getType() {
+        return type;
+    }
 
-	public void setTxtQuery(String txtQuery) {
-		this.txtQuery = txtQuery;
-	}
+    public void setType(TypeGroupEnum type) {
+        this.type = type;
+    }
+
+    public String getTxtQuery() {
+        return txtQuery;
+    }
+
+    public void setTxtQuery(String txtQuery) {
+        this.txtQuery = txtQuery;
+    }
+
+    public List<SingleSourceGroup> getSingleSourceGroup() {
+        return singleSourceGroup;
+    }
+
+    public void setSingleSourceGroup(List<SingleSourceGroup> singleSourceGroup) {
+        this.singleSourceGroup = singleSourceGroup;
+    }
+
+    public List<GroupAttribute> getGroupAttribute() {
+        return groupAttribute;
+    }
+
+    public void setGroupAttribute(List<GroupAttribute> groupAttribute) {
+        this.groupAttribute = groupAttribute;
+    }
+    
 }

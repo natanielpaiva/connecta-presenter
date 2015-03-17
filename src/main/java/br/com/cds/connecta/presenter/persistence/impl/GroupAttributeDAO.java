@@ -3,8 +3,8 @@ package br.com.cds.connecta.presenter.persistence.impl;
 import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
-import br.com.cds.connecta.presenter.entity.AttrGroup;
+import br.com.cds.connecta.presenter.entity.GroupAttribute;
 @Repository
-public class AttrGroupDAO extends AbstractBaseJpaDAO<AttrGroup> {
+public class GroupAttributeDAO extends AbstractBaseJpaDAO<GroupAttribute> {
 
 }

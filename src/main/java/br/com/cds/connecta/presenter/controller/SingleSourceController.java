@@ -119,14 +119,6 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
         response.setContentLength(singleSource.getBinaryFile().getBinaryFile().length);
         response.setContentType(singleSource.getFileType().getMimeTypes());
         response.setHeader(headerKey, headerValue);
-        
-//        response.addHeader("Content-Range", "bytes " + 0 + "-"
-//                    + singleSource.getBinaryFile().getBinaryFile().length + "/" 
-//                    + singleSource.getBinaryFile().getBinaryFile().length);
-//            response.addHeader("Accept-Ranges", "bytes");
-//            response.addHeader("Connection", "Keep-Alive");
-//            response.addHeader("Keep-Alive", "timeout=5, max=980");
-
 
         IOUtils.copy(bis, response.getOutputStream());
         response.flushBuffer();
