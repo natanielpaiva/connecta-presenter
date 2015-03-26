@@ -86,10 +86,11 @@ public class DatasourceAS implements IDatasourceAS {
     public Datasource saveWebservice(WebserviceDatasource datasource) {
         WebserviceDatasource entity = (WebserviceDatasource) save(datasource);
 
-        for (WebserviceDatasourceParameter parameter : entity.getParameters()) {
+        for (WebserviceDatasourceParameter parameter : datasource.getParameters()) {
             parameter.setDatasource(entity);
-            em.persist(parameter);
+            em.merge(parameter);
         }
+        
         return entity;
     }
 
