@@ -2,5 +2,19 @@
     "description": "Group Description",
     "name": "New Group",
     "type": "FOLDER",
-    "txtQuery": "SELECT..."
+    "txtQuery": "SELECT...",
+    "singleSourceGroup": [
+        {
+            "numOrder": 9,
+            "singleSource": {
+                "id": 1
+            }
+        },
+        {
+            "numOrder": 9,
+            "singleSource": {
+                "id": 15
+            }
+        }
+    ]
 }

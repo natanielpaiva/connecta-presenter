@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.cds.connecta.framework.core.controller.AbstractBaseController;
-import br.com.cds.connecta.presenter.business.applicationService.IMediaAS;
+import br.com.cds.connecta.presenter.business.applicationService.ISingleSourceAS;
 import br.com.cds.connecta.presenter.entity.FileSingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
+import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
 import java.io.ByteArrayInputStream;
 import org.apache.commons.io.IOUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class SingleSourceController extends AbstractBaseController<SingleSource> {
 
     @Autowired
-    private IMediaAS mediaService;
+    private ISingleSourceAS mediaService;
 
     @Autowired
     private HibernateAwareObjectMapper hibernateAwareObjectMapper;
@@ -42,6 +44,12 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
         SingleSource singleSource = mediaService.get(id);
         return new ResponseEntity<>(singleSource, HttpStatus.OK);
     }
+    
+    @RequestMapping("attribute/{id}")
+    protected ResponseEntity<List<SingleSource>> getByAttribute(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List<SingleSource> singleSource = mediaService.getByAttributeId(id);
+        return new ResponseEntity<>(singleSource, HttpStatus.OK);
+    }
 
     @Override
     protected ResponseEntity<List<SingleSource>> list(HttpServletRequest request,
@@ -49,7 +57,19 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
         List<SingleSource> list = mediaService.list();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
+    
+    @RequestMapping("auto-complete")
+    protected ResponseEntity<Iterable<SingleSource>> listAutoComplete(SingleSourceFilter filter){
+        Page<SingleSource> list;
+        list = mediaService.listAutoComplete(filter);
+        
+        Iterable<SingleSource> content = list.getContent();
+        
+        return new ResponseEntity<>(content, HttpStatus.OK);
+        
+    }
+            
+ 
     @Override
     protected ResponseEntity<SingleSource> save(SingleSource singleSource, HttpServletRequest request,
             HttpServletResponse response) throws Exception {

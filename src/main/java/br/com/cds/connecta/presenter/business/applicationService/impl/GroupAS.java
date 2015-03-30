@@ -18,6 +18,7 @@ public class GroupAS extends AbstractBaseAS<Group> implements IGroupAS{
     @Autowired
     private IGroupDAO groupDao;
     
+    
     @Override
     public Group get(Long id) {
         return groupDao.get(id);

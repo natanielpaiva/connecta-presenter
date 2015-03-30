@@ -32,10 +32,13 @@ import org.hibernate.annotations.DynamicUpdate;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
 @NamedQueries({
-        @NamedQuery(name = "SingleSource.findAll", query = "SELECT s FROM SingleSource s"),
-        @NamedQuery(name = "SingleSource.getById", query = "SELECT sg FROM SingleSource sg "
-                + "LEFT JOIN FETCH sg.singleSourceAttributes sa "
-                + "LEFT JOIN FETCH sa.attribute l WHERE sg.id = :id")
+    @NamedQuery(name = "SingleSource.findAll", query = "SELECT s FROM SingleSource s"),
+    @NamedQuery(name = "SingleSource.getById", query = "SELECT sg FROM SingleSource sg "
+            + "LEFT JOIN FETCH sg.singleSourceAttributes sa "
+            + "LEFT JOIN FETCH sa.attribute l WHERE sg.id = :id"),
+    @NamedQuery(name = "SingleSource.getByAttributeId", query = "SELECT sg FROM SingleSource sg "
+            + "LEFT JOIN FETCH sg.singleSourceAttributes sa "
+            + "LEFT JOIN FETCH sa.attribute l WHERE sa.attribute.id = :id")
 })
 public class SingleSource extends AbstractBaseEntity {
 

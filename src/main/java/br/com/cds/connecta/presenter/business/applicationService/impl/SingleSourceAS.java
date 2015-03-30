@@ -1,42 +1,76 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import br.com.cds.connecta.framework.core.util.Util;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
-import br.com.cds.connecta.presenter.business.applicationService.IMediaAS;
+import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
+import static br.com.cds.connecta.framework.core.util.Util.isNull;
+import br.com.cds.connecta.presenter.business.applicationService.ISingleSourceAS;
 import br.com.cds.connecta.presenter.domain.FileExtensionEnum;
+import br.com.cds.connecta.presenter.entity.Attribute;
 import br.com.cds.connecta.presenter.entity.BinaryFile;
 import br.com.cds.connecta.presenter.entity.FileSingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSource;
+import br.com.cds.connecta.presenter.entity.SingleSourceAttribute;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
+import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
 import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
-import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
+import br.com.cds.connecta.presenter.persistence.impl.SingleSourceDAO;
 import java.io.IOException;
 import java.util.Arrays;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.apache.commons.io.FilenameUtils;
+import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class MediaAS extends AbstractBaseAS<SingleSource> implements IMediaAS {
+public class SingleSourceAS  implements ISingleSourceAS {
 
     @Autowired
-    private ISingleSourceDAO singleSourceDAO;
+    private SingleSourceDAO singleSourceDAO;
 
+    @PersistenceContext
+    private EntityManager em;
+    
     @Autowired
     private IFileSingleSourceDAO fileSingleSourceDAO;
 
     @Override
     public List<SingleSource> list() throws Exception {
-        return singleSourceDAO.list();
+        return singleSourceDAO.findAll();
+    }
+    
+    @Override
+    public Page<SingleSource> listAutoComplete(SingleSourceFilter filter){
+        String name = filter.getName();
+        if(isNull(name)){
+            name = "";
+        }
+        
+        return singleSourceDAO.findByName("%"+name.toUpperCase()+"%", filter.makePageable());
+                
     }
 
     @Override
     public SingleSource saveOrUpdate(SingleSource singleSource) throws Exception {
-        singleSourceDAO.refreshAttribute(singleSource);
-        return singleSourceDAO.saveOrUpdate(singleSource);
+        refreshAttribute(singleSource);
+        return singleSourceDAO.save(singleSource);
+    }
+    
+    private void refreshAttribute(SingleSource singleSource) {
+        if (isNotEmpty(singleSource.getSingleSourceAttributes())) {
+            for (SingleSourceAttribute singleSourceAttribute : singleSource.getSingleSourceAttributes()) {
+                if (isNotNull(singleSourceAttribute.getAttribute()) && isNotNull(singleSourceAttribute.getAttribute().getId())) {
+                    Attribute merge = em.merge(singleSourceAttribute.getAttribute());
+                    singleSourceAttribute.setAttribute(merge);
+                }
+            }
+        }
     }
 
     @Override
@@ -51,7 +85,7 @@ public class MediaAS extends AbstractBaseAS<SingleSource> implements IMediaAS {
 
     @Override
     public SingleSource get(Long id) {
-        return singleSourceDAO.get(id);
+        return singleSourceDAO.getWithAttributes(id);
     }
 
     @Override
@@ -102,5 +136,11 @@ public class MediaAS extends AbstractBaseAS<SingleSource> implements IMediaAS {
     public FileSingleSource getFileWithBinary(Long id) {
         return fileSingleSourceDAO.getWithBinary(id);
     }
+
+    @Override
+    public List<SingleSource> getByAttributeId(Long id) {
+        return singleSourceDAO.getByAttributeId(id);
+    }
+    
 
 }

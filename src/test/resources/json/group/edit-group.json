@@ -3,5 +3,13 @@
     "description": "Group Description Edit",
     "name": "Edit Group",
     "type": "GALLERY",
-    "txtQuery": "SELECT..."
+    "txtQuery": "SELECT...",
+    "singleSourceGroup": [
+        {
+            "numOrder": 9,
+            "singleSource": {
+                "id": 1
+            }
+        }
+    ]
 }

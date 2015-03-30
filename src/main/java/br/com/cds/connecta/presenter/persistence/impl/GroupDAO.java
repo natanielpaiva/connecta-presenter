@@ -12,11 +12,14 @@ import br.com.cds.connecta.presenter.entity.GroupAttribute;
 import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSourceGroup;
 import java.util.List;
-import javax.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Repository
 public class GroupDAO extends AbstractBaseJpaDAO<Group> implements IGroupDAO {
 
+    @Autowired
+    private SingleSourceDAO singleSourceDAO;
+    
     @Override
     public List<Group> list() {
         return getEntityManager().createNamedQuery("Group.findAll").getResultList();
@@ -55,9 +58,10 @@ public class GroupDAO extends AbstractBaseJpaDAO<Group> implements IGroupDAO {
             for( SingleSourceGroup singleSourceGroup : group.getSingleSourceGroup() ){
                  if (isNotNull(singleSourceGroup.getSingleSource()) && 
                         isNotNull(singleSourceGroup.getSingleSource().getId())) {
-                    SingleSource merge = getEntityManager()
-                            .merge(singleSourceGroup.getSingleSource());
-                    singleSourceGroup.setSingleSource(merge);
+                    SingleSource singleSource = singleSourceDAO
+                            .getWithAttributes(singleSourceGroup.getSingleSource()
+                            .getId());
+                    singleSourceGroup.setSingleSource(singleSource);
                     
                 }
             }

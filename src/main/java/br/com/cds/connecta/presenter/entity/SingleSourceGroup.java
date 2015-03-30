@@ -35,8 +35,7 @@ public class SingleSourceGroup extends AbstractBaseEntity {
     @Column(name = "NU_ORDER")
     private BigDecimal numOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,
-        CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_SINGLE_SOURCE")
     private SingleSource singleSource;
 

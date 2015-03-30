@@ -5,10 +5,12 @@ import java.util.List;
 
 import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
+import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
 import java.io.IOException;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface IMediaAS {
+public interface ISingleSourceAS {
 
     abstract SingleSource get(Long id);
 
@@ -27,5 +29,9 @@ public interface IMediaAS {
     void preValidate(FileSingleSource fileSingleSource, MultipartFile file) throws IOException;
 
     FileSingleSource getFileWithBinary(Long id);
+    
+    List<SingleSource> getByAttributeId(Long id);
+    
+    public Page<SingleSource> listAutoComplete(SingleSourceFilter filter);
 
 }

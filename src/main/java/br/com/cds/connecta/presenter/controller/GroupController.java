@@ -41,7 +41,8 @@ public class GroupController extends AbstractBaseController<Group> {
     @Override
     protected ResponseEntity<Group> save(Group group, HttpServletRequest request, 
             HttpServletResponse response) throws Exception {
-        Group newGroup  = groupService.saveOrUpdate(group);
+        Group newGroup;
+        newGroup = groupService.saveOrUpdate(group);
         return new ResponseEntity<>(newGroup, HttpStatus.CREATED);
     }
 

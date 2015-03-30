@@ -1,40 +1,33 @@
 package br.com.cds.connecta.presenter.persistence.impl;
 
+import br.com.cds.connecta.presenter.entity.Attribute;
 import org.springframework.stereotype.Repository;
 
-import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
-import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
-import br.com.cds.connecta.presenter.entity.Attribute;
 import br.com.cds.connecta.presenter.entity.SingleSource;
-import br.com.cds.connecta.presenter.entity.SingleSourceAttribute;
-import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import java.util.List;
-import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 @Repository
-public class SingleSourceDAO extends AbstractBaseJpaDAO<SingleSource> implements ISingleSourceDAO {
+public interface SingleSourceDAO extends JpaRepository<SingleSource, Long>{
 
-    @Override
-    public List<SingleSource> list() {
-        return getEntityManager().createNamedQuery("SingleSource.findAll").getResultList();
-    }
-
-    @Override
-    public SingleSource get(Long id) {
-        return (SingleSource) getEntityManager()
-                .createNamedQuery("SingleSource.getById").setParameter("id", id).getSingleResult();
-    }
-
-    @Override
-    public void refreshAttribute(SingleSource singleSource) {
-        if (isNotEmpty(singleSource.getSingleSourceAttributes())) {
-            for (SingleSourceAttribute singleSourceAttribute : singleSource.getSingleSourceAttributes()) {
-                if (isNotNull(singleSourceAttribute.getAttribute()) && isNotNull(singleSourceAttribute.getAttribute().getId())) {
-                    Attribute merge = getEntityManager().merge(singleSourceAttribute.getAttribute());
-                    singleSourceAttribute.setAttribute(merge);
-                }
-            }
-        }
-    }
+    
+    @Query(name = "SingleSource.getById")
+    SingleSource getWithAttributes(@Param("id") Long id);
+    
+    @Query(name = "SingleSource.getByAttributeId")
+    List<SingleSource> getByAttributeId(@Param("id") Long id);
+    
+    /**
+     *
+     * @param name
+     * @param pageable
+     * @return
+     */
+    @Query("FROM SingleSource t WHERE UPPER(t.name) LIKE :name")
+    Page<SingleSource> findByName(@Param("name") String name, Pageable pageable);
 
 }
