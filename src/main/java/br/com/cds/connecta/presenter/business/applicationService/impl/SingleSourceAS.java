@@ -17,7 +17,9 @@ import br.com.cds.connecta.presenter.entity.SingleSourceAttribute;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
 import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
 import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
+import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.impl.SingleSourceDAO;
+import br.com.cds.connecta.presenter.persistence.list.SingleSourceListRepository;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.persistence.EntityManager;
@@ -32,7 +34,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class SingleSourceAS  implements ISingleSourceAS {
 
     @Autowired
-    private SingleSourceDAO singleSourceDAO;
+    private SingleSourceListRepository singleSourceListRepository;
+    
+    @Autowired
+    private ISingleSourceDAO singleSourceDAO; 
 
     @PersistenceContext
     private EntityManager em;
@@ -42,7 +47,7 @@ public class SingleSourceAS  implements ISingleSourceAS {
 
     @Override
     public List<SingleSource> list() throws Exception {
-        return singleSourceDAO.findAll();
+        return singleSourceListRepository.findAll();
     }
     
     @Override
@@ -52,14 +57,14 @@ public class SingleSourceAS  implements ISingleSourceAS {
             name = "";
         }
         
-        return singleSourceDAO.findByName("%"+name.toUpperCase()+"%", filter.makePageable());
+        return singleSourceListRepository.findByName("%"+name.toUpperCase()+"%", filter.makePageable());
                 
     }
 
     @Override
     public SingleSource saveOrUpdate(SingleSource singleSource) throws Exception {
         refreshAttribute(singleSource);
-        return singleSourceDAO.save(singleSource);
+        return singleSourceListRepository.save(singleSource);
     }
     
     private void refreshAttribute(SingleSource singleSource) {
@@ -75,7 +80,7 @@ public class SingleSourceAS  implements ISingleSourceAS {
 
     @Override
     public void delete(Long id) throws Exception {
-        singleSourceDAO.delete(id);
+        singleSourceListRepository.delete(id);
     }
 
     @Override

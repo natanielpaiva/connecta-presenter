@@ -11,6 +11,7 @@ import br.com.cds.connecta.presenter.entity.Group;
 import br.com.cds.connecta.presenter.entity.GroupAttribute;
 import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSourceGroup;
+import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class GroupDAO extends AbstractBaseJpaDAO<Group> implements IGroupDAO {
 
     @Autowired
-    private SingleSourceDAO singleSourceDAO;
+    private ISingleSourceDAO singleSourceDAO;
     
     @Override
     public List<Group> list() {

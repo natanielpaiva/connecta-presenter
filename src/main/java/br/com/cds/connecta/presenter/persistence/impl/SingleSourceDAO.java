@@ -1,33 +1,29 @@
 package br.com.cds.connecta.presenter.persistence.impl;
 
-import br.com.cds.connecta.presenter.entity.Attribute;
+import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
 import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.presenter.entity.SingleSource;
+import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 @Repository
-public interface SingleSourceDAO extends JpaRepository<SingleSource, Long>{
+public class SingleSourceDAO extends AbstractBaseJpaDAO<SingleSource> implements ISingleSourceDAO {
+  
 
-    
-    @Query(name = "SingleSource.getById")
-    SingleSource getWithAttributes(@Param("id") Long id);
-    
-    @Query(name = "SingleSource.getByAttributeId")
-    List<SingleSource> getByAttributeId(@Param("id") Long id);
-    
-    /**
-     *
-     * @param name
-     * @param pageable
-     * @return
-     */
-    @Query("FROM SingleSource t WHERE UPPER(t.name) LIKE :name")
-    Page<SingleSource> findByName(@Param("name") String name, Pageable pageable);
+    @Override
+    public List<SingleSource> getByAttributeId(Long id) {
+        
+        return getEntityManager().createNamedQuery("SingleSource.getByAttributeId")
+                .setParameter("id", id).getResultList();
+        
+    }
+
+    @Override
+    public SingleSource getWithAttributes(Long id) {
+        return (SingleSource) getEntityManager().createNamedQuery("SingleSource.getById")
+                .setParameter("id", id).getSingleResult();
+    }
+
 
 }
