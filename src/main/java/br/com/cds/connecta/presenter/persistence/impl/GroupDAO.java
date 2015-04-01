@@ -69,4 +69,10 @@ public class GroupDAO extends AbstractBaseJpaDAO<Group> implements IGroupDAO {
         }
     }
 
+    @Override
+    public Group getSingleSourceByGroupId(Long id) {
+        return  (Group) getEntityManager().createNamedQuery("Group.getSingleSourceByGroupId")
+                .setParameter("id", id).getSingleResult();
+    }
+
 }

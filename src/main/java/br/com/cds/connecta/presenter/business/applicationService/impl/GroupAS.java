@@ -50,5 +50,10 @@ public class GroupAS extends AbstractBaseAS<Group> implements IGroupAS{
     public void preValidate(Group group) {
         
     }
+
+    @Override
+    public Group getSingleSourceByGroupId(Long id) {
+        return groupDao.getSingleSourceByGroupId(id);
+    }
     
 }

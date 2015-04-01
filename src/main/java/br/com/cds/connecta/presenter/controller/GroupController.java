@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -36,6 +37,15 @@ public class GroupController extends AbstractBaseController<Group> {
             HttpServletResponse response) throws Exception {
         List<Group> list = groupService.list();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    
+    @RequestMapping("single-source/{id}")
+    protected ResponseEntity<Group> getSingleSourceByGroupId(
+                    @PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response){
+    
+        Group group = groupService.getSingleSourceByGroupId(id);
+        
+        return new ResponseEntity<>(group, HttpStatus.OK);
     }
 
     @Override

@@ -21,4 +21,6 @@ public interface IGroupAS {
    
     void preValidate(Group group);
     
+    Group getSingleSourceByGroupId(Long id);
+    
 }

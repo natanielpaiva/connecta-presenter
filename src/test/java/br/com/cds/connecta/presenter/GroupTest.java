@@ -26,7 +26,7 @@ public class GroupTest extends BaseTest {
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
     
     
-     @Test
+    @Test
     public void listGroup() throws Exception {
         mockMvc().perform(get(RESOURCE)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -4,6 +4,7 @@ import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpa
 import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.presenter.entity.SingleSource;
+import br.com.cds.connecta.presenter.entity.SingleSourceGroup;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import java.util.List;
 
@@ -23,6 +24,17 @@ public class SingleSourceDAO extends AbstractBaseJpaDAO<SingleSource> implements
     public SingleSource getWithAttributes(Long id) {
         return (SingleSource) getEntityManager().createNamedQuery("SingleSource.getById")
                 .setParameter("id", id).getSingleResult();
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<SingleSourceGroup> findById(Long id) {
+        return getEntityManager().createNamedQuery("SingleSourceGroup.findById")
+                .setParameter("id", id).getResultList();
     }
 
 

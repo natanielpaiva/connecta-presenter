@@ -14,12 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import javax.persistence.CascadeType;
 
-/**
- * The persistent class for the TA_SNGL_SRC_GROUP database table.
- *
- */
 @Entity
 @Table(name = "TA_SNGL_SRC_GROUP")
 public class SingleSourceGroup extends AbstractBaseEntity {

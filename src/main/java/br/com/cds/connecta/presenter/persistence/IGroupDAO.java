@@ -18,5 +18,7 @@ public interface IGroupDAO extends IBaseJpaDAO<Group> {
      * @param group
      */
     void refreshSingleSource(Group group);
+    
+    Group getSingleSourceByGroupId(Long id);
 
 }

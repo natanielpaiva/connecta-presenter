@@ -37,6 +37,10 @@ import org.hibernate.annotations.DynamicUpdate;
     @NamedQuery(name = "Group.getByWhitAttributeId", query = "SELECT g FROM Group g "
             + "LEFT JOIN FETCH g.groupAttribute sgg "
             + "LEFT JOIN FETCH sgg.attribute k "
+            + "WHERE g.id = :id"),
+    @NamedQuery(name = "Group.getSingleSourceByGroupId", query = "SELECT g FROM Group g "
+            + "INNER JOIN FETCH g.singleSourceGroup ssg "
+            + "INNER JOIN FETCH ssg.singleSource sg "
             + "WHERE g.id = :id")
 })
 public class Group extends AbstractBaseEntity {
