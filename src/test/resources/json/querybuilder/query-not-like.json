@@ -1,0 +1,10 @@
+{
+    "statement": {
+        "type": "CONDITION",
+        "attribute": {
+            "id": 1
+        },
+        "predicate": "NOT_LIKE",
+        "value": "Tes"
+    }
+}

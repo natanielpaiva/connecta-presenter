@@ -1,0 +1,10 @@
+{
+    "statement": {
+        "type": "CONDITION",
+        "attribute": {
+            "id": 1
+        },
+        "predicate": "EQUAL",
+        "value": "Teste"
+    }
+}

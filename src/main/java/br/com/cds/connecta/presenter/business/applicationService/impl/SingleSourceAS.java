@@ -1,6 +1,5 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
-import br.com.cds.connecta.framework.core.util.Util;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import br.com.cds.connecta.presenter.entity.UrlSingleSource;
 import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
 import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
-import br.com.cds.connecta.presenter.persistence.impl.SingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.list.SingleSourceListRepository;
 import java.io.IOException;
 import java.util.Arrays;

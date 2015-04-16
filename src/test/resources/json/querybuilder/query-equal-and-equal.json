@@ -1,0 +1,24 @@
+{
+    "statement": {
+        "type": "GROUP",
+        "operator": "AND",
+        "statements": [
+            {
+                "type": "CONDITION",
+                "attribute": {
+                    "id": 1
+                },
+                "predicate": "EQUAL",
+                "value": "Teste"
+            },
+            {
+                "type": "CONDITION",
+                "attribute": {
+                    "id": 1
+                },
+                "predicate": "EQUAL",
+                "value": "Testando"
+            }
+        ]
+    }
+}

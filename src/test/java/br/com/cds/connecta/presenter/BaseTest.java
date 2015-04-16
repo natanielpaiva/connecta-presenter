@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
-import org.jboss.logging.Logger;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,20 +2,27 @@ package br.com.cds.connecta.presenter.controller;
 
 import br.com.cds.connecta.framework.core.controller.AbstractBaseController;
 import br.com.cds.connecta.presenter.business.applicationService.IGroupAS;
+import br.com.cds.connecta.presenter.business.builder.IQueryBuilder;
 import br.com.cds.connecta.presenter.entity.Group;
+import br.com.cds.connecta.presenter.entity.Query;
+import br.com.cds.connecta.presenter.entity.SingleSource;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
- *
+ * 
  * @author Nataniel Paiva
  */
 @Controller
@@ -24,6 +31,32 @@ public class GroupController extends AbstractBaseController<Group> {
 
     @Autowired
     private IGroupAS groupService;
+    
+    @Autowired
+    private IQueryBuilder builder;
+    
+    @RequestMapping(value = "query", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Query> saveQuery(@RequestBody Query query) {
+        
+        Query save = builder.save(query);
+        
+        return new ResponseEntity<>(save, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "query/result", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<SingleSource>> getResultsForQuery(@RequestBody Query query) {
+        List results = builder.listResultsFor(query, SingleSource.class);
+        
+        return new ResponseEntity<List<SingleSource>>(results, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "query/preview", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/sql")
+    public ResponseEntity<String> getPreviewForQuery(
+            @RequestBody Query query,
+            @RequestParam(value="split", required = false) Boolean split) {
+        return new ResponseEntity<>(builder.sqlFor(query, split, SingleSource.class), HttpStatus.OK);
+    }
 
     @Override
     protected ResponseEntity<Group> get(Long id, HttpServletRequest request, 
@@ -40,8 +73,7 @@ public class GroupController extends AbstractBaseController<Group> {
     }
     
     @RequestMapping("single-source/{id}")
-    protected ResponseEntity<Group> getSingleSourceByGroupId(
-                    @PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response){
+    protected ResponseEntity<Group> getSingleSourceByGroupId(@PathVariable("id") Long id){
     
         Group group = groupService.getSingleSourceByGroupId(id);
         

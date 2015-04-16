@@ -68,7 +68,6 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
         return new ResponseEntity<>(content, HttpStatus.OK);
         
     }
-            
  
     @Override
     protected ResponseEntity<SingleSource> save(SingleSource singleSource, HttpServletRequest request,

@@ -1,0 +1,52 @@
+{
+    "statement": {
+        "type": "GROUP",
+        "operator": "AND",
+        "statements": [
+            {
+                "type": "CONDITION",
+                "attribute": {
+                    "id": 1
+                },
+                "predicate": "EQUAL",
+                "value": "Tes"
+            },
+            {
+                "type": "GROUP",
+                "operator": "OR",
+                "statements": [
+                    {
+                        "type": "CONDITION",
+                        "attribute": {
+                            "id": 1
+                        },
+                        "predicate": "EQUAL",
+                        "value": "Tes"
+                    },
+                    {
+                        "type": "GROUP",
+                        "operator": "OR",
+                        "statements": [
+                            {
+                                "type": "CONDITION",
+                                "attribute": {
+                                    "id": 1
+                                },
+                                "predicate": "EQUAL",
+                                "value": "Tes"
+                            },
+                            {
+                                "type": "CONDITION",
+                                "attribute": {
+                                    "id": 1
+                                },
+                                "predicate": "EQUAL",
+                                "value": "Tes"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -10,8 +10,10 @@ import java.util.List;
  */
 public interface IQueryBuilder<T extends Object> {
     
-    List<T> fetchResultsFor(Query query);
+    List<T> listResultsFor(Query query, Class<T> target);
 
     Query save(Query query);
+
+    String sqlFor(Query query, Boolean split, Class<T> target);
     
 }

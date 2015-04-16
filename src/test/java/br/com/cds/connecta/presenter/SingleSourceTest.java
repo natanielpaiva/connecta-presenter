@@ -8,7 +8,6 @@ package br.com.cds.connecta.presenter;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
-import org.junit.Ignore;
 import org.springframework.mock.web.MockMultipartFile;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
