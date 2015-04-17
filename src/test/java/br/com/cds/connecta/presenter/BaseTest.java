@@ -38,7 +38,7 @@ public class BaseTest {
     protected Logger logger;
     protected static final String REST_PATH = "/";
     protected static final String TEST_RESOURCE_FOLDER = "src/test/resources/";
-    protected static final String FILE_CHARSET = Charset.defaultCharset().displayName();
+    protected static final String FILE_CHARSET = "UTF-8";
     
     protected static final MediaType MEDIATYPE_JSON_UTF8 = MediaType.parseMediaType(MediaType.APPLICATION_JSON_VALUE+";charset="+FILE_CHARSET);
 
