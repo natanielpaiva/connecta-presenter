@@ -4,7 +4,7 @@
     "port": 666,
     "sid": "teste",
     "schema": "teste",
-    "name": "Novodatasource",
+    "name": "Novódatasource",
     "description": "s",
     "type": "DATABASE",
     "user": "s",
