@@ -7,10 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.Valid;
 
 /**
  *
@@ -28,7 +28,7 @@ public class Query implements Serializable {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-//    @Valid
+    @JoinColumn(name="FK_QUERY_STATEMENT")
     private QueryStatement statement;
 
     public Long getId() {
