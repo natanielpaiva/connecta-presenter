@@ -1,35 +1,25 @@
 package br.com.cds.connecta.presenter.business.strategy.querybuilder;
 
 import br.com.cds.connecta.presenter.entity.QueryCondition;
-import br.com.cds.connecta.presenter.entity.SingleSource;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.util.List;
 
 /**
  *
  * @author Vinicius Pires <vinicius.pires@cds.com.br>
  */
 public class LikeQueryPredicateStrategy implements QueryPredicateStrategy {
-    
+
     @Override
-    public Predicate getPredicateFor(QueryCondition condition, CriteriaBuilder builder, Root<SingleSource> from, Join<Object, Object> join) {
-        Path<Object> attribute = join.get("attribute").get("id");
+    public String getPredicateFor(QueryCondition condition, List<String> parameters) {
+        condition.setValue( "%"+condition.getValue().toUpperCase()+"%" );
+        parameters.add(condition.getValue());
         
-        Predicate equal = builder.equal(attribute, condition.getAttribute().getId());
-
-        Expression<String> value = join.get("value");
-        Predicate like = builder.like(
-                builder.lower(value), String.format("%%%s%%", condition.getValue().toLowerCase())
-        );
-
+        String negate = "";
         if (condition.getPredicate().isNegation()) {
-            like = builder.not(like);
+            negate = " NOT ";
         }
-
-        return builder.and(like, equal);
+        
+        return " UPPER(attr" + condition.getAttribute().getId() + ") "
+                + negate + " LIKE ? ";
     }
 }

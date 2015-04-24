@@ -1,6 +1,7 @@
 package br.com.cds.connecta.presenter;
 
 import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.peloMenosUmItem;
+import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.stringIgnoringWhitespaceAndCase;
 import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.todosOsItens;
 import br.com.cds.connecta.presenter.domain.QueryOperatorEnum;
 import org.junit.Test;
@@ -54,22 +55,57 @@ public class QueryBuilderTest extends BaseTest {
                 .andExpect(jsonPath("$[*]", hasSize(1)))
                 .andExpect(jsonPath("$[*].message", is("BATATA")));
     }
-
+    
+    @Test
+    public void sqlWithEqual() throws Exception {
+        String expected = getTestResourceContent("sql/querybuilder/select-equal.sql");
+        
+        mockMvc().perform(post(RESOURCE_PREVIEW)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("querybuilder/query-equal"))
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/sql"))
+                .andExpect(content().string( stringIgnoringWhitespaceAndCase(expected) ));
+    }
+    
+    @Test
+    public void sqlWithNotEqual() throws Exception {
+        String expected = getTestResourceContent("sql/querybuilder/select-not-equal.sql");
+        
+        mockMvc().perform(post(RESOURCE_PREVIEW)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("querybuilder/query-not-equal"))
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/sql"))
+                .andExpect(content().string( stringIgnoringWhitespaceAndCase(expected) ));
+    }
+    
     @Test
     public void sqlWithLike() throws Exception {
+        String expected = getTestResourceContent("sql/querybuilder/select-like.sql");
+        
         mockMvc().perform(post(RESOURCE_PREVIEW)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getJson("querybuilder/query-like"))
         ).andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType("application/sql"))
-            .andExpect(content().string(allOf(
-                not(isEmptyString()),
-                containsString("select"),
-                containsString("from"),
-                containsString("where"),
-                containsString("like")
-        )));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/sql"))
+                .andExpect(content().string(stringIgnoringWhitespaceAndCase(expected)));
+    }
+    
+    @Test
+    public void sqlWithNotLike() throws Exception {
+        String expected = getTestResourceContent("sql/querybuilder/select-not-like.sql");
+        
+        mockMvc().perform(post(RESOURCE_PREVIEW)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("querybuilder/query-not-like"))
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/sql"))
+                .andExpect(content().string(stringIgnoringWhitespaceAndCase(expected)));
     }
 
     @Test
@@ -99,12 +135,12 @@ public class QueryBuilderTest extends BaseTest {
     @Test
     public void fetchsResultsWithEqual() throws Exception {
         mockMvc().perform(post(RESOURCE)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(getJson("querybuilder/query-equal"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("querybuilder/query-equal"))
         ).andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[*].singleSourceAttributes[*].attribute.id", todosOsItens(is(1))))
-            .andExpect(jsonPath("$[*].singleSourceAttributes[*].value", todosOsItens(equalTo("Teste"))));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[*].singleSourceAttributes[*].attribute.id", todosOsItens(is(1))))
+                .andExpect(jsonPath("$[*].singleSourceAttributes[*].value", todosOsItens(equalTo("Teste"))));
     }
 
     @Test
@@ -131,7 +167,7 @@ public class QueryBuilderTest extends BaseTest {
                 .andExpect(jsonPath("$[*].singleSourceAttributes[*].attribute.id", todosOsItens(is(1))))
                 .andExpect(jsonPath("$[*].singleSourceAttributes[*].value", todosOsItens(equalTo("Teste"))));
     }
-    
+
     @Test
     public void fetchsResultsWithEqualOrEqual() throws Exception {
         mockMvc().perform(post(RESOURCE)
@@ -143,18 +179,18 @@ public class QueryBuilderTest extends BaseTest {
                 .andExpect(jsonPath("$[*].singleSourceAttributes[*].attribute.id", todosOsItens(is(1))))
                 .andExpect(jsonPath("$[*].singleSourceAttributes[*].value", todosOsItens(equalTo("Teste"))));
     }
-    
+
     @Test
     public void sqlWithInnerGroups() throws Exception {
         mockMvc().perform(post(RESOURCE_PREVIEW)
-            .contentType(MediaType.APPLICATION_JSON)
-            .param("split", "true")
-            .content(getJson("querybuilder/query-inner-groups"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("split", "true")
+                .content(getJson("querybuilder/query-inner-groups"))
         ).andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType("application/sql"))
-            .andExpect(content().string(startsWith("where")))
-            .andExpect(content().string("where ( ( generatedAlias1.value=:param0 ) and ( generatedAlias1.attribute.id=1L ) ) and ( ( ( generatedAlias1.value=:param1 ) and ( generatedAlias1.attribute.id=1L ) ) or ( ( ( generatedAlias1.value=:param2 ) and ( generatedAlias1.attribute.id=1L ) ) or ( ( generatedAlias1.value=:param3 ) and ( generatedAlias1.attribute.id=1L ) ) ) )"));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/sql"))
+                .andExpect(content().string(startsWith("WHERE")))
+//                .andExpect(content().string("where ( ( generatedAlias1.value=:param0 ) and ( generatedAlias1.attribute.id=1L ) ) and ( ( ( generatedAlias1.value=:param1 ) and ( generatedAlias1.attribute.id=1L ) ) or ( ( ( generatedAlias1.value=:param2 ) and ( generatedAlias1.attribute.id=1L ) ) or ( ( generatedAlias1.value=:param3 ) and ( generatedAlias1.attribute.id=1L ) ) ) )"))
+                ;
     }
-    
 }

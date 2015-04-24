@@ -44,10 +44,10 @@ public class GroupController extends AbstractBaseController<Group> {
     }
     
     @RequestMapping(value = "query/result", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<SingleSource>> getResultsForQuery(@RequestBody Query query) {
+    public ResponseEntity<List> getResultsForQuery(@RequestBody Query query) {
         List results = builder.listResultsFor(query, SingleSource.class);
         
-        return new ResponseEntity<List<SingleSource>>(results, HttpStatus.OK);
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
     
     @RequestMapping(value = "query/preview", method = RequestMethod.POST,

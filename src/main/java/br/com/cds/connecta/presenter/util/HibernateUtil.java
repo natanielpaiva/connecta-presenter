@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.util;
 
-import javax.persistence.TypedQuery;
+import javax.persistence.Query;
 
 /**
  *
@@ -8,7 +8,7 @@ import javax.persistence.TypedQuery;
  */
 public class HibernateUtil {
 
-    public static String toSql(TypedQuery typedQuery) {
-        return typedQuery.unwrap(org.hibernate.Query.class).getQueryString();
+    public static String toSql(Query query) {
+        return query.unwrap(org.hibernate.Query.class).getQueryString();
     }
 }
