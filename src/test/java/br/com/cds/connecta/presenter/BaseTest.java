@@ -34,7 +34,7 @@ public class BaseTest {
 
     @Autowired
     private MockMvcProvider mmp;
-    protected Logger logger;
+    private Logger logger;
     protected static final String REST_PATH = "/";
     protected static final String TEST_RESOURCE_FOLDER = "src/test/resources/";
     protected static final String FILE_CHARSET = "UTF-8";

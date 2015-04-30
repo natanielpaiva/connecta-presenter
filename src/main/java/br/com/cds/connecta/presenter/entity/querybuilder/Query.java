@@ -1,4 +1,4 @@
-package br.com.cds.connecta.presenter.entity;
+package br.com.cds.connecta.presenter.entity.querybuilder;
 
 import java.io.Serializable;
 import javax.persistence.CascadeType;

@@ -1,4 +1,4 @@
-package br.com.cds.connecta.presenter.entity;
+package br.com.cds.connecta.presenter.entity.querybuilder;
 
 import br.com.cds.connecta.presenter.domain.QueryOperatorEnum;
 import java.util.List;

@@ -3,10 +3,10 @@ package br.com.cds.connecta.presenter.business.builder.impl;
 import br.com.cds.connecta.presenter.business.builder.IQueryBuilder;
 import br.com.cds.connecta.presenter.business.strategy.querybuilder.QueryPredicateStrategy;
 import br.com.cds.connecta.presenter.domain.QueryOperatorEnum;
-import br.com.cds.connecta.presenter.entity.Query;
-import br.com.cds.connecta.presenter.entity.QueryCondition;
-import br.com.cds.connecta.presenter.entity.QueryGroup;
-import br.com.cds.connecta.presenter.entity.QueryStatement;
+import br.com.cds.connecta.presenter.entity.querybuilder.Query;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryGroup;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryStatement;
 import br.com.cds.connecta.presenter.util.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,19 +26,15 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
 
     @PersistenceContext
     private EntityManager em;
-
+    
     static Logger logger = Logger.getLogger(SQLQueryBuilder.class);
 
     @Override
     public List<Object> listResultsFor(Query query, Class<Object> target) {
         javax.persistence.Query q = makeQuery(query, target);
-
-        return q.getResultList();
-    }
-
-    @Override
-    public Query save(Query query) {
-        return em.merge(query);
+        List resultList = q.getResultList();
+        
+        return resultList;
     }
 
     @Override
@@ -55,7 +51,7 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
     }
 
     private javax.persistence.Query makeQuery(Query query, final Class<Object> target) {
-        StringBuilder select = new StringBuilder("SELECT m.* FROM (SELECT m.PK_SINGLE_SOURCE ");
+        StringBuilder select = new StringBuilder("SELECT m.PK_SINGLE_SOURCE FROM (SELECT m.PK_SINGLE_SOURCE ");
 
         String join = " FROM CONNECTA.TB_SINGLE_SOURCE m "
                 + " JOIN CONNECTA.TA_ATTR_SNGL_SRC ma "
@@ -67,7 +63,7 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
                 + " ON m.PK_SINGLE_SOURCE = r.PK_SINGLE_SOURCE";
 
         String where = " WHERE ";
-        List<String> parameters = new ArrayList<>();
+        List<Object> parameters = new ArrayList<>();
         if (query.getStatement() instanceof QueryCondition) {
             select.append(makePivot((QueryCondition) query.getStatement()));
             where += makeConditionPredicate((QueryCondition) query.getStatement(), parameters);
@@ -83,13 +79,13 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
         return nativeQuery;
     }
 
-    private String makeConditionPredicate(QueryCondition condition, List<String> parameters) {
+    private String makeConditionPredicate(QueryCondition condition, List<Object> parameters) {
         QueryPredicateStrategy strategy = getStrategyFor(condition);
 
         return strategy.getPredicateFor(condition, parameters);
     }
 
-    private String makeGroupPredicate(QueryGroup group, StringBuilder select, List<String> parameters) {
+    private String makeGroupPredicate(QueryGroup group, StringBuilder select, List<Object> parameters) {
         List<String> predicates = new ArrayList<>();
         for (QueryStatement statement : group.getStatements()) {
             if (statement instanceof QueryCondition) {
@@ -120,9 +116,9 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
         return strategy;
     }
 
-    private void setParameters(javax.persistence.Query nativeQuery, List<String> parameters) {
+    private void setParameters(javax.persistence.Query nativeQuery, List<Object> parameters) {
         for (int i = 0; i < parameters.size(); i++) {
-            String get = parameters.get(i);
+            Object get = parameters.get(i);
             nativeQuery.setParameter(i + 1, get);
         }
     }

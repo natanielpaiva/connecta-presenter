@@ -38,7 +38,9 @@ import org.hibernate.annotations.DynamicUpdate;
             + "LEFT JOIN FETCH sa.attribute l WHERE sg.id = :id"),
     @NamedQuery(name = "SingleSource.getByAttributeId", query = "SELECT sg FROM SingleSource sg "
             + "LEFT JOIN FETCH sg.singleSourceAttributes sa "
-            + "LEFT JOIN FETCH sa.attribute l WHERE sa.attribute.id = :id")
+            + "LEFT JOIN FETCH sa.attribute l WHERE sa.attribute.id = :id"),
+    @NamedQuery(name = "SingleSource.getByIds", query = "SELECT s FROM SingleSource s WHERE id in(:ids)")
+
 })
 public class SingleSource extends AbstractBaseEntity {
 

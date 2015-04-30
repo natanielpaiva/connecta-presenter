@@ -1,6 +1,8 @@
 package br.com.cds.connecta.presenter.domain;
 
+import br.com.cds.connecta.presenter.business.strategy.querybuilder.BetweenQueryPredicateStrategy;
 import br.com.cds.connecta.presenter.business.strategy.querybuilder.EqualQueryPredicateStrategy;
+import br.com.cds.connecta.presenter.business.strategy.querybuilder.InQueryPredicateStrategy;
 import br.com.cds.connecta.presenter.business.strategy.querybuilder.LikeQueryPredicateStrategy;
 import br.com.cds.connecta.presenter.business.strategy.querybuilder.QueryPredicateStrategy;
 
@@ -14,10 +16,10 @@ public enum QueryPredicateEnum {
     NOT_EQUAL(EqualQueryPredicateStrategy.class, true),
     LIKE(LikeQueryPredicateStrategy.class, false),
     NOT_LIKE(LikeQueryPredicateStrategy.class, true),
-    IN(null, false),
-    NOT_IN(null, true),
-    BETWEEN(null, false),
-    NOT_BETWEEN(null, true);
+    IN(InQueryPredicateStrategy.class, false),
+    NOT_IN(InQueryPredicateStrategy.class, true),
+    BETWEEN(BetweenQueryPredicateStrategy.class, false),
+    NOT_BETWEEN(BetweenQueryPredicateStrategy.class, true);
 
     private final Class<? extends QueryPredicateStrategy> strategy;
     private final boolean negation;

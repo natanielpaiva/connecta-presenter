@@ -5,6 +5,11 @@
             "id": 1
         },
         "predicate": "LIKE",
-        "value": "Tes"
+        "value": {
+            "value": "Tes",
+            "between": {},
+            "in": [
+            ]
+        }
     }
 }

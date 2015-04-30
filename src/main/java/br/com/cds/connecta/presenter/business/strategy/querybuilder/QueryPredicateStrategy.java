@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.business.strategy.querybuilder;
 
-import br.com.cds.connecta.presenter.entity.QueryCondition;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
 import java.util.List;
 
 /**
@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface QueryPredicateStrategy {
 
-    String getPredicateFor(QueryCondition condition, List<String> parameters);
+    String getPredicateFor(QueryCondition condition, List<Object> parameters);
 
 }

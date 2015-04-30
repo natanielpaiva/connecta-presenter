@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.persistence;
 
+import br.com.cds.connecta.presenter.entity.FileSingleSource;
 import java.util.List;
 
 import br.com.cds.connecta.presenter.entity.SingleSource;
@@ -12,5 +13,7 @@ public interface ISingleSourceDAO extends IBaseJpaDAO<SingleSource> {
     List<SingleSource> getByAttributeId(Long id);
     
     List<SingleSourceGroup> findById(Long id);
+    
+    List<FileSingleSource> getByIds(List<Long> ids);
 
 }

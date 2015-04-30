@@ -2,9 +2,13 @@
     "statement": {
         "type": "CONDITION",
         "attribute": {
-            "id": 1
+            "id": 99
         },
         "predicate": "EQUAL",
-        "value": "Teste"
+        "value": {
+            "value" : "Brasília",
+            "between": {},
+            "in": []
+        }
     }
 }

@@ -1,7 +1,9 @@
 package br.com.cds.connecta.presenter.business.strategy.querybuilder;
 
-import br.com.cds.connecta.presenter.entity.QueryCondition;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
+import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -10,14 +12,21 @@ import java.util.List;
 public class InQueryPredicateStrategy implements QueryPredicateStrategy {
 
     @Override
-    public String getPredicateFor(QueryCondition condition, List<String> parameters) {
-        parameters.add( condition.getValue() );
-        
-        String operator = "=";
-        if (condition.getPredicate().isNegation()) {
-            operator = "!=";
+    public String getPredicateFor(QueryCondition condition, List<Object> parameters) {
+        List<String> inSQL = new ArrayList<>();
+        for (String in : condition.getValue().getIn()) {
+            inSQL.add("?");
+            parameters.add(in);
         }
         
-        return String.format(" attr%s "+operator+" ? ", condition.getAttribute().getId());
+        String join = StringUtils.join(inSQL, ",");
+        
+        String negate = "";
+        if (condition.getPredicate().isNegation()) {
+            negate = " NOT ";
+        }
+        
+        return " UPPER(attr" + condition.getAttribute().getId() + ") "
+                + negate + " IN ("+join+")";
     }
 }

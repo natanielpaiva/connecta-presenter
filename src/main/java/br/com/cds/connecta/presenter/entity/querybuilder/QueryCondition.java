@@ -1,12 +1,15 @@
-package br.com.cds.connecta.presenter.entity;
+package br.com.cds.connecta.presenter.entity.querybuilder;
 
 import br.com.cds.connecta.presenter.domain.QueryPredicateEnum;
+import br.com.cds.connecta.presenter.entity.Attribute;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,7 +30,8 @@ public class QueryCondition extends QueryStatement {
     private QueryPredicateEnum predicate;
     
     @Column(name = "VALUE")
-    private String value;
+    @Lob
+    private Serializable value;
 
     public Attribute getAttribute() {
         return attribute;
@@ -45,12 +49,11 @@ public class QueryCondition extends QueryStatement {
         this.predicate = predicate;
     }
 
-    public String getValue() {
-        return value;
+    public QueryConditionValue getValue() {
+        return (QueryConditionValue) value;
     }
 
-    public void setValue(String value) {
+    public void setValue(QueryConditionValue value) {
         this.value = value;
     }
-   
 }

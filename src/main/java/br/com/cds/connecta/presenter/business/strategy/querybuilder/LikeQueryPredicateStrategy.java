@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.business.strategy.querybuilder;
 
-import br.com.cds.connecta.presenter.entity.QueryCondition;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
 import java.util.List;
 
 /**
@@ -10,8 +10,8 @@ import java.util.List;
 public class LikeQueryPredicateStrategy implements QueryPredicateStrategy {
 
     @Override
-    public String getPredicateFor(QueryCondition condition, List<String> parameters) {
-        condition.setValue( "%"+condition.getValue().toUpperCase()+"%" );
+    public String getPredicateFor(QueryCondition condition, List<Object> parameters) {
+        condition.getValue().setValue( "%"+condition.getValue().getValue().toUpperCase()+"%" );
         parameters.add(condition.getValue());
         
         String negate = "";

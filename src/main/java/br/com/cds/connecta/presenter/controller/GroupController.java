@@ -2,9 +2,10 @@ package br.com.cds.connecta.presenter.controller;
 
 import br.com.cds.connecta.framework.core.controller.AbstractBaseController;
 import br.com.cds.connecta.presenter.business.applicationService.IGroupAS;
+import br.com.cds.connecta.presenter.business.applicationService.IQueryAS;
 import br.com.cds.connecta.presenter.business.builder.IQueryBuilder;
 import br.com.cds.connecta.presenter.entity.Group;
-import br.com.cds.connecta.presenter.entity.Query;
+import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import br.com.cds.connecta.presenter.entity.SingleSource;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -35,17 +36,29 @@ public class GroupController extends AbstractBaseController<Group> {
     @Autowired
     private IQueryBuilder builder;
     
+    @Autowired
+    private IQueryAS queryService;
+    
     @RequestMapping(value = "query", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Query> saveQuery(@RequestBody Query query) {
         
-        Query save = builder.save(query);
+        Query save = queryService.save(query);
         
         return new ResponseEntity<>(save, HttpStatus.OK);
     }
     
+    @RequestMapping(value = "query/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Query> getQueryById(@PathVariable("id") Long id) {
+        
+        Query query = queryService.saveGetById(id);
+        
+        return new ResponseEntity<>(query, HttpStatus.OK);
+    }
+    
+    
     @RequestMapping(value = "query/result", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List> getResultsForQuery(@RequestBody Query query) {
-        List results = builder.listResultsFor(query, SingleSource.class);
+        List results = queryService.getSingleSourceByIds(query, null);
         
         return new ResponseEntity<>(results, HttpStatus.OK);
     }

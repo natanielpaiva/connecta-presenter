@@ -2,13 +2,15 @@
     "statement": {
         "type": "CONDITION",
         "attribute": {
-            "id": 99
+            "id": 1
         },
-        "predicate": "NOT_EQUAL",
+        "predicate": "NOT_IN",
         "value": {
-            "value": "Teste",
+            "value": null,
             "between": {},
             "in": [
+                "Teste",
+                "Tes"
             ]
         }
     }

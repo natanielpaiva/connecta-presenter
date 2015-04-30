@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.business.builder;
 
-import br.com.cds.connecta.presenter.entity.Query;
+import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.util.List;
 
 /**
@@ -11,8 +11,6 @@ import java.util.List;
 public interface IQueryBuilder<T extends Object> {
     
     List<T> listResultsFor(Query query, Class<T> target);
-
-    Query save(Query query);
 
     String sqlFor(Query query, Boolean split, Class<T> target);
     

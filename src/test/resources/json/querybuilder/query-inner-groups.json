@@ -9,7 +9,12 @@
                     "id": 1
                 },
                 "predicate": "EQUAL",
-                "value": "Tes"
+                "value": {
+                    "value": "Tes",
+                    "between": {},
+                    "in": [
+                    ]
+                }
             },
             {
                 "type": "GROUP",
@@ -21,7 +26,12 @@
                             "id": 1
                         },
                         "predicate": "EQUAL",
-                        "value": "Tes"
+                        "value": {
+                            "value": "Tes",
+                            "between": {},
+                            "in": [
+                            ]
+                        }
                     },
                     {
                         "type": "GROUP",
@@ -33,7 +43,12 @@
                                     "id": 1
                                 },
                                 "predicate": "EQUAL",
-                                "value": "Tes"
+                                "value": {
+                                    "value": "Tes",
+                                    "between": {},
+                                    "in": [
+                                    ]
+                                }
                             },
                             {
                                 "type": "CONDITION",
@@ -41,7 +56,12 @@
                                     "id": 1
                                 },
                                 "predicate": "EQUAL",
-                                "value": "Tes"
+                                "value": {
+                                    "value": "Tes",
+                                    "between": {},
+                                    "in": [
+                                    ]
+                                }
                             }
                         ]
                     }

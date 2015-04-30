@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.business.strategy.querybuilder;
 
-import br.com.cds.connecta.presenter.entity.QueryCondition;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
 import java.util.List;
 
 /**
@@ -10,8 +10,8 @@ import java.util.List;
 public class EqualQueryPredicateStrategy implements QueryPredicateStrategy {
 
     @Override
-    public String getPredicateFor(QueryCondition condition, List<String> parameters) {
-        parameters.add( condition.getValue() );
+    public String getPredicateFor(QueryCondition condition, List<Object> parameters) {
+        parameters.add( condition.getValue().getValue() );
         
         String operator = "=";
         if (condition.getPredicate().isNegation()) {

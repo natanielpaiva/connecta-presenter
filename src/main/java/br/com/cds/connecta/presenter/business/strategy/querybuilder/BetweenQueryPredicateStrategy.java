@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.business.strategy.querybuilder;
 
-import br.com.cds.connecta.presenter.entity.QueryCondition;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
 import java.util.List;
 
 /**
@@ -10,14 +10,16 @@ import java.util.List;
 public class BetweenQueryPredicateStrategy implements QueryPredicateStrategy {
 
     @Override
-    public String getPredicateFor(QueryCondition condition, List<String> parameters) {
-        parameters.add( condition.getValue() );
+    public String getPredicateFor(QueryCondition condition, List<Object> parameters) {
+        parameters.add( condition.getValue().getBetween().getStart() );
+        parameters.add( condition.getValue().getBetween().getEnd() );
         
-        String operator = "=";
+        String negation = "";
         if (condition.getPredicate().isNegation()) {
-            operator = "!=";
+            negation = "NOT";
         }
         
-        return String.format(" attr%s "+operator+" ? ", condition.getAttribute().getId());
+        return  " attr" + condition.getAttribute().getId() + " " + negation + " BETWEEN " + 
+               " ? AND ?";
     }
 }

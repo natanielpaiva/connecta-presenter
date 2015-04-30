@@ -9,7 +9,12 @@
                     "id": 1
                 },
                 "predicate": "EQUAL",
-                "value": "Teste"
+                "value": {
+                    "value": "Teste",
+                    "between": {},
+                    "in": [
+                    ]
+                }
             },
             {
                 "type": "CONDITION",
@@ -17,7 +22,12 @@
                     "id": 2
                 },
                 "predicate": "EQUAL",
-                "value": "Testando"
+                "value": {
+                    "value": "Testando",
+                    "between": {},
+                    "in": [
+                    ]
+                }
             }
         ]
     }
