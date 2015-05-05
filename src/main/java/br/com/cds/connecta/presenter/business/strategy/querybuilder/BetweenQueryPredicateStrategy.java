@@ -20,6 +20,6 @@ public class BetweenQueryPredicateStrategy implements QueryPredicateStrategy {
         }
         
         return  " attr" + condition.getAttribute().getId() + " " + negation + " BETWEEN " + 
-               " ? AND ?";
+               " ? AND ? ";
     }
 }

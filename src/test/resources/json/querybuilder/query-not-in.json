@@ -2,7 +2,7 @@
     "statement": {
         "type": "CONDITION",
         "attribute": {
-            "id": 1
+            "id": 99
         },
         "predicate": "NOT_IN",
         "value": {

@@ -2,14 +2,14 @@
     "statement": {
         "type": "CONDITION",
         "attribute": {
-            "id": 1
+            "id": 100
         },
         "predicate": "NOT_BETWEEN",
         "value": {
             "value" : "",
             "between": { 
-                "start" : "Teste",
-                "end" : "Teste"
+                "start" : 10,
+                "end" : 15
             },
             "in": []
         }

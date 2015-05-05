@@ -2,15 +2,15 @@
     "statement": {
         "type": "CONDITION",
         "attribute": {
-            "id": 1
+            "id": 100
         },
         "predicate": "IN",
         "value": {
             "value": null,
             "between": {},
             "in": [
-                "Teste",
-                "Tes"
+                1000,
+                4000
             ]
         }
     }

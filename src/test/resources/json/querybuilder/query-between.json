@@ -2,14 +2,14 @@
     "statement": {
         "type": "CONDITION",
         "attribute": {
-            "id": 99
+            "id": 100
         },
         "predicate": "BETWEEN",
         "value": {
             "value" : "",
             "between": { 
-                "start" : "Teste",
-                "end" : "Teste"
+                "start" : 1000,
+                "end" : 5000
             },
             "in": []
         }

@@ -6,11 +6,11 @@
             {
                 "type": "CONDITION",
                 "attribute": {
-                    "id": 1
+                    "id": 99
                 },
                 "predicate": "EQUAL",
                 "value": {
-                    "value": "Teste",
+                    "value": "Brasília",
                     "between": {},
                     "in": [
                     ]
@@ -19,11 +19,11 @@
             {
                 "type": "CONDITION",
                 "attribute": {
-                    "id": 2
+                    "id": 100
                 },
                 "predicate": "EQUAL",
                 "value": {
-                    "value": "Testando",
+                    "value": "1000",
                     "between": {},
                     "in": [
                     ]

@@ -2,11 +2,11 @@
     "statement": {
         "type": "CONDITION",
         "attribute": {
-            "id": 1
+            "id": 99
         },
         "predicate": "LIKE",
         "value": {
-            "value": "Tes",
+            "value": "Bras",
             "between": {},
             "in": [
             ]
