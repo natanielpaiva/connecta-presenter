@@ -53,13 +53,13 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
     private javax.persistence.Query makeQuery(Query query, final Class<Object> target) {
         StringBuilder select = new StringBuilder("SELECT m.PK_SINGLE_SOURCE FROM (SELECT m.PK_SINGLE_SOURCE ");
 
-        String join = " FROM CONNECTA.TB_SINGLE_SOURCE m "
-                + " JOIN CONNECTA.TA_ATTR_SNGL_SRC ma "
+        String join = " FROM PRESENTER2.TB_SINGLE_SOURCE m "
+                + " JOIN PRESENTER2.TA_ATTR_SNGL_SRC ma "
                 + " ON ma.FK_SINGLE_SOURCE = m.PK_SINGLE_SOURCE "
                 + " GROUP BY m.PK_SINGLE_SOURCE "
                 + " ORDER BY m.PK_SINGLE_SOURCE "
                 + ") r "
-                + " INNER JOIN CONNECTA.TB_SINGLE_SOURCE m "
+                + " INNER JOIN PRESENTER2.TB_SINGLE_SOURCE m "
                 + " ON m.PK_SINGLE_SOURCE = r.PK_SINGLE_SOURCE";
 
         String where = " WHERE ";
