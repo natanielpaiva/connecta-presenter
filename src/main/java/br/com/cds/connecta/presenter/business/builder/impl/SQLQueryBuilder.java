@@ -3,6 +3,7 @@ package br.com.cds.connecta.presenter.business.builder.impl;
 import br.com.cds.connecta.presenter.business.builder.IQueryBuilder;
 import br.com.cds.connecta.presenter.business.strategy.querybuilder.QueryPredicateStrategy;
 import br.com.cds.connecta.presenter.domain.QueryOperatorEnum;
+import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryGroup;

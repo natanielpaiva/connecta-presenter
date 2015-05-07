@@ -64,12 +64,14 @@ public class QueryAS implements IQueryAS {
 
         List<Long> list = new ArrayList<>();
         for (Iterator it = listResultsFor.iterator(); it.hasNext();) {
-            BigInteger o = (BigInteger) it.next();
+            Number o = (Number) it.next();
             list.add(o.longValue());
         }
 
-        List<FileSingleSource> result = singleSourceDAO.getByIds(list);
-
+        List<FileSingleSource> result = new ArrayList<>();
+        if (!list.isEmpty()) {
+            result = singleSourceDAO.getByIds(list);
+        } 
         return result;
     }
 
