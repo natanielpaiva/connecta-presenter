@@ -30,11 +30,17 @@ public class GroupDAO extends AbstractBaseJpaDAO<Group> implements IGroupDAO {
         Group groupWithSingleSource = (Group) getEntityManager()
                 .createNamedQuery("Group.getByWhitSingleSourceId")
                 .setParameter("id", id).getSingleResult();
+        
         Group groupWithAttribute = (Group) getEntityManager()
                 .createNamedQuery("Group.getByWhitAttributeId")
                 .setParameter("id", id).getSingleResult();
         
+        Group groupWithQuery = (Group) getEntityManager()
+                .createNamedQuery("Group.getByWhitQueryId")
+                .setParameter("id", id).getSingleResult();
+        
         groupWithAttribute.setSingleSourceGroup(groupWithSingleSource.getSingleSourceGroup());
+        groupWithAttribute.setQuery(groupWithQuery.getQuery());
         
         return  groupWithAttribute;
     }

@@ -40,6 +40,9 @@ import org.hibernate.annotations.DynamicUpdate;
             + "LEFT JOIN FETCH g.groupAttribute sgg "
             + "LEFT JOIN FETCH sgg.attribute k "
             + "WHERE g.id = :id"),
+    @NamedQuery(name = "Group.getByWhitQueryId", query = "SELECT g FROM Group g "
+            + "LEFT JOIN FETCH g.query q "
+            + "WHERE g.id = :id"),
     @NamedQuery(name = "Group.getSingleSourceByGroupId", query = "SELECT g FROM Group g "
             + "INNER JOIN FETCH g.singleSourceGroup ssg "
             + "INNER JOIN FETCH ssg.singleSource sg "
