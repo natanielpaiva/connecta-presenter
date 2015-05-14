@@ -78,6 +78,19 @@ public class QueryBuilderTest extends BaseTest {
                 .andExpect(content().contentType("application/sql"))
                 .andExpect(content().string(stringIgnoringWhitespaceAndCase(expected)));
     }
+    
+    @Test
+    public void sqlWithGroup() throws Exception {
+       // String expected = getTestResourceContent("sql/querybuilder/select-group.sql");
+
+        mockMvc().perform(post(RESOURCE_PREVIEW)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("querybuilder/query-group"))
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/sql"))
+                ;//.andExpect(content().string(stringIgnoringWhitespaceAndCase(expected)));
+    }
 
     @Test
     public void sqlWithNotEqual() throws Exception {
@@ -264,6 +277,18 @@ public class QueryBuilderTest extends BaseTest {
         mockMvc().perform(post(RESOURCE_RESULT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getJson("querybuilder/query-equal-or-equal"))
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
+                .andExpect(jsonPath("$[*].id", peloMenosUmItem(equalTo(99))))
+                .andExpect(jsonPath("$[*].id", peloMenosUmItem(equalTo(100))));
+    }
+    
+    @Test
+    public void fetchsResultsWithEqualOrEqualSameAttribute() throws Exception {
+        mockMvc().perform(post(RESOURCE_RESULT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("querybuilder/query-equal-or-equal-same"))
         ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
