@@ -3,7 +3,6 @@
     "description": "Group Description Edit",
     "name": "Edit Group",
     "type": "GALLERY",
-    "txtQuery": "SELECT...",
     "singleSourceGroup": [
         {
             "numOrder": 9,
