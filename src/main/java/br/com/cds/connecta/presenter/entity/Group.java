@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.domain.TypeGroupEnum;
+import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
@@ -19,6 +20,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import org.hibernate.annotations.DynamicUpdate;
 
 /**
@@ -64,8 +66,9 @@ public class Group extends AbstractBaseEntity {
     @Enumerated(EnumType.STRING)
     private TypeGroupEnum type;
 
-    @Column(name = "TXT_QUERY")
-    private String txtQuery;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_QUERY")
+    private Query query;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_GROUP")
@@ -112,14 +115,14 @@ public class Group extends AbstractBaseEntity {
         this.type = type;
     }
 
-    public String getTxtQuery() {
-        return txtQuery;
+    public Query getQuery() {
+        return query;
     }
 
-    public void setTxtQuery(String txtQuery) {
-        this.txtQuery = txtQuery;
+    public void setQuery(Query query) {
+        this.query = query;
     }
-
+    
     public List<SingleSourceGroup> getSingleSourceGroup() {
         return singleSourceGroup;
     }

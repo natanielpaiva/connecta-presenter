@@ -1,0 +1,34 @@
+{
+    "statement": {
+        "type": "GROUP",
+        "operator": "OR",
+        "statements": [
+            {
+                "type": "CONDITION",
+                "attribute": {
+                    "id": 100
+                },
+                "predicate": "EQUAL",
+                "value": {
+                    "value": "4000",
+                    "between": {},
+                    "in": [
+                    ]
+                }
+            },
+            {
+                "type": "CONDITION",
+                "attribute": {
+                    "id": 100
+                },
+                "predicate": "EQUAL",
+                "value": {
+                    "value": "1000",
+                    "between": {},
+                    "in": [
+                    ]
+                }
+            }
+        ]
+    }
+}

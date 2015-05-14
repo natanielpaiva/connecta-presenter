@@ -7,7 +7,6 @@ import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryGroup;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryStatement;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

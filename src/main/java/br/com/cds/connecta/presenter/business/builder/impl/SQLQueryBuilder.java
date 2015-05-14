@@ -3,7 +3,6 @@ package br.com.cds.connecta.presenter.business.builder.impl;
 import br.com.cds.connecta.presenter.business.builder.IQueryBuilder;
 import br.com.cds.connecta.presenter.business.strategy.querybuilder.QueryPredicateStrategy;
 import br.com.cds.connecta.presenter.domain.QueryOperatorEnum;
-import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryGroup;
@@ -66,7 +65,7 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
         String where = " WHERE ";
         List<Object> parameters = new ArrayList<>();
         if (query.getStatement() instanceof QueryCondition) {
-            select.append(makePivot((QueryCondition) query.getStatement()));
+            select.append(makePivot((QueryCondition) query.getStatement(), select));
             where += makeConditionPredicate((QueryCondition) query.getStatement(), parameters);
         } else {
             where += makeGroupPredicate((QueryGroup) query.getStatement(), select, parameters);
@@ -90,7 +89,7 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
         List<String> predicates = new ArrayList<>();
         for (QueryStatement statement : group.getStatements()) {
             if (statement instanceof QueryCondition) {
-                select.append(makePivot((QueryCondition) statement));
+                select.append(makePivot((QueryCondition) statement, select));
                 predicates.add(makeConditionPredicate((QueryCondition) statement, parameters));
             } else {
                 predicates.add(makeGroupPredicate((QueryGroup) statement, select, parameters));
@@ -124,11 +123,16 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
         }
     }
 
-    private String makePivot(QueryCondition condition) {
-        return String.format(
+    private String makePivot(QueryCondition condition, StringBuilder select) {
+        String pivot = "";
+        if ( !select.toString().contains(String.format("attr%s ", condition.getAttribute().getId())) ) {
+            pivot = String.format(
                 ", MAX(CASE WHEN ma.FK_ATTRIBUTE = %s THEN ma.TXT_VALUE END) attr%s ",
                 condition.getAttribute().getId(),
                 condition.getAttribute().getId());
+        }
+        
+        return pivot;
     }
 
 }

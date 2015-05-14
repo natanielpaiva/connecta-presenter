@@ -1,0 +1,75 @@
+{
+    "statement":
+            {
+                "type": "GROUP",
+                "operator": "OR",
+                "statements": [
+                    {
+                        "type": "GROUP",
+                        "operator": "AND",
+                        "statements": [
+                            {
+                                "type": "CONDITION",
+                                "attribute": {
+                                    "id": 99
+                                },
+                                "predicate": "EQUAL",
+                                "value":
+                                        {
+                                            "value": "Brasília",
+                                            "between": {},
+                                            "in": [
+                                            ]
+                                        }
+                            },
+                            {
+                                "type": "CONDITION",
+                                "attribute": {
+                                    "id": 100
+                                },
+                                "predicate": "EQUAL",
+                                "value": {
+                                    "value": "4000",
+                                    "between": {},
+                                    "in": [
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "type": "GROUP",
+                        "operator": "AND",
+                        "statements": [
+                            {
+                                "type": "CONDITION",
+                                "attribute": {
+                                    "id": 99
+                                },
+                                "predicate": "EQUAL",
+                                "value":
+                                        {
+                                            "value": "Brasília",
+                                            "between": {},
+                                            "in": [
+                                            ]
+                                        }
+                            },
+                            {
+                                "type": "CONDITION",
+                                "attribute": {
+                                    "id": 100
+                                },
+                                "predicate": "EQUAL",
+                                "value": {
+                                    "value": "4000",
+                                    "between": {},
+                                    "in": [
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+}

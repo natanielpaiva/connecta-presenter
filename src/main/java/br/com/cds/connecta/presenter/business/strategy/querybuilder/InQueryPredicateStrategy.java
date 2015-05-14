@@ -16,17 +16,21 @@ public class InQueryPredicateStrategy implements QueryPredicateStrategy {
         List<String> inSQL = new ArrayList<>();
         for (String in : condition.getValue().getIn()) {
             inSQL.add("?");
-            parameters.add(in);
+            if (in.matches("[0-9]+")) {
+                parameters.add(in);
+            }else{
+                parameters.add("'" + in + "'");
+            }
         }
-        
+
         String join = StringUtils.join(inSQL, ",");
-        
+
         String negate = "";
         if (condition.getPredicate().isNegation()) {
             negate = " NOT ";
         }
-        
+
         return " UPPER(attr" + condition.getAttribute().getId() + ") "
-                + negate + " IN ("+join+")";
+                + negate + " IN (" + join + ")";
     }
 }
