@@ -13,11 +13,6 @@ import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
-
-/**
- * The persistent class for the VIEWER_RELATION database table.
- * 
- */
 @Entity
 @Table(name="VIEWER_RELATION")
 @NamedQuery(name="ViewerRelation.findAll", query="SELECT v FROM ViewerRelation v")

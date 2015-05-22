@@ -13,54 +13,54 @@ import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
-
 /**
  * The persistent class for the VIEWERGROUP_RELATION database table.
- * 
+ *
  */
 @Entity
-@Table(name="VIEWERGROUP_RELATION")
-@NamedQuery(name="ViewergroupRelation.findAll", query="SELECT v FROM ViewergroupRelation v")
+@Table(name = "VIEWERGROUP_RELATION")
+@NamedQuery(name = "ViewergroupRelation.findAll", query = "SELECT v FROM ViewergroupRelation v")
 public class ViewergroupRelation extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="VIEWERGROUP_RELATION_PKVIEWERGROUPRELATION_GENERATOR", sequenceName="VIEWERGROUP_RELATION_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VIEWERGROUP_RELATION_PKVIEWERGROUPRELATION_GENERATOR")
-	@Column(name="PK_VIEWERGROUP_RELATION")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="ID_RELATION")
-	private BigDecimal idRelation;
+    @Id
+    @SequenceGenerator(name = "VIEWERGROUP_RELATION_PKVIEWERGROUPRELATION_GENERATOR", sequenceName = "VIEWERGROUP_RELATION_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "VIEWERGROUP_RELATION_PKVIEWERGROUPRELATION_GENERATOR")
+    @Column(name = "PK_VIEWERGROUP_RELATION")
+    private Long id;
 
-	@Column(name="ID_VIEWER_GROUP")
-	private BigDecimal idViewerGroup;
+    @Column(name = "ID_RELATION")
+    private BigDecimal idRelation;
 
-	public ViewergroupRelation() {
-	}
+    @Column(name = "ID_VIEWER_GROUP")
+    private BigDecimal idViewerGroup;
 
-	public Long getId() {
-		return this.id;
-	}
+    public ViewergroupRelation() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return this.id;
+    }
 
-	public BigDecimal getIdRelation() {
-		return this.idRelation;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setIdRelation(BigDecimal idRelation) {
-		this.idRelation = idRelation;
-	}
+    public BigDecimal getIdRelation() {
+        return this.idRelation;
+    }
 
-	public BigDecimal getIdViewerGroup() {
-		return this.idViewerGroup;
-	}
+    public void setIdRelation(BigDecimal idRelation) {
+        this.idRelation = idRelation;
+    }
 
-	public void setIdViewerGroup(BigDecimal idViewerGroup) {
-		this.idViewerGroup = idViewerGroup;
-	}
+    public BigDecimal getIdViewerGroup() {
+        return this.idViewerGroup;
+    }
+
+    public void setIdViewerGroup(BigDecimal idViewerGroup) {
+        this.idViewerGroup = idViewerGroup;
+    }
 
 }

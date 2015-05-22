@@ -29,6 +29,11 @@
             <artifactId>connecta-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>br.com.cds.connecta.framework</groupId>
+            <artifactId>connecta-amcharts</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>commons-httpclient</groupId>
