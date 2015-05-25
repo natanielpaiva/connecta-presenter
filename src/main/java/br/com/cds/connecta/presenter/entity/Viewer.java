@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import java.io.Serializable;
 import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
 
 /**
  * The persistent class for the TB_VIEWER database table.
@@ -20,7 +21,11 @@ import javax.persistence.Lob;
  */
 @Entity
 @Table(name = "TB_VIEWER")
-@NamedQuery(name = "Viewer.findAll", query = "SELECT t FROM Viewer t")
+@NamedQueries({
+    @NamedQuery(name = "Viewer.findAll", query = "SELECT t FROM Viewer t"),
+    @NamedQuery(name = "Viewer.getById", query = "SELECT v FROM Viewer v WHERE v.id = :id ")
+}
+)
 public class Viewer extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -33,13 +38,13 @@ public class Viewer extends AbstractBaseEntity {
 
     @Column(name = "NM_VIEWER")
     private String name;
-    
+
     @Column(name = "DS_VIEWER")
     private String description;
-    
+
     @Lob
-    @Column(name="CONFIGURATION")
-    private Serializable configuration;
+    @Column(name = "CONFIGURATION")
+    private ChartConfiguration configuration;
 
     @Override
     public Long getId() {
@@ -65,7 +70,7 @@ public class Viewer extends AbstractBaseEntity {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public ChartConfiguration getConfiguration() {
         return (ChartConfiguration) configuration;
     }

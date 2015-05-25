@@ -80,7 +80,7 @@
    * Cursor line color (color)
    * Graph bullet alpha (interval 0-100%)
    * Hovered bullet size (number)
-   * Selection alpha (interval 0-100)
+   * Selection alpha (interval 0-100$)
 * Chart scrollbar
  * General settings
    * Auto grid count (boolean)
@@ -103,7 +103,34 @@
    * Drag icon height (number)
    * Drag icon width (number)
    * Graph fill alpha (interval 0-100%)
-   * Graph
+   * Graph fill color (color)
+   * Graph line alpha (interval 0-100%)
+   * Graph line color (color)
+   * Grid alpha (interval 0-100%)
+   * Grid color (color)
+   * Selected background alpha (interval0-100%)
+   * Selected background color (color)
+   * Selected graph fill alpha (interval 0-100%)
+   * Selected graph fill color (color)
+   * Selected graph line alpha (interval 0-100%)
+   * Selected graph line color (color)
+  * Chart scrollbar
+   * Drag icon (enum)
+* Export
+  * General settings
+    * Enabled (boolean)
+* Legend
+  * General settings
+    * Enabled (boolean)
+    * Equal widths (boolean)  
+    * Label text (string) Olhar novamente
+    * Label width (number)
+    * Max columns (number)
+    * Period value text (string)
+    * Reversed order (boolean)
+    * Roll over graph alpha (interval 0-100%)
+    * Show entries (boolean)
+    * Switchable ()
 * Miscellaneous
   * Columns
    * Column spacing (number)
