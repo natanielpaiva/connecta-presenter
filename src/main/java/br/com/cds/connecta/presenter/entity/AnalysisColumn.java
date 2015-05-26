@@ -4,114 +4,101 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
-
 /**
  * The persistent class for the TB_ANALYSIS_COLUMNS database table.
- * 
+ *
  */
 @Entity
-@Table(name="TB_ANALYSIS_COLUMNS")
-@NamedQuery(name="AnalysisColumn.findAll", query="SELECT t FROM AnalysisColumn t")
+@Table(name = "TB_ANALYSIS_COLUMNS")
 public class AnalysisColumn extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="TB_ANALYSIS_COLUMNS_PKANALYSISCOLUMNS_GENERATOR", sequenceName="TB_ANALYSIS_COLUMNS_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_ANALYSIS_COLUMNS_PKANALYSISCOLUMNS_GENERATOR")
-	@Column(name="PK_ANALYSIS_COLUMNS")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="FML_COLUMN")
-	private String fmlColumn;
+    @Id
+    @SequenceGenerator(name = "TB_ANALYSIS_COLUMNS_SEQ", sequenceName = "TB_ANALYSIS_COLUMNS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ANALYSIS_COLUMNS_SEQ")
+    @Column(name = "PK_ANALYSIS_COLUMNS")
+    private Long id;
 
-	@Column(name="LB_COLUMN")
-	private String lbColumn;
+    @Column(name = "FML_COLUMN")
+    private String formula;
 
-	@Column(name="NM_COLUMN")
-	private String nmColumn;
+    @Column(name = "LB_COLUMN")
+    private String label;
 
-	@Column(name="TP_COLUMN")
-	private BigDecimal tpColumn;
+    @Column(name = "NM_COLUMN")
+    private String name;
 
-	//bi-directional many-to-one association to TbAnalysi
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="FK_ANALYSIS")
-	private Analysis tbAnalysi;
+    @Column(name = "TP_COLUMN")
+    private BigDecimal type;
 
-	//bi-directional many-to-one association to TbCombinedAnalysi
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="FK_COMBINED_ANALYSIS")
-	private CombinedAnalysi tbCombinedAnalysi;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "FK_ANALYSIS", referencedColumnName = "PK_ANALYSIS")
+    
+//    @ManyToOne
+//    @JoinColumn(name = "FK_ANALYSIS")
+//    private Analysis analysis;
 
-	public AnalysisColumn() {
-	}
+//    @JoinColumn(name = "FK_COMBINED_ANALYSIS")
+//    private CombinedAnalysi combinedAnalysi;
 
-	public Long getId() {
-		return this.id;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getFmlColumn() {
-		return this.fmlColumn;
-	}
+    public String getFormula() {
+        return formula;
+    }
 
-	public void setFmlColumn(String fmlColumn) {
-		this.fmlColumn = fmlColumn;
-	}
+    public void setFormula(String formula) {
+        this.formula = formula;
+    }
 
-	public String getLbColumn() {
-		return this.lbColumn;
-	}
+    public String getLabel() {
+        return label;
+    }
 
-	public void setLbColumn(String lbColumn) {
-		this.lbColumn = lbColumn;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	public String getNmColumn() {
-		return this.nmColumn;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setNmColumn(String nmColumn) {
-		this.nmColumn = nmColumn;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public BigDecimal getTpColumn() {
-		return this.tpColumn;
-	}
+    public BigDecimal getType() {
+        return type;
+    }
 
-	public void setTpColumn(BigDecimal tpColumn) {
-		this.tpColumn = tpColumn;
-	}
+    public void setType(BigDecimal type) {
+        this.type = type;
+    }
 
-	public Analysis getTbAnalysi() {
-		return this.tbAnalysi;
-	}
 
-	public void setTbAnalysi(Analysis tbAnalysi) {
-		this.tbAnalysi = tbAnalysi;
-	}
 
-	public CombinedAnalysi getTbCombinedAnalysi() {
-		return this.tbCombinedAnalysi;
-	}
-
-	public void setTbCombinedAnalysi(CombinedAnalysi tbCombinedAnalysi) {
-		this.tbCombinedAnalysi = tbCombinedAnalysi;
-	}
+//    public CombinedAnalysi getCombinedAnalysi() {
+//        return combinedAnalysi;
+//    }
+//
+//    public void setCombinedAnalysi(CombinedAnalysi combinedAnalysi) {
+//        this.combinedAnalysi = combinedAnalysi;
+//    }
 
 }
