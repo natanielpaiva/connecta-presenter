@@ -14,7 +14,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.NamedQueries;
+import javax.persistence.OneToMany;
 
 /**
  * The persistent class for the TB_ANALYSIS database table.
@@ -47,6 +50,10 @@ public class Analysis extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_DATASOURCE")
     private Datasource datasource;
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_ANALYSIS", nullable = false)
+    private List<AnalysisColumn> analysisColumns;
 
     @Override
     public Long getId() {
@@ -89,5 +96,14 @@ public class Analysis extends AbstractBaseEntity {
         this.datasource = datasource;
     }
 
+    public List<AnalysisColumn> getAnalysisColumns() {
+        return analysisColumns;
+    }
+
+    public void setAnalysisColumns(List<AnalysisColumn> analysisColumns) {
+        this.analysisColumns = analysisColumns;
+    }
+
+    
     
 }
