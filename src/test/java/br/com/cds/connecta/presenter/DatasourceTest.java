@@ -163,7 +163,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))))
                 .andExpect(jsonPath("$.address", equalTo("endereco")))
-                .andExpect(jsonPath("$.method", equalTo("metodo")))
+                //.andExpect(jsonPath("$.method", equalTo("metodo")))
                 .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
                 .andExpect(jsonPath("$.description", equalTo("s")))
                 .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.WEBSERVICE.name())))

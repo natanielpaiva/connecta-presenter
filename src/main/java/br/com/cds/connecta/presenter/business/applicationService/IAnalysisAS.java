@@ -3,17 +3,20 @@ package br.com.cds.connecta.presenter.business.applicationService;
 import java.util.List;
 
 import br.com.cds.connecta.presenter.entity.Analysis;
+import br.com.cds.connecta.presenter.entity.AnalysisColumn;
 
 public interface IAnalysisAS {
 
-    public abstract Analysis get(Long id) throws Exception;
+    Analysis get(Long id);
 
-    public abstract List<Analysis> list() throws Exception;
+    List<Analysis> list();
 
-    public abstract Analysis saveOrUpdate(Analysis entity) throws Exception;
+    Analysis saveOrUpdate(Analysis entity);
+    
+    void delete(Analysis analysis);
 
-    public abstract void delete(Long id) throws Exception;
+    void delete(Long id);
 
-    public abstract void delete(Analysis analysis) throws Exception;
+    List<AnalysisColumn> getColumns(Long id);
 
 }

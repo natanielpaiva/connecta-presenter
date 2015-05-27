@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.entity.datasource;
 
+import br.com.cds.connecta.presenter.domain.DatasourceTypeWebservice;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.Table;
 
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -27,8 +30,12 @@ public class WebserviceDatasource extends Datasource {
     @Column(name = "TXT_ADDRESS")
     private String address;
 
-    @Column(name = "TXT_METHOD")
-    private String method;
+//    @Column(name = "TXT_METHOD")
+//    private String method;
+    
+    @Column(name = "TYPE_WEBSERVICE")
+    @Enumerated(EnumType.STRING)
+    private DatasourceTypeWebservice typeWebservice;
     
     @Transient
     @JsonIgnoreProperties({"datasource"})
@@ -42,19 +49,19 @@ public class WebserviceDatasource extends Datasource {
         this.address = address;
     }
 
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
     public List<WebserviceDatasourceParameter> getParameters() {
         return parameters;
     }
 
     public void setParameters(List<WebserviceDatasourceParameter> parameters) {
         this.parameters = parameters;
+    }
+    
+     public DatasourceTypeWebservice getTypeWebservice() {
+        return typeWebservice;
+    }
+
+    public void setTypeWebservice(DatasourceTypeWebservice typeWebservice) {
+        this.typeWebservice = typeWebservice;
     }
 }
