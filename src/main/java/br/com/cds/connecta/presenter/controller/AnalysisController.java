@@ -96,6 +96,14 @@ public class AnalysisController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     
+    //retorna a análises e suas respectivas colunas
+    @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)
+    public ResponseEntity<Analysis> getAnalysisColumns(
+            @PathVariable Long id) {
+        Analysis analysis = analysisService.getByIdColumns(id);
+        return new ResponseEntity<>(analysis, HttpStatus.OK);
+    }
+    
     //lista colunas de um select
     @RequestMapping(value = "{id}/sql-view-columns", method = RequestMethod.GET)
     public ResponseEntity<List> getSqlViewColumns(

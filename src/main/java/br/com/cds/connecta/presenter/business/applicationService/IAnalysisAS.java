@@ -3,7 +3,6 @@ package br.com.cds.connecta.presenter.business.applicationService;
 import java.util.List;
 
 import br.com.cds.connecta.presenter.entity.Analysis;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
 
 public interface IAnalysisAS {
 
@@ -17,6 +16,6 @@ public interface IAnalysisAS {
 
     void delete(Long id);
 
-    List<AnalysisColumn> getColumns(Long id);
+    Analysis getByIdColumns(Long id);
 
 }

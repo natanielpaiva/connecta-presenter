@@ -1,16 +1,12 @@
 package br.com.cds.connecta.presenter;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  *
@@ -19,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ViewerTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("viewer");
+    static final String RESOURCE_TEST = RESOURCE.concat("/teste");
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
 
     @Test
@@ -97,4 +94,14 @@ public class ViewerTest extends BaseTest {
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
     }
+    
+     @Test
+    public void teste() throws Exception {
+        mockMvc().perform(get(RESOURCE_TEST)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isOk())
+                ;
+    }
+    
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.entity.Analysis;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 
 @Service
@@ -21,7 +20,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     public Analysis get(Long id) {
         return analysisDAO.get(id);
     }
-    
+
     @Override
     public List<Analysis> list() {
         return analysisDAO.list();
@@ -43,13 +42,8 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     }
 
     @Override
-    public List<AnalysisColumn> getColumns(Long id) {
-        Analysis analysis = analysisDAO.get(id);
-        
-        //nao terminei ainda
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Analysis getByIdColumns(Long id) {
+        return analysisDAO.getByIdColumns(id);
     }
-    
-    
 
 }

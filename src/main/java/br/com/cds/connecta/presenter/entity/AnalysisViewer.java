@@ -1,7 +1,5 @@
 package br.com.cds.connecta.presenter.entity;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,79 +13,88 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.OneToMany;
 
 /**
  * The persistent class for the TB_ANALYSIS_VIEWER database table.
- * 
+ *
  */
 @Entity
-@Table(name="TB_ANALYSIS_VIEWER")
-@NamedQuery(name="AnalysisViewer.findAll", query="SELECT t FROM AnalysisViewer t")
+@Table(name = "TB_ANALYSIS_VIEWER")
+@NamedQuery(name = "AnalysisViewer.findAll", query = "SELECT t FROM AnalysisViewer t")
 public class AnalysisViewer extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="TB_ANALYSIS_VIEWER_PKANALYSISVIEWER_GENERATOR", sequenceName="TB_ANALYSIS_VIEWER_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_ANALYSIS_VIEWER_PKANALYSISVIEWER_GENERATOR")
-	@Column(name="PK_ANALYSIS_VIEWER")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="NM_LABEL")
-	private String nmLabel;
+    @Id
+    @SequenceGenerator(name = "TB_ANALYSIS_VIEWER_SEQ", sequenceName = "TB_ANALYSIS_VIEWER_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ANALYSIS_VIEWER_SEQ")
+    @Column(name = "PK_ANALYSIS_VIEWER")
+    private Long id;
 
-	@Column(name="NU_INTRVL_ATLZCO")
-	private BigDecimal nuIntrvlAtlzco;
+    @Column(name = "NM_LABEL")
+    private String label;
 
-	@Column(name="NU_MAX_LINHAS")
-	private BigDecimal nuMaxLinhas;
+    @Column(name = "NU_INTRVL_ATLZCO")
+    private Long intervalUpdateRow;
 
-	//bi-directional many-to-one association to TbViewer
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="FK_VIEWER")
-	private Viewer tbViewer;
+    @Column(name = "NU_MAX_LINHAS")
+    private Long numMaxRow;
 
-	public AnalysisViewer() {
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_VIEWER")
+    private Viewer viewer;
 
-	public Long getId() {
-		return this.id;
-	}
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_ANALYSIS_VIEWER")
+    private List<AnalysisVwColumn> analysisVwColumn;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return this.id;
+    }
 
-	public String getNmLabel() {
-		return this.nmLabel;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setNmLabel(String nmLabel) {
-		this.nmLabel = nmLabel;
-	}
+    public String getLabel() {
+        return label;
+    }
 
-	public BigDecimal getNuIntrvlAtlzco() {
-		return this.nuIntrvlAtlzco;
-	}
+    public void setLabel(String label) {
+        this.label = label;
+    }
 
-	public void setNuIntrvlAtlzco(BigDecimal nuIntrvlAtlzco) {
-		this.nuIntrvlAtlzco = nuIntrvlAtlzco;
-	}
+    public Long getIntervalUpdateRow() {
+        return intervalUpdateRow;
+    }
 
-	public BigDecimal getNuMaxLinhas() {
-		return this.nuMaxLinhas;
-	}
+    public Long getNumMaxRow() {
+        return numMaxRow;
+    }
 
-	public void setNuMaxLinhas(BigDecimal nuMaxLinhas) {
-		this.nuMaxLinhas = nuMaxLinhas;
-	}
+    public void setNumMaxRow(Long numMaxRow) {
+        this.numMaxRow = numMaxRow;
+    }
 
-	public Viewer getTbViewer() {
-		return this.tbViewer;
-	}
+    public Viewer getViewer() {
+        return viewer;
+    }
 
-	public void setTbViewer(Viewer tbViewer) {
-		this.tbViewer = tbViewer;
-	}
+    public void setViewer(Viewer viewer) {
+        this.viewer = viewer;
+    }
+
+    public List<AnalysisVwColumn> getAnalysisVwColumn() {
+        return analysisVwColumn;
+    }
+
+    public void setAnalysisVwColumn(List<AnalysisVwColumn> analysisVwColumn) {
+        this.analysisVwColumn = analysisVwColumn;
+    }
+
+    
 
 }

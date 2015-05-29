@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.NamedQueries;
 
 /**
  * The persistent class for the TB_DATABASE_DS database table.
@@ -17,7 +18,10 @@ import javax.persistence.Enumerated;
  */
 @Entity
 @Table(name = "TB_DATABASE_DS")
-@NamedQuery(name = "DatabaseDatasource.findAll", query = "SELECT t FROM DatabaseDatasource t")
+@NamedQueries({
+    @NamedQuery(name = "DatabaseDatasource.findById", query = "SELECT t FROM DatabaseDatasource t  WHERE t.id = :id "),
+    @NamedQuery(name = "DatabaseDatasource.findAll", query = "SELECT t FROM DatabaseDatasource t")
+})
 public class DatabaseDatasource extends Datasource {
    
     @Column(name = "CD_DRIVER")

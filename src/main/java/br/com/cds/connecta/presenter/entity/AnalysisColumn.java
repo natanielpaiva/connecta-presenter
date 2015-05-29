@@ -42,8 +42,8 @@ public class AnalysisColumn extends AbstractBaseEntity {
 
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "FK_ANALYSIS", referencedColumnName = "PK_ANALYSIS")
-    
-//    @ManyToOne
+//    
+//    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "FK_ANALYSIS")
 //    private Analysis analysis;
 

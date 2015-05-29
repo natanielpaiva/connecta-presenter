@@ -6,6 +6,8 @@ import br.com.cds.connecta.presenter.entity.Analysis;
 
 public interface IAnalysisDAO extends IBaseJpaDAO<Analysis> {
 
-    public abstract List<Analysis> list();
+	List<Analysis> list();
+        
+        Analysis getByIdColumns(Long id);
 
 }

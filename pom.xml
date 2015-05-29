@@ -41,6 +41,14 @@
             <artifactId>connecta-connectors</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        
+         <!-- Dependência Meta Model do apache -->
+        <dependency>
+            <groupId>org.apache.metamodel</groupId>
+            <artifactId>MetaModel-full</artifactId>
+            <version>4.3.4</version>
+        </dependency>
+        
        
         <!-- Other dependencies -->
 

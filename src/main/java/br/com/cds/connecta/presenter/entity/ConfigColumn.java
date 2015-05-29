@@ -37,7 +37,7 @@ public class ConfigColumn extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TaAnalysisVwColumn
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_ANALYSIS_VW_COLUMNS")
-	private AnalysisVw taAnalysisVwColumn;
+	private AnalysisVwColumn taAnalysisVwColumn;
 
 	//bi-directional many-to-one association to TbConfigViewer
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -63,11 +63,11 @@ public class ConfigColumn extends AbstractBaseEntity {
 		this.txtValue = txtValue;
 	}
 
-	public AnalysisVw getTaAnalysisVwColumn() {
+	public AnalysisVwColumn getTaAnalysisVwColumn() {
 		return this.taAnalysisVwColumn;
 	}
 
-	public void setTaAnalysisVwColumn(AnalysisVw taAnalysisVwColumn) {
+	public void setTaAnalysisVwColumn(AnalysisVwColumn taAnalysisVwColumn) {
 		this.taAnalysisVwColumn = taAnalysisVwColumn;
 	}
 

@@ -11,10 +11,12 @@ import br.com.cds.connecta.framework.connector.database.service.IDatabaseTable;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.entity.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
+import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,15 +28,19 @@ public class DatabaseAS implements IDatabaseAS {
 
     @PersistenceContext
     private EntityManager em;
-
+    
+    @Autowired
+    private DatasourceDAO dataSourceDao;
+    
     @Override
     public List getTables(Long id) {
 
-        DatabaseDatasource datasource = em.find(DatabaseDatasource.class, id);
+        DatabaseDatasource datasource = (DatabaseDatasource) dataSourceDao.findOne(id);
+        
         DatabaseService database = new DatabaseService();
         ArrayList<AnalysisColumn> columns = new ArrayList<>();
 
-        List<IDatabaseTable> databaseTables = database.getTables(datasource.getServer(),
+        List<IDatabaseTable> databaseTables = database.getTables(getParamsConnection(datasource),
                 datasource.getSchema(),
                 datasource.getUser(),
                 datasource.getPassword());
@@ -49,6 +55,16 @@ public class DatabaseAS implements IDatabaseAS {
             }
         }
         return databaseTables;
+    }
+    
+    
+    private String getParamsConnection(DatabaseDatasource dataBaseDataSource){
+          return "jdbc:oracle:thin:@"
+                    + dataBaseDataSource.getServer()
+                    + ":"
+                    + dataBaseDataSource.getPort()
+                    + ":"
+                    + dataBaseDataSource.getSid();
     }
 
     @Override

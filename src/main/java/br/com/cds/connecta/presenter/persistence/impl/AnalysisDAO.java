@@ -18,4 +18,11 @@ public class AnalysisDAO extends AbstractBaseJpaDAO<Analysis> implements IAnalys
         return getEntityManager().createNamedQuery("Analysis.findAll").getResultList();
     }
 
+    @Override
+    public Analysis getByIdColumns(Long id) {
+        
+        return (Analysis) getEntityManager().createNamedQuery("Analysis.findById")
+                .setParameter("id", id).getSingleResult();
+    }
+
 }
