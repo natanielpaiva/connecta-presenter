@@ -32,7 +32,7 @@ public class DatabaseDatasource extends Datasource {
     private String server;
     
     @Column(name = "TXT_PORT")
-    private BigDecimal port;
+    private Integer port;
     
     @Column(name = "TXT_SID")
     private String sid;
@@ -49,11 +49,11 @@ public class DatabaseDatasource extends Datasource {
         this.driver = driver;
     }
 
-    public BigDecimal getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(BigDecimal port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 

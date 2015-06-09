@@ -15,7 +15,9 @@ import javax.persistence.Table;
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * The persistent class for the TB_ANALYSIS_VIEWER database table.
@@ -23,7 +25,16 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @Table(name = "TB_ANALYSIS_VIEWER")
-@NamedQuery(name = "AnalysisViewer.findAll", query = "SELECT t FROM AnalysisViewer t")
+@NamedQueries({
+    @NamedQuery(name = "AnalysisViewer.findAll", query = "SELECT t FROM AnalysisViewer t"),
+    @NamedQuery(name = "AnalysisViewer.get", query = "SELECT a FROM AnalysisViewer a "
+            + " LEFT JOIN FETCH a.analysisVwColumn av "
+            + " LEFT JOIN FETCH av.analysisColumn WHERE a.id = :id "),
+    @NamedQuery(name = "AnalysisViewer.getWithViewer", query = "SELECT a FROM AnalysisViewer a "
+            + " LEFT JOIN FETCH a.viewer v "
+            + " WHERE a.id = :id ")
+})
+@DynamicUpdate
 public class AnalysisViewer extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -43,7 +54,7 @@ public class AnalysisViewer extends AbstractBaseEntity {
     @Column(name = "NU_MAX_LINHAS")
     private Long numMaxRow;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_VIEWER")
     private Viewer viewer;
 
@@ -94,7 +105,5 @@ public class AnalysisViewer extends AbstractBaseEntity {
     public void setAnalysisVwColumn(List<AnalysisVwColumn> analysisVwColumn) {
         this.analysisVwColumn = analysisVwColumn;
     }
-
-    
 
 }

@@ -1,0 +1,61 @@
+package br.com.cds.connecta.presenter.controller;
+
+import br.com.cds.connecta.framework.core.controller.AbstractBaseController;
+import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
+import br.com.cds.connecta.presenter.business.applicationService.IAnalysisViewerAS;
+import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
+import br.com.cds.connecta.presenter.entity.AnalysisViewer;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ *
+ * @author Nataniel Paiva
+ */
+@Controller
+@RequestMapping("analysis-viewer")
+public class AnalysisViewerController extends AbstractBaseController<AnalysisViewer> {
+
+    @Autowired
+    private IAnalysisViewerAS analysisViewerService;
+    
+    @Autowired
+    private IDataExtractorAS dataExtratorService;
+
+    @RequestMapping(value = "result/{id}", method = RequestMethod.GET)
+    public ResponseEntity<AnalysisViewerResult> getResult(@PathVariable("id") Long id){
+        AnalysisViewer analysisViewer = analysisViewerService.get(id);
+        AnalysisViewerResult analysisViewerResult = dataExtratorService.getAnalysisViewerResult(analysisViewer);
+        return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
+    }
+
+    @Override
+    protected ResponseEntity<AnalysisViewer> save(AnalysisViewer analysisViewer,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        AnalysisViewer analysisViewerResult = analysisViewerService.saveOrUpdate(analysisViewer);
+        
+        AnalysisViewerResult analysisViewer1Completed = dataExtratorService.getAnalysisViewerResult(analysisViewerResult);
+        
+        return new ResponseEntity<>(analysisViewerResult, HttpStatus.CREATED);
+    }
+
+    @Override
+    protected ResponseEntity<AnalysisViewer> update(Long id, AnalysisViewer analysisViewer,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        AnalysisViewer analysisViewerResult = analysisViewerService.saveOrUpdate(analysisViewer);
+        return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
+    }
+
+    @Override
+    protected void delete(Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        analysisViewerService.delete(id);
+    }
+
+}

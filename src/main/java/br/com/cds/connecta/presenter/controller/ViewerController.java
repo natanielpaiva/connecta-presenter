@@ -5,8 +5,6 @@ import br.com.cds.connecta.presenter.business.applicationService.IViewerAS;
 import br.com.cds.connecta.presenter.entity.Viewer;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author nataniel
+ * @author Nataniel Paiva
  */
 @Controller
 @RequestMapping("viewer")

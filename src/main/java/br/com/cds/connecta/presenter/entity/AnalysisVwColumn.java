@@ -13,6 +13,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import br.com.cds.connecta.presenter.domain.AnalysisViewerTypeColumn;
+import br.com.cds.connecta.presenter.domain.AnalysisViewerType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 /**
  * The persistent class for the TA_ANALYSIS_VW_COLUMNS database table.
@@ -32,13 +36,15 @@ public class AnalysisVwColumn extends AbstractBaseEntity {
     private Long id;
 
     @Column(name = "TP_COLUMN")
-    private String typeColumn;
+    @Enumerated(EnumType.STRING)
+    private AnalysisViewerTypeColumn typeColumn;
 
     @Column(name = "TP_ORDER")
     private String typeOrder;
 
     @Column(name = "TP_TYPE")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private AnalysisViewerType type;
 
     @Column(name = "TXT_MASK_FORMAT")
     private String txtMaskFormat;
@@ -55,28 +61,12 @@ public class AnalysisVwColumn extends AbstractBaseEntity {
         this.id = id;
     }
 
-    public String getTypeColumn() {
-        return typeColumn;
-    }
-
-    public void setTypeColumn(String typeColumn) {
-        this.typeColumn = typeColumn;
-    }
-
     public String getTypeOrder() {
         return typeOrder;
     }
 
     public void setTypeOrder(String typeOrder) {
         this.typeOrder = typeOrder;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getTxtMaskFormat() {
@@ -93,6 +83,22 @@ public class AnalysisVwColumn extends AbstractBaseEntity {
 
     public void setAnalysisColumn(AnalysisColumn analysisColumn) {
         this.analysisColumn = analysisColumn;
+    }
+
+    public AnalysisViewerTypeColumn getTypeColumn() {
+        return typeColumn;
+    }
+
+    public void setTypeColumn(AnalysisViewerTypeColumn typeColumn) {
+        this.typeColumn = typeColumn;
+    }
+
+    public AnalysisViewerType getType() {
+        return type;
+    }
+
+    public void setType(AnalysisViewerType type) {
+        this.type = type;
     }
 
 }

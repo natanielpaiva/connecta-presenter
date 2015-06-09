@@ -10,8 +10,15 @@ import br.com.cds.connecta.presenter.persistence.IAnalysisViewerDAO;
 public class AnalysisViewerDAO extends AbstractBaseJpaDAO<AnalysisViewer> implements IAnalysisViewerDAO{
 
     @Override
-    public AnalysisViewer getByIdViewer(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public AnalysisViewer get(Long id) {
+        return (AnalysisViewer) getEntityManager().createNamedQuery("AnalysisViewer.get")
+                .setParameter("id", id).getSingleResult();
+    }
+
+    @Override
+    public AnalysisViewer getWithViewer(Long id) {
+        return (AnalysisViewer) getEntityManager().createNamedQuery("AnalysisViewer.getWithViewer")
+                .setParameter("id", id).getSingleResult();
     }
 
 }

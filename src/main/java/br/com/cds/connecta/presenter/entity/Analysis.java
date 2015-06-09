@@ -27,8 +27,9 @@ import javax.persistence.OneToMany;
 @Table(name = "TB_ANALYSIS")
 @NamedQueries({
     @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
-    @NamedQuery(name = "Analysis.findById", query = "SELECT t, a FROM Analysis t "
-            + "INNER JOIN FETCH t.analysisColumns a WHERE t.id = :id ")
+    @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
+            + "INNER JOIN FETCH t.analysisColumns a "
+            + "INNER JOIN FETCH t.datasource d WHERE a.id = :id ")
 })
 public class Analysis extends AbstractBaseEntity {
 

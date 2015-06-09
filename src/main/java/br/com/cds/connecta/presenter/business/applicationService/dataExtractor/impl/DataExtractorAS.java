@@ -1,22 +1,34 @@
 package br.com.cds.connecta.presenter.business.applicationService.dataExtractor.impl;
 
+import br.com.cds.connecta.framework.amcharts.model.AmSerialChart;
+import br.com.cds.connecta.framework.amcharts.model.ChartConfiguration;
+import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.business.applicationService.impl.ViewerAS;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
 import br.com.cds.connecta.presenter.entity.Analysis;
 import br.com.cds.connecta.presenter.entity.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.AnalysisViewer;
+import br.com.cds.connecta.presenter.entity.AnalysisVwColumn;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
+import br.com.cds.connecta.presenter.persistence.IAnalysisColumnDAO;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.DataContextFactory;
 import org.apache.metamodel.data.DataSet;
+import org.apache.metamodel.data.Row;
+import org.apache.metamodel.query.Query;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,32 +41,58 @@ public class DataExtractorAS implements IDataExtractorAS {
 
 //    @Autowired
 //    private IViewerDAO viewerDao;
-
     @Autowired
     private DatasourceDAO dataSourceDao;
 
     @Autowired
     private IAnalysisDAO analysisDao;
 
+    @Autowired
+    private IAnalysisColumnDAO analysisColumnDAO;
+
     @Override
-    public List<Object[]> getResult(Long id) {
-        List<Object[]> result = null;
+    public List<Map<String, Object>> getDataProvider(List<AnalysisColumn> analysisColumns) {
+        List<Map<String, Object>> dataProvider = null;
         try {
-            Analysis analysis = analysisDao.getByIdColumns(id);
-            
+            Analysis analysis = analysisDao.getByIdColumns(analysisColumns.get(0).getId());
+
             DatabaseDatasource dataBaseDataSource = (DatabaseDatasource) dataSourceDao.findOne(analysis.getDatasource().getId());
-            
+
             DataContext dataContext = DataContextFactory
                     .createJdbcDataContext(getConnection(dataBaseDataSource));
-            DataSet dataSet = getDataSet(dataContext, analysis.getAnalysisColumns());
-            result = dataSet.toObjectArrays();
-            
+            dataProvider = getResult(dataContext, analysisColumns);
+
         } catch (SQLException ex) {
             Logger.getLogger(DataExtractorAS.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return result;
 
+        return dataProvider;
+
+    }
+
+    @Override
+    public AnalysisViewerResult getAnalysisViewerResult(AnalysisViewer analysisViewer) {
+
+        List<Map<String, Object>> dataProvider = getDataProvider(
+                getAnalysisColumn(
+                        analysisViewer.getAnalysisVwColumn()
+                )
+        );
+        AnalysisViewerResult analysViewerResult = new AnalysisViewerResult();
+        analysViewerResult.setResult((List<Object>) (Object) dataProvider);
+        analysViewerResult.setAnalysisViewer(analysisViewer);
+
+        return analysViewerResult;
+    }
+
+    @Override
+    public List<AnalysisColumn> getAnalysisColumn(List<AnalysisVwColumn> analysisVwColumns) {
+        List<AnalysisColumn> analysisColumn = new ArrayList<>();
+
+        for (AnalysisVwColumn analysisVwColumn : analysisVwColumns) {
+            analysisColumn.add(analysisVwColumn.getAnalysisColumn());
+        }
+        return analysisColumn;
     }
 
     @Override
@@ -66,12 +104,17 @@ public class DataExtractorAS implements IDataExtractorAS {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ViewerAS.class.getName()).log(Level.SEVERE, null, ex);
             }
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@"
+
+            String teste = "jdbc:oracle:thin:@"
                     + dataBaseDatasource.getServer()
                     + ":"
                     + dataBaseDatasource.getPort()
                     + ":"
-                    + dataBaseDatasource.getSid(),
+                    + dataBaseDatasource.getSid();
+
+            System.out.println(teste);
+
+            conn = DriverManager.getConnection(teste,
                     dataBaseDatasource.getUser(),
                     dataBaseDatasource.getPassword());
 
@@ -81,21 +124,33 @@ public class DataExtractorAS implements IDataExtractorAS {
     }
 
     @Override
-    public DataSet getDataSet(DataContext dataContext, List<AnalysisColumn> analysisColumns) {
+    public List<Map<String, Object>> getResult(DataContext dataContext, List<AnalysisColumn> analysisColumns) {
 
-        String select = "";
+        Query q = new Query();
 
         for (AnalysisColumn analysisColumn : analysisColumns) {
-            select = select + ", " + analysisColumn.getName();
+            q.select(analysisColumn.getName());
         }
 
-        select = select.substring(0, select.length() - 1);
+        String[] table = analysisColumns.get(0).getFormula().split("\\.");
 
-        String[] table = analysisColumns.get(0).getFormula().split(".");
+        q.from(table[0]);
 
-        DataSet dataSet = dataContext.query().from(table[0]).select(select).execute();
+        DataSet dataset = dataContext.executeQuery(q);
 
-        return dataSet;
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Row row : dataset) {
+            Object[] values = row.getValues();
+            Map<String, Object> object = new HashMap<>(analysisColumns.size());
+            for (int i = 0; i < values.length; i++) {
+                Object value = values[i];
+                object.put(analysisColumns.get(i).getName(), value);
+            }
+            result.add(object);
+
+        }
+        dataset.close();
+        return result;
 
     }
 

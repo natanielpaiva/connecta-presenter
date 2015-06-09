@@ -1,6 +1,5 @@
 package br.com.cds.connecta.presenter;
 
-
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
@@ -94,14 +93,13 @@ public class ViewerTest extends BaseTest {
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
     }
-    
-     @Test
+
+    @Test
     public void teste() throws Exception {
         mockMvc().perform(get(RESOURCE_TEST)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
-                .andExpect(status().isOk())
-                ;
+                .andExpect(status().isOk());
     }
-    
+
 }
