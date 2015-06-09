@@ -40,9 +40,6 @@ public class AnalysisViewerController extends AbstractBaseController<AnalysisVie
     protected ResponseEntity<AnalysisViewer> save(AnalysisViewer analysisViewer,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         AnalysisViewer analysisViewerResult = analysisViewerService.saveOrUpdate(analysisViewer);
-        
-        AnalysisViewerResult analysisViewer1Completed = dataExtratorService.getAnalysisViewerResult(analysisViewerResult);
-        
         return new ResponseEntity<>(analysisViewerResult, HttpStatus.CREATED);
     }
 
