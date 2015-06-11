@@ -6,16 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-
 
 
 /**
@@ -29,16 +23,13 @@ public class WebserviceDatasource extends Datasource {
 
     @Column(name = "TXT_ADDRESS")
     private String address;
-
-//    @Column(name = "TXT_METHOD")
-//    private String method;
     
     @Column(name = "TYPE_WEBSERVICE")
     @Enumerated(EnumType.STRING)
     private DatasourceTypeWebservice typeWebservice;
     
     @Transient
-    @JsonIgnoreProperties({"datasource"})
+    @JsonIgnoreProperties("datasource")
     private List<WebserviceDatasourceParameter> parameters;
 
     public String getAddress() {

@@ -1,7 +1,6 @@
 package br.com.cds.connecta.presenter.controller;
 
 import br.com.cds.connecta.presenter.bean.analysis.BIAnalysisCatalogPathName;
-import br.com.cds.connecta.framework.connector.soap.service.Param;
 import br.com.cds.connecta.framework.connector.soap.service.Parameters;
 import java.util.List;
 

@@ -4,22 +4,16 @@ package br.com.cds.connecta.presenter.business.applicationService.impl;
 import br.com.cds.connecta.framework.connector.soap.SoapService;
 import br.com.cds.connecta.framework.connector.soap.service.Parameters;
 import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
-
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.xpath.XPathExpressionException;
-import org.xml.sax.SAXException;
 
 @Service
 public class SoapAS implements ISoapAS {
