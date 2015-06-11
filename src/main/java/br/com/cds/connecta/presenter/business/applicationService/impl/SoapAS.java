@@ -1,4 +1,3 @@
-
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
 import br.com.cds.connecta.framework.connector.soap.SoapService;
@@ -10,28 +9,28 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.soap.SOAPException;
 import javax.xml.xpath.XPathExpressionException;
+import org.apache.log4j.Logger;
 
 @Service
 public class SoapAS implements ISoapAS {
-   
+
     @PersistenceContext
     private EntityManager em;
-    
+    private final Logger logger = Logger.getLogger(SoapAS.class);
+
     @Override
     public List getMethodsSoap(Long id) {
         List operation = null;
         WebserviceDatasource webservice = em.find(WebserviceDatasource.class, id);
-        
-         SoapService soap = new SoapService(webservice.getAddress());
-       
+
+        SoapService soap = new SoapService(webservice.getAddress());
+
         try {
-             operation = soap.getOperation();
+            operation = soap.getOperation();
         } catch (XPathExpressionException ex) {
-            Logger.getLogger(SoapAS.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex.getMessage(), ex);
         }
         return operation;
     }
@@ -45,15 +44,13 @@ public class SoapAS implements ISoapAS {
      */
     @Override
     public String getColumnsSoap(Long id, String operation, List<Parameters> parameters) {
-        String ResponseXml = null;
         WebserviceDatasource webservice = em.find(WebserviceDatasource.class, id);
-        
-        System.out.println("---------------");
-        System.out.println("---------------" + webservice.getAddress());
-        //System.out.println("---------------" + uri);
-        System.out.println("---------------" + operation);
-        
-         SoapService soap = new SoapService(webservice.getAddress());
+
+        logger.debug("---------------");
+        logger.debug("---------------" + webservice.getAddress());
+        logger.debug("---------------" + operation);
+
+        SoapService soap = new SoapService(webservice.getAddress());
 //          SoapService soap = new SoapService("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx?WSDL");
 //          List parameters2 = new ArrayList<Parameters>();
 //        
@@ -61,21 +58,17 @@ public class SoapAS implements ISoapAS {
 //        parameters2.add(new Parameters("nCdServico", "41106"));
 //        parameters2.add(new Parameters("sCepOrigem", "64002150"));
 //        parameters2.add(new Parameters("sCepDestino", "72594235"));
-         
-        try {
-            ResponseXml = soap.ResponseXml(operation, parameters);
 
-        } catch (SOAPException ex) {
-            Logger.getLogger(SoapAS.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(SoapAS.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (XPathExpressionException ex) {
-            Logger.getLogger(SoapAS.class.getName()).log(Level.SEVERE, null, ex);
+        String responseXml = null;
+        try {
+            responseXml = soap.ResponseXml(operation, parameters);
+        } catch (SOAPException | IOException | XPathExpressionException ex) {
+            logger.error(ex.getMessage(), ex);
         }
-        
-        
-        System.out.println("-->>>>>>>>>>>>>>>>>>>>>>>>>-" + ResponseXml);
-        return ResponseXml;
+
+        logger.debug("-->>>>>>>>>>>>>>>>>>>>>>>>>-" + responseXml);
+
+        return responseXml;
     }
 
 }
