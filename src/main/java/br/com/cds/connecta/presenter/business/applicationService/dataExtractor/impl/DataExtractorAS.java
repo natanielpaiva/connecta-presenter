@@ -36,16 +36,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataExtractorAS implements IDataExtractorAS {
 
-//    @Autowired
-//    private IViewerDAO viewerDao;
     @Autowired
     private DatasourceDAO dataSourceDao;
 
     @Autowired
     private IAnalysisDAO analysisDao;
-
-    @Autowired
-    private IAnalysisColumnDAO analysisColumnDAO;
 
     @Override
     public List<Map<String, Object>> getDataProvider(List<AnalysisColumn> analysisColumns) {
