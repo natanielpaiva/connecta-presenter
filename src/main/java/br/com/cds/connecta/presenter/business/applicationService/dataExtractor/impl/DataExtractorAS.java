@@ -1,7 +1,5 @@
 package br.com.cds.connecta.presenter.business.applicationService.dataExtractor.impl;
 
-import br.com.cds.connecta.framework.amcharts.model.AmSerialChart;
-import br.com.cds.connecta.framework.amcharts.model.ChartConfiguration;
 import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.business.applicationService.impl.ViewerAS;
@@ -28,7 +26,6 @@ import org.apache.metamodel.DataContextFactory;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.data.Row;
 import org.apache.metamodel.query.Query;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -144,7 +141,7 @@ public class DataExtractorAS implements IDataExtractorAS {
             Map<String, Object> object = new HashMap<>(analysisColumns.size());
             for (int i = 0; i < values.length; i++) {
                 Object value = values[i];
-                object.put(analysisColumns.get(i).getName(), value);
+                object.put(analysisColumns.get(i).getLabel(), value);
             }
             result.add(object);
 
