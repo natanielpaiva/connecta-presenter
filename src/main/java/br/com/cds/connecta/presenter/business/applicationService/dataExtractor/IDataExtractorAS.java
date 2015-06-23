@@ -1,7 +1,7 @@
 package br.com.cds.connecta.presenter.business.applicationService.dataExtractor;
 
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.AnalysisViewer;
 import br.com.cds.connecta.presenter.entity.AnalysisVwColumn;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;

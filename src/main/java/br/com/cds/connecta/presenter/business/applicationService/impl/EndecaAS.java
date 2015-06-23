@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import br.com.cds.connecta.framework.connector.endeca.service.ManageService;
 import br.com.cds.connecta.framework.connector.endeca.service.SConfigService;
 import br.com.cds.connecta.framework.connector.endeca.service.ServiceFault;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import java.util.ArrayList;
 
 /**

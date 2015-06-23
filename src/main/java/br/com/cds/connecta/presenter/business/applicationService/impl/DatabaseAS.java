@@ -9,7 +9,7 @@ import br.com.cds.connecta.framework.connector.database.DatabaseService;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseColumn;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseTable;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
 import java.util.ArrayList;

@@ -2,10 +2,11 @@ package br.com.cds.connecta.presenter.controller;
 
 import br.com.cds.connecta.presenter.bean.analysis.BIAnalysisCatalogPathName;
 import br.com.cds.connecta.framework.connector.soap.service.Parameters;
+import br.com.cds.connecta.presenter.bean.analysis.ParseBeanNode;
+import br.com.cds.connecta.presenter.bean.analysis.XMLNodeBean;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
@@ -13,14 +14,18 @@ import br.com.cds.connecta.presenter.business.applicationService.IEndecaAS;
 import br.com.cds.connecta.presenter.business.applicationService.IObieeAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
-import br.com.cds.connecta.presenter.entity.Analysis;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import javax.xml.transform.dom.DOMSource;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("analysis")
@@ -31,19 +36,20 @@ public class AnalysisController {
 
     @Autowired
     private IDatabaseAS DatabaseService;
-    
+
     @Autowired
     private ISolr SolrService;
-    
+
     @Autowired
     private IObieeAS ObieeService;
-    
+
     @Autowired
     private IEndecaAS EndecaService;
-    
+
     @Autowired
-    private ISoapAS SoapService;
-    
+    private ISoapAS soapService;
+
+    private static final Logger logger = Logger.getLogger(AnalysisController.class);
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<Analysis> save(@RequestBody Analysis analysis) {
@@ -94,7 +100,7 @@ public class AnalysisController {
         List list = DatabaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    
+
     //retorna a análises e suas respectivas colunas
     @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)
     public ResponseEntity<Analysis> getAnalysisColumns(
@@ -102,7 +108,7 @@ public class AnalysisController {
         Analysis analysis = analysisService.getByIdColumns(id);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
-    
+
     //lista colunas de um select
     @RequestMapping(value = "{id}/sql-view-columns", method = RequestMethod.GET)
     public ResponseEntity<List> getSqlViewColumns(
@@ -119,51 +125,73 @@ public class AnalysisController {
         List catalog = ObieeService.getCatalog(id, path.getPath());
         return new ResponseEntity<>(catalog, HttpStatus.OK);
     }
-    
-   // lista tabelas e colunas do obiee
+
+    // lista tabelas e colunas do obiee
     @RequestMapping(value = "{id}/columns-obiee", method = RequestMethod.POST)
     public ResponseEntity<List<AnalysisColumn>> getColumnsObiee(
             @PathVariable Long id,
             @RequestBody BIAnalysisCatalogPathName path) {
-        List<AnalysisColumn> list  = ObieeService.getColumns(id, path.getPath());
-        return new ResponseEntity<>(list,  HttpStatus.OK);
+        List<AnalysisColumn> list = ObieeService.getColumns(id, path.getPath());
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    
+
     //lista Dominios do Endeca
     @RequestMapping(value = "{id}/domains-endeca", method = RequestMethod.GET)
     public ResponseEntity<List> getDomainsEndeca(
             @PathVariable Long id) {
-            List domains = EndecaService.getDomains(id);
+        List domains = EndecaService.getDomains(id);
         return new ResponseEntity<>(domains, HttpStatus.OK);
     }
-    
+
     //lista colunas do Endeca
     @RequestMapping(value = "{id}/columns-endeca/{domain}", method = RequestMethod.GET)
-    public ResponseEntity<List<AnalysisColumn>> getCalumnsEndeca(
+    public ResponseEntity<List<AnalysisColumn>> getColumnsEndeca(
             @PathVariable Long id,
             @PathVariable String domain) {
-            List<AnalysisColumn> domains = EndecaService.getColumns(id, domain);
+        List<AnalysisColumn> domains = EndecaService.getColumns(id, domain);
         return new ResponseEntity<>(domains, HttpStatus.OK);
     }
-    
+
     //lista metodos(Operation) do soap
     @RequestMapping(value = "{id}/method-soap", method = RequestMethod.GET)
     public ResponseEntity<List> getMethodSoap(
             @PathVariable Long id) {
-            List soapColumns = SoapService.getMethodsSoap(id);
+        List soapColumns = soapService.getMethodsSoap(id);
         return new ResponseEntity<>(soapColumns, HttpStatus.OK);
     }
-    
-    //lista metodos(Operation) do soap
-    @RequestMapping(value = "{id}/columns-soap/operation/{operation}", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getColumnsSoap(
+
+    //Retona a resposta do Soap no formato json
+    @RequestMapping(value = "{id}/soap/operation/{operation}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<XMLNodeBean> getSoap(
             @PathVariable Long id,
             @PathVariable String operation,
             @RequestBody List<Parameters> parameters) {
-            //System.err.println("-----------");parameters
-            
-            String soapColumns = SoapService.getColumnsSoap(id, operation, parameters);
-        return new ResponseEntity<>(soapColumns, HttpStatus.OK);
+
+        DOMSource xmlSoap = soapService.getDOMSourceSoap(id, operation, parameters);
+        
+        //Converte o DOMSource para um padrao que o Jackson possa entender
+        ParseBeanNode parseBeanNode = new ParseBeanNode();
+        XMLNodeBean parseNode = parseBeanNode.parseNode(xmlSoap.getNode());
+
+        return new ResponseEntity<>(parseNode, HttpStatus.OK);
+    }
+    
+    //Retona o soap aplicando os xml
+    @RequestMapping(value = "{id}/soap-applying-xpath/operation/{operation}", 
+                    method = RequestMethod.POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getSoapApplyingXpath(
+            @PathVariable Long id,
+            @PathVariable String operation,
+            @RequestParam List<Parameters> parameters) {
+
+      DOMSource xmlSoap = soapService.getDOMSourceSoap(id, operation, parameters);
+        
+        //Converte o DOMSource para um padrao que o Jackson possa entender
+        ParseBeanNode parseBeanNode = new ParseBeanNode();
+        XMLNodeBean parseNode = parseBeanNode.parseNode(xmlSoap.getNode());
+
+        return new ResponseEntity<>("mamae", HttpStatus.OK);
     }
 
 }

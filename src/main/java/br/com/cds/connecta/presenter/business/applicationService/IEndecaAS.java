@@ -5,7 +5,7 @@
  */
 package br.com.cds.connecta.presenter.business.applicationService;
 
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import java.util.List;
 
 /**

@@ -3,8 +3,8 @@ package br.com.cds.connecta.presenter.persistence.impl;
 import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
-import br.com.cds.connecta.presenter.entity.BiAnalysi;
+import br.com.cds.connecta.presenter.entity.analysis.BIAnalysis;
 @Repository
-public class BiAnalysiDAO extends AbstractBaseJpaDAO<BiAnalysi> {
+public class BiAnalysiDAO extends AbstractBaseJpaDAO<BIAnalysis> {
 
 }

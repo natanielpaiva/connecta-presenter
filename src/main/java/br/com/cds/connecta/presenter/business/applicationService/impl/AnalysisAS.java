@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
-import br.com.cds.connecta.presenter.entity.Analysis;
+import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 
 @Service

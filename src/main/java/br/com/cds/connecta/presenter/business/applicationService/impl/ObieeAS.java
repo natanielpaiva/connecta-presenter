@@ -4,7 +4,7 @@ import br.com.cds.connecta.framework.connector.obiee.service.Obiee;
 import static br.com.cds.connecta.framework.core.util.Util.isNull;
 
 import br.com.cds.connecta.presenter.business.applicationService.IObieeAS;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.BIDatasource;
 import java.util.ArrayList;
 import java.util.HashMap;

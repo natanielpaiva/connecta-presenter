@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.cds.connecta.presenter.domain;
 
 /**
@@ -11,11 +6,21 @@ package br.com.cds.connecta.presenter.domain;
  */
 public enum DatasourceTypeEnum {
 
-    DATABASE,
-    ENDECA,
-    HDFS,
-    BI,
-    SOLR,
-    WEBSERVICE;
+    DATABASE(AnalysisTypeEnum.DATABASE),
+    ENDECA(AnalysisTypeEnum.ENDECA),
+    HDFS(AnalysisTypeEnum.HDFS),
+    BI(AnalysisTypeEnum.BI),
+    SOLR(AnalysisTypeEnum.SOLR),
+    WEBSERVICE(AnalysisTypeEnum.WEBSERVICE);
+    
+    private final AnalysisTypeEnum relatedAnalysisType;
+    
+    private DatasourceTypeEnum(AnalysisTypeEnum analysisTypeEnum) {
+        this.relatedAnalysisType = analysisTypeEnum;
+    }
+
+    public AnalysisTypeEnum getRelatedAnalysisType() {
+        return relatedAnalysisType;
+    }
     
 }

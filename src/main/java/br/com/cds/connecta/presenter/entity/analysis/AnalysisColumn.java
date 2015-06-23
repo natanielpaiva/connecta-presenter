@@ -1,4 +1,4 @@
-package br.com.cds.connecta.presenter.entity;
+package br.com.cds.connecta.presenter.entity.analysis;
 
 import java.math.BigDecimal;
 
@@ -22,7 +22,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "TB_ANALYSIS_COLUMNS")
 @DynamicUpdate
 @NamedQuery(name = "AnalysisColumn.get", query = "SELECT t FROM AnalysisColumn t "
-            + " WHERE t.id = :id ")
+        + " WHERE t.id = :id ")
 public class AnalysisColumn extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -44,16 +44,6 @@ public class AnalysisColumn extends AbstractBaseEntity {
 
     @Column(name = "TP_COLUMN")
     private BigDecimal type;
-
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "FK_ANALYSIS", referencedColumnName = "PK_ANALYSIS")
-//    
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "FK_ANALYSIS")
-//    private Analysis analysis;
-
-//    @JoinColumn(name = "FK_COMBINED_ANALYSIS")
-//    private CombinedAnalysi combinedAnalysi;
 
     @Override
     public Long getId() {
@@ -95,15 +85,5 @@ public class AnalysisColumn extends AbstractBaseEntity {
     public void setType(BigDecimal type) {
         this.type = type;
     }
-
-
-
-//    public CombinedAnalysi getCombinedAnalysi() {
-//        return combinedAnalysi;
-//    }
-//
-//    public void setCombinedAnalysi(CombinedAnalysi combinedAnalysi) {
-//        this.combinedAnalysi = combinedAnalysi;
-//    }
 
 }

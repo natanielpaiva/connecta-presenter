@@ -1,4 +1,4 @@
-package br.com.cds.connecta.presenter.entity;
+package br.com.cds.connecta.presenter.entity.analysis;
 
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 import javax.persistence.Column;
@@ -14,8 +14,15 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import br.com.cds.connecta.presenter.domain.AnalysisTypeEnum;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
 
@@ -25,11 +32,25 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @Table(name = "TB_ANALYSIS")
+@Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
     @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
             + "INNER JOIN FETCH t.datasource d WHERE a.id = :id ")
+})
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type"
+)
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "DATABASE", value = DatabaseAnalysis.class),
+    @JsonSubTypes.Type(name = "ENDECA", value = EndecaAnalysis.class),
+    @JsonSubTypes.Type(name = "HDFS", value = HdfsAnalysis.class),
+    @JsonSubTypes.Type(name = "BI", value = BIAnalysis.class),
+    @JsonSubTypes.Type(name = "SOLR", value = SolrAnalysis.class),
+    @JsonSubTypes.Type(name = "WEBSERVICE", value = WebserviceAnalysis.class)
 })
 public class Analysis extends AbstractBaseEntity {
 
@@ -47,13 +68,14 @@ public class Analysis extends AbstractBaseEntity {
     @Column(name = "NM_ANALYSIS")
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TP_ANALYSIS")
-    private String type;
+    private AnalysisTypeEnum type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_DATASOURCE")
     private Datasource datasource;
-    
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS", nullable = false)
     private List<AnalysisColumn> analysisColumns;
@@ -83,11 +105,11 @@ public class Analysis extends AbstractBaseEntity {
         this.name = name;
     }
 
-    public String getType() {
+    public AnalysisTypeEnum getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(AnalysisTypeEnum type) {
         this.type = type;
     }
 
@@ -107,6 +129,4 @@ public class Analysis extends AbstractBaseEntity {
         this.analysisColumns = analysisColumns;
     }
 
-    
-    
 }

@@ -6,7 +6,7 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
-import br.com.cds.connecta.presenter.entity.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import java.io.IOException;
 import java.util.ArrayList;
