@@ -37,7 +37,9 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
-            + "INNER JOIN FETCH t.datasource d WHERE a.id = :id ")
+            + "INNER JOIN FETCH t.datasource d WHERE a.id = :id "),
+    @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a"
+            + " INNER JOIN FETCH a.analysisColumns t WHERE a.id = :id ")
 })
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

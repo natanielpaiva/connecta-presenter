@@ -16,8 +16,10 @@ import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import javax.xml.transform.dom.DOMSource;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -192,6 +194,18 @@ public class AnalysisController {
         XMLNodeBean parseNode = parseBeanNode.parseNode(xmlSoap.getNode());
 
         return new ResponseEntity<>("mamae", HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "autocomplete",method = RequestMethod.GET, 
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    protected ResponseEntity<Iterable<Analysis>> listAutoComplete(AnalysisFilter filter){
+        Page<Analysis> list;
+        list = analysisService.listAutoComplete(filter);
+        
+        Iterable<Analysis> content = list.getContent();
+        
+        return new ResponseEntity<>(content, HttpStatus.OK);
+        
     }
 
 }
