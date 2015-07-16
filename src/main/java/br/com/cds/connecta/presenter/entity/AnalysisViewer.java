@@ -40,7 +40,8 @@ public class AnalysisViewer extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_ANALYSIS_VIEWER_SEQ", sequenceName = "TB_ANALYSIS_VIEWER_SEQ")
+    @SequenceGenerator(name = "TB_ANALYSIS_VIEWER_SEQ", sequenceName = "TB_ANALYSIS_VIEWER_SEQ",
+            allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ANALYSIS_VIEWER_SEQ")
     @Column(name = "PK_ANALYSIS_VIEWER")
     private Long id;

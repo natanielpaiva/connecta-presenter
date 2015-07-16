@@ -66,8 +66,10 @@ public class AnalysisViewerController{
     }
 
     
-    protected void delete(Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable("id") Long id) throws Exception {
         analysisViewerService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }

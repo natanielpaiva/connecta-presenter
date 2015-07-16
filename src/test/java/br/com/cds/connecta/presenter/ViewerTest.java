@@ -3,6 +3,7 @@ package br.com.cds.connecta.presenter;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
+import org.junit.Ignore;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -14,8 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ViewerTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("viewer");
-    static final String RESOURCE_TEST = RESOURCE.concat("/teste");
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
+    static final String RESOURCE_TEMPLATE = RESOURCE.concat("/chart-template");
+    static final String RESOURCE_TEMPLATE_TYPE = RESOURCE_TEMPLATE.concat("/{type}");
+    static final String RESOURCE_TEMPLATE_CONTENT = RESOURCE_TEMPLATE_TYPE.concat("/{template}");
 
     @Test
     public void saveViewer() throws Exception {
@@ -95,11 +98,36 @@ public class ViewerTest extends BaseTest {
     }
 
     @Test
-    public void teste() throws Exception {
-        mockMvc().perform(get(RESOURCE_TEST)
-                .contentType(MediaType.APPLICATION_JSON)
+    public void listChartTypes() throws Exception {
+        mockMvc().perform(get(RESOURCE_TEMPLATE)
+            .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
-                .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", hasSize(7)))
+        ;
+    }
+    
+    @Test
+    public void listChartByType() throws Exception {
+        mockMvc().perform(get(RESOURCE_TEMPLATE)
+            .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", hasSize(7)))
+        ;
+    }
+    
+    @Test
+    public void getChartTemplate() throws Exception {
+        mockMvc().perform(get(RESOURCE_TEMPLATE_CONTENT, "area", "area-area")
+        ).andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$", notNullValue()))
+            .andExpect(jsonPath("$.type", equalTo("serial")))
+        ;
     }
 
 }

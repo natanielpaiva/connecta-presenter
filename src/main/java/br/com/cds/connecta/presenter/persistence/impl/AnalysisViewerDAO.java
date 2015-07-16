@@ -20,5 +20,6 @@ public class AnalysisViewerDAO extends AbstractBaseJpaDAO<AnalysisViewer> implem
         return (AnalysisViewer) getEntityManager().createNamedQuery("AnalysisViewer.getWithViewer")
                 .setParameter("id", id).getSingleResult();
     }
+    
 
 }

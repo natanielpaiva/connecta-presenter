@@ -14,37 +14,36 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AnalysisViewerAS extends AbstractBaseAS<AnalysisViewer> implements IAnalysisViewerAS {
-
+    
     @Autowired
     private IAnalysisViewerDAO analysisViewerDao;
     
     @Override
-    public AnalysisViewer get(Long id){
+    public AnalysisViewer get(Long id) {
         AnalysisViewer analysisViewer = analysisViewerDao.get(id);
         AnalysisViewer analysisWithViewer = analysisViewerDao.getWithViewer(id);
         analysisViewer.setViewer(analysisWithViewer.getViewer());
         return analysisViewer;
     }
-
+    
     @Override
     public List<AnalysisViewer> list() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public AnalysisViewer saveOrUpdate(AnalysisViewer entity) throws Exception {
         return analysisViewerDao.saveOrUpdate(entity);
     }
-
+    
     @Override
     public void delete(Long id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        analysisViewerDao.delete(id);
     }
-
+    
     @Override
     public void delete(AnalysisViewer entity) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
+    
 }
