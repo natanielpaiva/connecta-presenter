@@ -26,7 +26,8 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "TB_ANALYSIS_VIEWER")
 @NamedQueries({
-    @NamedQuery(name = "AnalysisViewer.findAll", query = "SELECT t FROM AnalysisViewer t"),
+    @NamedQuery(name = "AnalysisViewer.findAll", query = "SELECT t FROM AnalysisViewer t "
+            + "INNER JOIN FETCH t.viewer v"),
     @NamedQuery(name = "AnalysisViewer.get", query = "SELECT a FROM AnalysisViewer a "
             + " LEFT JOIN FETCH a.analysisVwColumn av "
             + " LEFT JOIN FETCH av.analysisColumn WHERE a.id = :id "),

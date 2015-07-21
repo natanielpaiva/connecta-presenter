@@ -28,7 +28,7 @@ public class AnalysisViewerAS extends AbstractBaseAS<AnalysisViewer> implements 
     
     @Override
     public List<AnalysisViewer> list() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return analysisViewerDao.list();
     }
     
     @Override
