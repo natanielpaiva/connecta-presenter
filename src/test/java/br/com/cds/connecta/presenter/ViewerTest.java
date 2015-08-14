@@ -3,7 +3,6 @@ package br.com.cds.connecta.presenter;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
-import org.junit.Ignore;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -48,6 +47,7 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.configuration.graphs[1].title", equalTo("graph 2")))
                 .andExpect(jsonPath("$.configuration.graphs[1].type", equalTo("column")))
                 .andExpect(jsonPath("$.configuration.graphs[1].valueField", equalTo("column-2")))
+                .andExpect(jsonPath("$.configuration.graphs[1].lineColor", equalTo("['#FF6600', '#FCD202']")))
                 .andExpect(jsonPath("$.configuration.legend.useGraphSettings", equalTo(true)))
                 .andExpect(jsonPath("$.configuration.titles[0].id", equalTo("Title-1")))
                 .andExpect(jsonPath("$.configuration.titles[0].size", equalTo(15d)))

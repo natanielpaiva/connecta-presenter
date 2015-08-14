@@ -6,5 +6,8 @@ package br.com.cds.connecta.presenter.domain;
  */
 public enum AnalysisViewerType {
     METRIC,
-    DESCRIPTION
+    DESCRIPTION,
+    XFIELD,
+    YFIELD,
+    VALUEFIELD
 }

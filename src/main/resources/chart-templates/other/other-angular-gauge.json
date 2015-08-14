@@ -3,7 +3,8 @@
     "path": "https://www.amcharts.com/lib/3/",
     "arrows": [
         {
-            "id": "GaugeArrow-1"
+            "id": "GaugeArrow-1",
+            "value":40
         }
     ],
     "axes": [

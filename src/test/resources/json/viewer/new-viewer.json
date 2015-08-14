@@ -1,7 +1,7 @@
 {
     "name": "TestViewer",
-    "description":"TestDescription",
-    "types":"serial",
+    "description": "TestDescription",
+    "types": "serial",
     "configuration":
             {
                 "type": "serial",
@@ -20,6 +20,7 @@
                         "id": "AmGraph-1",
                         "title": "graph 1",
                         "type": "column",
+                        "lineColor": "#b0de09",
                         "valueField": "column-1"
                     },
                     {
@@ -28,6 +29,7 @@
                         "id": "AmGraph-2",
                         "title": "graph 2",
                         "type": "column",
+                        "lineColor": "['#FF6600', '#FCD202']",
                         "valueField": "column-2"
                     }
                 ],
