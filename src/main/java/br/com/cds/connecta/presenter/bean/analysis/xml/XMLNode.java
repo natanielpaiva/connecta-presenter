@@ -1,4 +1,4 @@
-package br.com.cds.connecta.presenter.bean.analysis;
+package br.com.cds.connecta.presenter.bean.analysis.xml;
 
 import java.util.List;
 import java.util.Map;
@@ -7,21 +7,21 @@ import java.util.Map;
  *
  * @author diego
  */
-public class XMLNodeBean {
-    private Map<String, XMLNodeBean> attributes;
+public class XMLNode {
+    private Map<String, XMLNode> attributes;
     private String nodeName;
     private short nodeType;
     private String nodeValue;
     private String prefix;
     private String textContent;
-    private List<XMLNodeBean> childNodes;
+    private List<XMLNode> childNodes;
     private Boolean isTable;
 
-    public void setAttributes(Map<String, XMLNodeBean> attributes) {
+    public void setAttributes(Map<String, XMLNode> attributes) {
         this.attributes = attributes;
     }
 
-    public Map<String, XMLNodeBean> getAttributes() {
+    public Map<String, XMLNode> getAttributes() {
         return attributes;
     }
 
@@ -45,7 +45,7 @@ public class XMLNodeBean {
         this.textContent = textContent;
     }
 
-    public void setChildNodes(List<XMLNodeBean> childNodes) {
+    public void setChildNodes(List<XMLNode> childNodes) {
         this.childNodes = childNodes;
     }
 
@@ -69,7 +69,7 @@ public class XMLNodeBean {
         return textContent;
     }
 
-    public List<XMLNodeBean> getChildNodes() {
+    public List<XMLNode> getChildNodes() {
         return childNodes;
     }
 

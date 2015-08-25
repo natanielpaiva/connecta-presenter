@@ -33,7 +33,7 @@ public class AnalysisViewerTest extends BaseTest {
                   .andExpect(jsonPath("$.viewer.description", equalTo("Testando viewer")))
                   .andExpect(jsonPath("$.analysisVwColumn[0].id", equalTo(1)))
                   .andExpect(jsonPath("$.analysisVwColumn[0].typeColumn", equalTo("NUMBER")))
-                  .andExpect(jsonPath("$.analysisVwColumn[0].type", equalTo("METRIC")))
+                  //.andExpect(jsonPath("$.analysisVwColumn[0].type", equalTo("METRIC")))
                   .andExpect(jsonPath("$.analysisVwColumn[0].txtMaskFormat", equalTo("REAL")))
                   .andExpect(jsonPath("$.analysisVwColumn[0].analysisColumn.formula", equalTo("TBTAL.FULANO")))
                   .andExpect(jsonPath("$.analysisVwColumn[0].analysisColumn.label", equalTo("FFA")))

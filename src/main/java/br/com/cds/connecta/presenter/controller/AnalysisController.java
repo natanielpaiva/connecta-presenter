@@ -2,8 +2,10 @@ package br.com.cds.connecta.presenter.controller;
 
 import br.com.cds.connecta.presenter.bean.analysis.BIAnalysisCatalogPathName;
 import br.com.cds.connecta.framework.connector.soap.service.Parameters;
-import br.com.cds.connecta.presenter.bean.analysis.ParseBeanNode;
-import br.com.cds.connecta.presenter.bean.analysis.XMLNodeBean;
+import br.com.cds.connecta.presenter.bean.analysis.json.JSONValue;
+import br.com.cds.connecta.presenter.bean.analysis.json.JSONValueParser;
+import br.com.cds.connecta.presenter.bean.analysis.xml.XMLNodeParser;
+import br.com.cds.connecta.presenter.bean.analysis.xml.XMLNode;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,15 @@ import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.business.applicationService.IEndecaAS;
 import br.com.cds.connecta.presenter.business.applicationService.IObieeAS;
+import br.com.cds.connecta.presenter.business.applicationService.IRestAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Map;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import javax.xml.transform.dom.DOMSource;
 import org.apache.log4j.Logger;
@@ -27,7 +34,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("analysis")
@@ -51,10 +57,16 @@ public class AnalysisController {
     @Autowired
     private ISoapAS soapService;
 
+    @Autowired
+    private IRestAS restService;
+
+    private JSONValueParser parser = new JSONValueParser();
+
     private static final Logger logger = Logger.getLogger(AnalysisController.class);
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<Analysis> save(@RequestBody Analysis analysis) {
+
         Analysis newAnalysis = analysisService.saveOrUpdate(analysis);
         return new ResponseEntity<>(newAnalysis, HttpStatus.CREATED);
     }
@@ -164,36 +176,32 @@ public class AnalysisController {
 
     //Retona a resposta do Soap no formato json
     @RequestMapping(value = "{id}/soap/operation/{operation}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<XMLNodeBean> getSoap(
+    public ResponseEntity<XMLNode> getSoap(
             @PathVariable Long id,
             @PathVariable String operation,
             @RequestBody List<Parameters> parameters) {
 
         DOMSource xmlSoap = soapService.getDOMSourceSoap(id, operation, parameters);
-        
+
         //Converte o DOMSource para um padrao que o Jackson possa entender
-        ParseBeanNode parseBeanNode = new ParseBeanNode();
-        XMLNodeBean parseNode = parseBeanNode.parseNode(xmlSoap.getNode());
+        XMLNodeParser parseBeanNode = new XMLNodeParser();
+        XMLNode parseNode = parseBeanNode.parseNode(xmlSoap.getNode());
 
         return new ResponseEntity<>(parseNode, HttpStatus.OK);
     }
-    
+
     //Retona o soap aplicando os xml
-    @RequestMapping(value = "{id}/soap-applying-xpath/operation/{operation}", 
-                    method = RequestMethod.POST,
-                    consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "{id}/soap-applying-xpath/operation/{operation}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getSoapApplyingXpath(
             @PathVariable Long id,
             @PathVariable String operation,
-            @RequestParam List<Parameters> parameters) {
+            @RequestBody WebserviceAnalysis ws) {
 
-      DOMSource xmlSoap = soapService.getDOMSourceSoap(id, operation, parameters);
-        
-        //Converte o DOMSource para um padrao que o Jackson possa entender
-        ParseBeanNode parseBeanNode = new ParseBeanNode();
-        XMLNodeBean parseNode = parseBeanNode.parseNode(xmlSoap.getNode());
+        List<Map<String, Object>> resultXmlXpath = soapService.getResultXmlXpath(id, ws);
 
-        return new ResponseEntity<>("mamae", HttpStatus.OK);
+        return new ResponseEntity<>(resultXmlXpath, HttpStatus.OK);
     }
     
     @RequestMapping(value = "autocomplete",method = RequestMethod.GET, 
@@ -208,4 +216,68 @@ public class AnalysisController {
         
     }
 
+    //Retorna json de Rest via get
+    @RequestMapping(value = "{id}/get-rest", method = RequestMethod.GET)
+    public ResponseEntity getJsonRest(
+            @PathVariable Long id) {
+        Object rest = restService.getJsonRest(id);
+        return new ResponseEntity<>(rest, HttpStatus.OK);
+    }
+
+    //Retorn Json de Rest com expecificaçoes 
+    @RequestMapping(value = "{id}/get-rest-specifications",
+            method = RequestMethod.GET)
+    public ResponseEntity getRestSpecifications(@PathVariable Long id) {
+
+        Object rest = restService.getJsonRest(id);
+
+        InputStream is = new ByteArrayInputStream(rest.toString().getBytes());
+
+        JSONValue parse = parser.parse(is);
+
+        return new ResponseEntity<>(parse, HttpStatus.OK);
+    }
+
+    //Retona o json aplicando jsonPath
+    @RequestMapping(value = "{id}/rest-get-applying-jsonPath",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getRestGetApplyingJsonPath(
+            @PathVariable Long id,
+            @RequestBody WebserviceAnalysis ws) {
+
+        Object result = restService.getResultApplyingJsonPath(id, ws);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    
+    
+    
+    //Extri parte de um json
+    @RequestMapping(value = "{id}/extract-json",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getExtractJson(
+            @PathVariable Long id,
+            @RequestBody WebserviceAnalysis ws) {
+                    //mudar o nome dessa funcoa
+        Object result = restService.getJsonPartJsonPath(id, ws);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
+    
+    
+    //Retona o json aplicando jsonPath
+//    @RequestMapping(value = "{id}/teste",
+//                    method = RequestMethod.POST,
+//                    consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity getTeste(
+//            @PathVariable Long id,
+//            @RequestBody WebserviceAnalysis ws) throws IOException {
+//        
+//        Rest rest = new Rest();
+//        //rest.teste();
+//        
+//        return new ResponseEntity<>(rest.teste(), HttpStatus.OK);
+//    }
 }

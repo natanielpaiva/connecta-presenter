@@ -70,10 +70,6 @@ public class Analysis extends AbstractBaseEntity {
     @Column(name = "NM_ANALYSIS")
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "TP_ANALYSIS")
-    private AnalysisTypeEnum type;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_DATASOURCE")
     private Datasource datasource;
@@ -107,14 +103,6 @@ public class Analysis extends AbstractBaseEntity {
         this.name = name;
     }
 
-    public AnalysisTypeEnum getType() {
-        return type;
-    }
-
-    public void setType(AnalysisTypeEnum type) {
-        this.type = type;
-    }
-
     public Datasource getDatasource() {
         return datasource;
     }
@@ -130,5 +118,4 @@ public class Analysis extends AbstractBaseEntity {
     public void setAnalysisColumns(List<AnalysisColumn> analysisColumns) {
         this.analysisColumns = analysisColumns;
     }
-
 }

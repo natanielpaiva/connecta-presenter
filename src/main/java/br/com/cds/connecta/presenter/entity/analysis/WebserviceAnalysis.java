@@ -1,10 +1,15 @@
 package br.com.cds.connecta.presenter.entity.analysis;
 
 import br.com.cds.connecta.presenter.domain.WebserviceAnalysisTypeEnum;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -30,6 +35,10 @@ public class WebserviceAnalysis extends Analysis {
 
     @Column(name = "TXT_PARAMS")
     private String params;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_ANALYSIS", nullable = false)
+    private List<WebserviceAnalysisParameter> webserviceAnalysisParameter;
 
     public WebserviceAnalysisTypeEnum getWebserviceType() {
         return webserviceType;
@@ -63,6 +72,11 @@ public class WebserviceAnalysis extends Analysis {
         this.params = params;
     }
     
-    
+    public List<WebserviceAnalysisParameter> getWebserviceAnalysisParameter() {
+        return webserviceAnalysisParameter;
+    }
 
+    public void setWebserviceAnalysisParameter(List<WebserviceAnalysisParameter> webserviceAnalysisParameter) {
+        this.webserviceAnalysisParameter = webserviceAnalysisParameter;
+    }
 }

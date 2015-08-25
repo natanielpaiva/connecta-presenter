@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.com.cds.connecta.presenter.bean.analysis;
+package br.com.cds.connecta.presenter.bean.analysis.xml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,10 +12,10 @@ import org.w3c.dom.NodeList;
  *
  * @author diego
  */
-public class ParseBeanNode {
+public class XMLNodeParser {
 
-    public XMLNodeBean parseNode(Node node) {
-        XMLNodeBean xmlNode = new XMLNodeBean();
+    public XMLNode parseNode(Node node) {
+        XMLNode xmlNode = new XMLNode();
 
         if (node.getAttributes() != null && node.getAttributes().getLength() > 0) {
             xmlNode.setAttributes(parseNodeMap(node.getAttributes()));
@@ -39,8 +34,8 @@ public class ParseBeanNode {
         return xmlNode;
     }
 
-    public Map<String, XMLNodeBean> parseNodeMap(NamedNodeMap attributes) {
-        Map<String, XMLNodeBean> map = new HashMap<>(attributes.getLength());
+    public Map<String, XMLNode> parseNodeMap(NamedNodeMap attributes) {
+        Map<String, XMLNode> map = new HashMap<>(attributes.getLength());
 
         for (int i = 0; i < attributes.getLength(); i++) {
             Node item = attributes.item(i);
@@ -52,12 +47,12 @@ public class ParseBeanNode {
         return map;
     }
 
-    public List<XMLNodeBean> parseNodeList(NodeList childNodes) {
-        List<XMLNodeBean> list = new ArrayList<>();
+    public List<XMLNode> parseNodeList(NodeList childNodes) {
+        List<XMLNode> list = new ArrayList<>();
 
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node item = childNodes.item(i);
-            XMLNodeBean xmlNode = parseNode(item);
+            XMLNode xmlNode = parseNode(item);
             //para evitar Nodes vazios #text
             if (xmlNode.getNodeType() != 3) {
                 list.add(xmlNode);

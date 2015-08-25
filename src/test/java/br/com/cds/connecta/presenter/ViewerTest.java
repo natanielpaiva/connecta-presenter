@@ -3,6 +3,7 @@ package br.com.cds.connecta.presenter;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
+import org.junit.Ignore;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -20,6 +21,7 @@ public class ViewerTest extends BaseTest {
     static final String RESOURCE_TEMPLATE_CONTENT = RESOURCE_TEMPLATE_TYPE.concat("/{template}");
 
     @Test
+    @Ignore
     public void saveViewer() throws Exception {
         mockMvc().perform(post(RESOURCE)
                 .contentType(MediaType.APPLICATION_JSON)

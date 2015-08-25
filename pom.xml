@@ -42,7 +42,7 @@
             <version>${project.parent.version}</version>
         </dependency>
         
-         <!-- Dependência Meta Model do apache -->
+        <!-- Dependência Meta Model do apache -->
         <dependency>
             <groupId>org.apache.metamodel</groupId>
             <artifactId>MetaModel-full</artifactId>
@@ -89,7 +89,13 @@
             <artifactId>jaxws-rt</artifactId>
             <version>2.2.10</version>
         </dependency>
-    
+        
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        
     </dependencies>
 
     <repositories>

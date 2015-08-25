@@ -2,6 +2,7 @@ package br.com.cds.connecta.presenter.business.applicationService;
 
 import br.com.cds.connecta.framework.connector.soap.service.Parameters;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import java.util.List;
 import java.util.Map;
 import javax.xml.transform.dom.DOMSource;
@@ -16,5 +17,5 @@ public interface ISoapAS {
     
     DOMSource getDOMSourceSoap(Long id, String operation, List<Parameters> parameters);
     
-    List<Map<String, Object>> getResultXmlXpath(Long id, String operation, List<Parameters> parameters, String xPathTable, List<AnalysisColumn> analysisColumn); 
+    List<Map<String, Object>> getResultXmlXpath(Long id, WebserviceAnalysis ws);  
 }
