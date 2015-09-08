@@ -5,7 +5,7 @@
  */
 package br.com.cds.connecta.presenter;
 
-import br.com.cds.connecta.framework.core.domain.MessageEnum;
+import br.com.cds.connecta.framework.core.domain.MessageTypeEnum;
 import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.todosOsItens;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -32,7 +32,7 @@ public class AttributeTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
 //                .andExpect(jsonPath("$.code", equalTo(null)))
                 .andExpect(jsonPath("$.message", containsString("Invalid pagination")))
-                .andExpect(jsonPath("$.type", equalTo(MessageEnum.WARN.name())));
+                .andExpect(jsonPath("$.type", equalTo(MessageTypeEnum.WARN.name())));
     }
     
     @Test

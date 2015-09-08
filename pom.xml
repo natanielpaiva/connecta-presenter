@@ -46,24 +46,20 @@
         <dependency>
             <groupId>org.apache.metamodel</groupId>
             <artifactId>MetaModel-full</artifactId>
-            <version>4.3.4</version>
         </dependency>
         
        
         <!-- Other dependencies -->
-
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
         </dependency>
-
         
-        <!-- Dependencias do Solr -->
         <dependency>
-            <groupId>org.apache.solr</groupId>
-            <artifactId>solr-solrj</artifactId>
-            <version>3.6.1</version>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>2.2.10</version>
         </dependency>
 
         <dependency>
@@ -77,17 +73,23 @@
             <artifactId>httpclient</artifactId>
             <version>4.2.1</version>
         </dependency>
+        
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
             <version>4.1.2</version>
         </dependency>
-        <!-- Fim das Dependencias do Solr -->
         
+        <!--HIBERNATE SEARCH-->
         <dependency>
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-rt</artifactId>
-            <version>2.2.10</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
+        </dependency>
+        
+        <!-- SOLR -->
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
         </dependency>
         
         <dependency>
@@ -104,10 +106,6 @@
             <name>Archiva Managed Internal Repository</name>
             <url>http://archiva.cds.com.br/archiva/repository/internal/</url>
         </repository>
-        <!--<repository>
-            <id>codelds</id>
-            <url>https://code.lds.org/nexus/content/groups/main-repo</url>
-        </repository>-->
     </repositories>
 
     <distributionManagement>
