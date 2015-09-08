@@ -5,7 +5,7 @@
  */
 package br.com.cds.connecta.presenter.filter;
 
-import br.com.cds.connecta.framework.core.filter.PaginationFilter;
+import br.com.cds.connecta.framework.core.search.filter.PaginationFilter;
 
 /**
  *
