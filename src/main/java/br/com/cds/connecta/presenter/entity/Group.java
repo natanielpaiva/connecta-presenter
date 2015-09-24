@@ -10,12 +10,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import br.com.cds.connecta.presenter.domain.TypeGroupEnum;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
@@ -65,10 +62,6 @@ public class Group extends AbstractBaseEntity {
     @Column(name = "NM_GROUP")
     private String name;
 
-    @Column(name = "TP_GROUP")
-    @Enumerated(EnumType.STRING)
-    private TypeGroupEnum type;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_QUERY")
     private Query query;
@@ -108,14 +101,6 @@ public class Group extends AbstractBaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public TypeGroupEnum getType() {
-        return type;
-    }
-
-    public void setType(TypeGroupEnum type) {
-        this.type = type;
     }
 
     public Query getQuery() {

@@ -2,7 +2,7 @@ package br.com.cds.connecta.presenter.business.applicationService.impl;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisViewerAS;
-import br.com.cds.connecta.presenter.entity.AnalysisViewer;
+import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
 import br.com.cds.connecta.presenter.persistence.IAnalysisViewerDAO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,7 @@ public class AnalysisViewerAS extends AbstractBaseAS<AnalysisViewer> implements 
     
     @Override
     public AnalysisViewer get(Long id) {
-        AnalysisViewer analysisViewer = analysisViewerDao.get(id);
-        AnalysisViewer analysisWithViewer = analysisViewerDao.getWithViewer(id);
-        analysisViewer.setViewer(analysisWithViewer.getViewer());
-        return analysisViewer;
+        return analysisViewerDao.get(id);
     }
     
     @Override

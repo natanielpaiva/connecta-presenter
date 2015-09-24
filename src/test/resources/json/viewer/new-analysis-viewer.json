@@ -1,0 +1,81 @@
+{
+    "name": "TestViewer",
+    "description": "TestDescription",
+    "type" : "ANALYSIS",
+    "configuration": {
+        "type": "serial",
+        "path": "https://www.amcharts.com/lib/3/",
+        "categoryField": "category",
+        "startDuration": 1,
+        "categoryAxis": {
+            "gridPosition": "start"
+        },
+        "trendLines": [
+        ],
+        "graphs": [
+            {
+                "balloonText": "[[title]] of [[category]]:[[value]]",
+                "fillAlphas": 1,
+                "id": "AmGraph-1",
+                "title": "graph 1",
+                "type": "column",
+                "lineColor": "#b0de09",
+                "valueField": "column-1"
+            },
+            {
+                "balloonText": "[[title]] of [[category]]:[[value]]",
+                "fillAlphas": 1,
+                "id": "AmGraph-2",
+                "title": "graph 2",
+                "type": "column",
+                "lineColor": "['#FF6600', '#FCD202']",
+                "valueField": "column-2"
+            }
+        ],
+        "guides": [
+        ],
+        "valueAxes": [
+            {
+                "id": "ValueAxis-1",
+                "title": "Axis title"
+            }
+        ],
+        "allLabels": [
+        ],
+        "balloon": {},
+        "legend": {
+            "useGraphSettings": true
+        },
+        "titles": [
+            {
+                "id": "Title-1",
+                "size": 15,
+                "text": "Chart Title"
+            }
+        ]
+    },
+    
+    "label": "Test",
+    "updateInterval": 1000,
+    "maxRows": 2,
+    "analysisViewerColumns": [
+        {
+            "columnDataType": "NUMBER",
+            "order": "DESC",
+            "columnType": "METRIC",
+            "maskFormat": "########-##",
+            "analysisColumn": {
+                "id": 1
+            }
+        },
+        {
+            "columnDataType": "TEXT",
+            "order": "ASC",
+            "columnType": "DESCRIPTION",
+            "maskFormat": ".*",
+            "analysisColumn": {
+                "id": 2
+            }
+        }
+    ]
+}

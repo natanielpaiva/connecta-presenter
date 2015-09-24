@@ -1,0 +1,12 @@
+{
+    "name": "TestViewer",
+    "description": "TestDescription",
+    "type" : "SINGLESOURCE",
+    "configuration": {
+        "type": "singlesource"
+    },
+    
+    "singleSource":{
+        "id": 1
+    }
+}

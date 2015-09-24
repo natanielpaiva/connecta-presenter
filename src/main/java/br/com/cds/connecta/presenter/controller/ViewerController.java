@@ -5,11 +5,10 @@ import br.com.cds.connecta.framework.amcharts.ChartTemplateType;
 import br.com.cds.connecta.framework.amcharts.provider.ChartProvider;
 import br.com.cds.connecta.framework.core.controller.AbstractBaseController;
 import br.com.cds.connecta.presenter.business.applicationService.IViewerAS;
-import br.com.cds.connecta.presenter.entity.Viewer;
+import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,8 +93,6 @@ public class ViewerController extends AbstractBaseController<Viewer> {
         
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(json);
-        
-//        return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
 }

@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.entity;
 
+import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,69 +15,69 @@ import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
-
 /**
  * The persistent class for the TA_CONFIG_COLUMNS database table.
- * 
+ *
  */
 @Entity
-@Table(name="TA_CONFIG_COLUMNS")
-@NamedQuery(name="ConfigColumn.findAll", query="SELECT t FROM ConfigColumn t")
+@Table(name = "TA_CONFIG_COLUMNS")
+@NamedQuery(name = "ConfigColumn.findAll", query = "SELECT t FROM ConfigColumn t")
 public class ConfigColumn extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@SequenceGenerator(name="TA_CONFIG_COLUMNS_PKCONFIGCOLUMNS_GENERATOR", sequenceName="TA_CONFIG_COLUMNS_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TA_CONFIG_COLUMNS_PKCONFIGCOLUMNS_GENERATOR")
-	@Column(name="PK_CONFIG_COLUMNS")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="TXT_VALUE")
-	private String txtValue;
+    @Id
+    @SequenceGenerator(name = "TA_CONFIG_COLUMNS_PKCONFIGCOLUMNS_GENERATOR", sequenceName = "TA_CONFIG_COLUMNS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_CONFIG_COLUMNS_PKCONFIGCOLUMNS_GENERATOR")
+    @Column(name = "PK_CONFIG_COLUMNS")
+    private Long id;
 
-	//bi-directional many-to-one association to TaAnalysisVwColumn
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="FK_ANALYSIS_VW_COLUMNS")
-	private AnalysisVwColumn taAnalysisVwColumn;
+    @Column(name = "TXT_VALUE")
+    private String txtValue;
 
-	//bi-directional many-to-one association to TbConfigViewer
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="FK_CONFIG_VIEWER")
-	private ConfigViewer tbConfigViewer;
+    //bi-directional many-to-one association to TaAnalysisVwColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_ANALYSIS_VW_COLUMNS")
+    private AnalysisViewerColumn taAnalysisVwColumn;
 
-	public ConfigColumn() {
-	}
+    //bi-directional many-to-one association to TbConfigViewer
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_CONFIG_VIEWER")
+    private ConfigViewer tbConfigViewer;
 
-	public Long getId() {
-		return this.id;
-	}
+    public ConfigColumn() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return this.id;
+    }
 
-	public String getTxtValue() {
-		return this.txtValue;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setTxtValue(String txtValue) {
-		this.txtValue = txtValue;
-	}
+    public String getTxtValue() {
+        return this.txtValue;
+    }
 
-	public AnalysisVwColumn getTaAnalysisVwColumn() {
-		return this.taAnalysisVwColumn;
-	}
+    public void setTxtValue(String txtValue) {
+        this.txtValue = txtValue;
+    }
 
-	public void setTaAnalysisVwColumn(AnalysisVwColumn taAnalysisVwColumn) {
-		this.taAnalysisVwColumn = taAnalysisVwColumn;
-	}
+    public AnalysisViewerColumn getTaAnalysisVwColumn() {
+        return this.taAnalysisVwColumn;
+    }
 
-	public ConfigViewer getTbConfigViewer() {
-		return this.tbConfigViewer;
-	}
+    public void setTaAnalysisVwColumn(AnalysisViewerColumn taAnalysisVwColumn) {
+        this.taAnalysisVwColumn = taAnalysisVwColumn;
+    }
 
-	public void setTbConfigViewer(ConfigViewer tbConfigViewer) {
-		this.tbConfigViewer = tbConfigViewer;
-	}
+    public ConfigViewer getTbConfigViewer() {
+        return this.tbConfigViewer;
+    }
+
+    public void setTbConfigViewer(ConfigViewer tbConfigViewer) {
+        this.tbConfigViewer = tbConfigViewer;
+    }
 
 }

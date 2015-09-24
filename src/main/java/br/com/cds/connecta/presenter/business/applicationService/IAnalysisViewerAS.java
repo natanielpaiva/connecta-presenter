@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.business.applicationService;
 
-import br.com.cds.connecta.presenter.entity.AnalysisViewer;
+import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
 import java.util.List;
 
 /**

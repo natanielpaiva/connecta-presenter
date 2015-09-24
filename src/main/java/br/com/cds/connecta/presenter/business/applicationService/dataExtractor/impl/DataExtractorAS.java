@@ -6,8 +6,8 @@ import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.I
 import br.com.cds.connecta.presenter.business.strategy.connector.DataBaseConnectorStrategy;
 import br.com.cds.connecta.presenter.business.strategy.connector.RestConnectorStrategy;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
-import br.com.cds.connecta.presenter.entity.AnalysisViewer;
-import br.com.cds.connecta.presenter.entity.AnalysisVwColumn;
+import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
+import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +47,9 @@ public class DataExtractorAS implements IDataExtractorAS {
     public List<Map<String, Object>> getDataProvider(AnalysisViewer analysisViewer) {
         List<Map<String, Object>> dataProvider = null;
 
-        List<AnalysisVwColumn> analysisVwColumn = analysisViewer.getAnalysisVwColumn();
+        List<AnalysisViewerColumn> analysisViewerColumns = analysisViewer.getAnalysisViewerColumns();
 
-        List<ConnectorColumn> ConnectorColumn = getAnalysisColumn(analysisVwColumn);
+        List<ConnectorColumn> ConnectorColumn = getAnalysisColumn(analysisViewerColumns);
 
         Long id = ConnectorColumn.get(0).getId();
 
@@ -68,11 +68,11 @@ public class DataExtractorAS implements IDataExtractorAS {
     }
 
     @Override
-    public List<ConnectorColumn> getAnalysisColumn(List<AnalysisVwColumn> analysisVwColumns) {
+    public List<ConnectorColumn> getAnalysisColumn(List<AnalysisViewerColumn> analysisVwColumns) {
 
         List<ConnectorColumn> connectorColumn = new ArrayList<>();
 
-        for (AnalysisVwColumn analysisVwColumn : analysisVwColumns) {
+        for (AnalysisViewerColumn analysisVwColumn : analysisVwColumns) {
 
             ConnectorColumn column = new ConnectorColumn();
             column.setId(analysisVwColumn.getAnalysisColumn().getId());

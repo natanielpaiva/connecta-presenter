@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.entity;
 
+import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;

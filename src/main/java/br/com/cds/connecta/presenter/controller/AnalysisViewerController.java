@@ -3,7 +3,7 @@ package br.com.cds.connecta.presenter.controller;
 import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisViewerAS;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
-import br.com.cds.connecta.presenter.entity.AnalysisViewer;
+import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

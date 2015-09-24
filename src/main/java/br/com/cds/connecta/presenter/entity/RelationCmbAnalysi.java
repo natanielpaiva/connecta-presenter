@@ -51,7 +51,7 @@ public class RelationCmbAnalysi extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbCombinedAnalysi
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_COMBINED_ANALYSIS")
-	private CombinedAnalysi tbCombinedAnalysi;
+	private CombinedAnalysis tbCombinedAnalysi;
 
 	public RelationCmbAnalysi() {
 	}
@@ -104,11 +104,11 @@ public class RelationCmbAnalysi extends AbstractBaseEntity {
 		this.tpSource2 = tpSource2;
 	}
 
-	public CombinedAnalysi getTbCombinedAnalysi() {
+	public CombinedAnalysis getTbCombinedAnalysi() {
 		return this.tbCombinedAnalysi;
 	}
 
-	public void setTbCombinedAnalysi(CombinedAnalysi tbCombinedAnalysi) {
+	public void setTbCombinedAnalysi(CombinedAnalysis tbCombinedAnalysi) {
 		this.tbCombinedAnalysi = tbCombinedAnalysi;
 	}
 }

@@ -1,7 +1,5 @@
 package br.com.cds.connecta.presenter.entity.datasource;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
@@ -40,7 +38,6 @@ public class DatabaseDatasource extends Datasource {
     @Column(name = "TXT_SCHEMA")
     private String schema;
 
-    
     public DatabaseDatasourceDriverEnum getDriver() {
         return driver;
     }
@@ -80,5 +77,4 @@ public class DatabaseDatasource extends Datasource {
     public void setSid(String sid) {
         this.sid = sid;
     }
-
 }

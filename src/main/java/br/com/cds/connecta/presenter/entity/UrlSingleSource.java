@@ -1,8 +1,6 @@
 package br.com.cds.connecta.presenter.entity;
 
-import br.com.cds.connecta.presenter.domain.SingleSourceTypeEnum;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;

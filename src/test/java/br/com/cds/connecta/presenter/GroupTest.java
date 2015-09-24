@@ -24,7 +24,6 @@ public class GroupTest extends BaseTest {
     static final String RESOURCE = REST_PATH.concat("group");
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
     
-    
     @Test
     public void listGroup() throws Exception {
         mockMvc().perform(get(RESOURCE)
@@ -47,7 +46,6 @@ public class GroupTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.name", equalTo("New Group")))
                 .andExpect(jsonPath("$.description", equalTo("Group Description")))
-                .andExpect(jsonPath("$.type", equalTo("FOLDER")))
                ;// .andExpect(jsonPath("$.txtQuery", equalTo("SELECT...")));
     }
     
@@ -61,7 +59,6 @@ public class GroupTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.name", equalTo("New Group")))
                 .andExpect(jsonPath("$.description", equalTo("Group Description")))
-                .andExpect(jsonPath("$.type", equalTo("GALLERY")))
                 ;//.andExpect(jsonPath("$.txtQuery", equalTo("SELECT...")));
     }
     
@@ -76,13 +73,12 @@ public class GroupTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.name", equalTo("Edit Group")))
                 .andExpect(jsonPath("$.description", equalTo("Group Description Edit")))
-                .andExpect(jsonPath("$.type", equalTo("GALLERY")))
                 ;//.andExpect(jsonPath("$.txtQuery", equalTo("SELECT...")));
     }
     
     @Test
     public void deleteGroup() throws Exception {
-        mockMvc().perform(delete(RESOURCE_ID, 1)
+        mockMvc().perform(delete(RESOURCE_ID, 999)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
                 .andExpect(status().isNoContent())

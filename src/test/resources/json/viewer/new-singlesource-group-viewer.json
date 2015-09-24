@@ -1,0 +1,13 @@
+{
+    "name": "TestViewer",
+    "description": "TestDescription",
+    "type" : "SINGLESOURCE_GROUP",
+    "configuration": {
+        "type": "singlesourcegroup"
+    },
+    
+    "group": {
+        "id": 1
+    },
+    "visualization" : "GALLERY"
+}

@@ -1,11 +1,8 @@
 package br.com.cds.connecta.presenter.entity;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import java.sql.Clob;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +26,7 @@ public class BinaryFile extends AbstractBaseEntity {
     @Column(name = "BINARY_FILE")
     private byte[] binaryFile;
    
-
+    @Override
     public Long getId() {
         return id;
     }

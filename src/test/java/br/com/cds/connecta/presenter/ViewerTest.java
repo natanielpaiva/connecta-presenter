@@ -1,5 +1,9 @@
 package br.com.cds.connecta.presenter;
 
+import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.enumKeyFor;
+import br.com.cds.connecta.presenter.domain.AnalysisViewerColumnDataType;
+import br.com.cds.connecta.presenter.domain.AnalysisViewerColumnType;
+import br.com.cds.connecta.presenter.domain.SingleSourceGroupViewerVisualizationEnum;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
@@ -21,15 +25,14 @@ public class ViewerTest extends BaseTest {
     static final String RESOURCE_TEMPLATE_CONTENT = RESOURCE_TEMPLATE_TYPE.concat("/{template}");
 
     @Test
-    @Ignore
-    public void saveViewer() throws Exception {
+    public void saveAnalysisViewer() throws Exception {
         mockMvc().perform(post(RESOURCE)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getJson("viewer/new-viewer"))
+                .content(getJson("viewer/new-analysis-viewer"))
         ).andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.id", greaterThan(0)))
                 .andExpect(jsonPath("$.name", equalTo("TestViewer")))
                 .andExpect(jsonPath("$.description", equalTo("TestDescription")))
                 .andExpect(jsonPath("$.configuration.type", equalTo("serial")))
@@ -53,10 +56,61 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.configuration.legend.useGraphSettings", equalTo(true)))
                 .andExpect(jsonPath("$.configuration.titles[0].id", equalTo("Title-1")))
                 .andExpect(jsonPath("$.configuration.titles[0].size", equalTo(15d)))
-                .andExpect(jsonPath("$.configuration.titles[0].text", equalTo("Chart Title")));
+                .andExpect(jsonPath("$.configuration.titles[0].text", equalTo("Chart Title")))
+                
+                .andExpect(jsonPath("$.label", equalTo("Test")))
+                .andExpect(jsonPath("$.maxRows", equalTo(2)))
+                .andExpect(jsonPath("$.analysisViewerColumns[0].id", equalTo(1)))
+                .andExpect(jsonPath("$.analysisViewerColumns[0].columnDataType", enumKeyFor(AnalysisViewerColumnDataType.NUMBER)))
+                .andExpect(jsonPath("$.analysisViewerColumns[0].columnType", enumKeyFor(AnalysisViewerColumnType.METRIC)))
+                .andExpect(jsonPath("$.analysisViewerColumns[0].maskFormat", equalTo("########-##")))
+                .andExpect(jsonPath("$.analysisViewerColumns[0].analysisColumn.id", equalTo(1)))
+                
+                .andExpect(jsonPath("$.analysisViewerColumns[1].id", equalTo(2)))
+                .andExpect(jsonPath("$.analysisViewerColumns[1].columnDataType", enumKeyFor(AnalysisViewerColumnDataType.TEXT)))
+                .andExpect(jsonPath("$.analysisViewerColumns[1].columnType", enumKeyFor(AnalysisViewerColumnType.DESCRIPTION)))
+                .andExpect(jsonPath("$.analysisViewerColumns[1].maskFormat", equalTo(".*")))
+                .andExpect(jsonPath("$.analysisViewerColumns[1].analysisColumn.id", equalTo(2)))
+                ;
     }
-
+    
     @Test
+    public void saveSingleSourceViewer() throws Exception {
+        mockMvc().perform(post(RESOURCE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("viewer/new-singlesource-viewer"))
+        ).andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", greaterThan(0)))
+                .andExpect(jsonPath("$.name", equalTo("TestViewer")))
+                .andExpect(jsonPath("$.description", equalTo("TestDescription")))
+                .andExpect(jsonPath("$.configuration.type", equalTo("singlesource")))
+                
+                .andExpect(jsonPath("$.singleSource.id", is(1)))
+                ;
+    }
+    
+    @Test
+    public void saveMediaGroupViewer() throws Exception {
+        mockMvc().perform(post(RESOURCE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("viewer/new-singlesource-group-viewer"))
+        ).andDo(print())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", greaterThan(0)))
+                .andExpect(jsonPath("$.name", equalTo("TestViewer")))
+                .andExpect(jsonPath("$.description", equalTo("TestDescription")))
+                .andExpect(jsonPath("$.configuration.type", equalTo("singlesourcegroup")))
+                
+                .andExpect(jsonPath("$.group.id", is(1)))
+                .andExpect(jsonPath("$.visualization", enumKeyFor(SingleSourceGroupViewerVisualizationEnum.GALLERY)))
+                ;
+    }
+    
+    @Test
+    @Ignore
     public void updateViewer() throws Exception {
         mockMvc().perform(put(RESOURCE_ID, 1)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -102,34 +156,31 @@ public class ViewerTest extends BaseTest {
     @Test
     public void listChartTypes() throws Exception {
         mockMvc().perform(get(RESOURCE_TEMPLATE)
-            .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$", hasSize(7)))
-        ;
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(7)));
     }
-    
+
     @Test
     public void listChartByType() throws Exception {
         mockMvc().perform(get(RESOURCE_TEMPLATE)
-            .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$", hasSize(7)))
-        ;
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(7)));
     }
-    
+
     @Test
     public void getChartTemplate() throws Exception {
         mockMvc().perform(get(RESOURCE_TEMPLATE_CONTENT, "area", "area-area")
         ).andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$", notNullValue()))
-            .andExpect(jsonPath("$.type", equalTo("serial")))
-        ;
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.type", equalTo("serial")));
     }
 
 }

@@ -3,8 +3,8 @@ package br.com.cds.connecta.presenter.persistence.impl;
 import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
-import br.com.cds.connecta.presenter.entity.SnglSrcViewer;
+import br.com.cds.connecta.presenter.entity.viewer.SingleSourceViewer;
 @Repository
-public class SnglSrcViewerDAO extends AbstractBaseJpaDAO<SnglSrcViewer> {
+public class SnglSrcViewerDAO extends AbstractBaseJpaDAO<SingleSourceViewer> {
 
 }

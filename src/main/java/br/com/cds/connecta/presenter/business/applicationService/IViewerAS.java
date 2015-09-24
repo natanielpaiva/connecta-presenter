@@ -1,7 +1,6 @@
 package br.com.cds.connecta.presenter.business.applicationService;
 
-import br.com.cds.connecta.presenter.entity.Viewer;
-import java.sql.SQLException;
+import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 import java.util.List;
 
 /**
@@ -9,17 +8,14 @@ import java.util.List;
  * @author Nataniel Paiva
  */
 public interface IViewerAS {
-
+    
     Viewer get(Long id);
 
-    List<Viewer> list() throws Exception;
+    List<Viewer> list();
 
-    Viewer saveOrUpdate(Viewer entity) throws Exception;
+    Viewer saveOrUpdate(Viewer entity);
 
-    void delete(Long id) throws Exception;
+    void delete(Long id);
 
-    void delete(Viewer group) throws Exception;
-    
-    void teste()throws SQLException;
-    
+    void delete(Viewer group);
 }
