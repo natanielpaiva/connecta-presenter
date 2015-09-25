@@ -14,13 +14,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import br.com.cds.connecta.presenter.domain.AnalysisTypeEnum;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
@@ -38,8 +35,9 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
             + "INNER JOIN FETCH t.datasource d WHERE a.id = :id "),
-    @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a"
-            + " INNER JOIN FETCH a.analysisColumns t WHERE a.id = :id ")
+     @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a"
+           + " INNER JOIN FETCH a.datasource d"
+           + " INNER JOIN FETCH a.analysisColumns c WHERE a.id = :id ")
 })
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
