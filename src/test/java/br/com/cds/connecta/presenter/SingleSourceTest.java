@@ -99,7 +99,7 @@ public class SingleSourceTest extends BaseTest {
 
     @Test
     public void deleteSingleSource() throws Exception {
-        mockMvc().perform(delete(RESOURCE_ID, 1)
+        mockMvc().perform(delete(RESOURCE_ID, 666)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andDo(print())
                 .andExpect(status().isNoContent())

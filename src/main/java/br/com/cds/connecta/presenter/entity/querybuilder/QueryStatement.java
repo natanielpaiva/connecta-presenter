@@ -28,7 +28,8 @@ import javax.persistence.Table;
 )
 @JsonSubTypes({
     @Type(value = QueryGroup.class, name = "GROUP"),
-    @Type(value = QueryCondition.class, name = "CONDITION")
+    @Type(value = QueryCondition.class, name = "CONDITION"),
+    @Type(value = QueryConditionSolr.class, name = "CONDITION_SOLR")
 })
 public class QueryStatement implements Serializable {
     

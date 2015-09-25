@@ -5,6 +5,7 @@ import br.com.cds.connecta.presenter.business.strategy.querybuilder.QueryPredica
 import br.com.cds.connecta.presenter.domain.QueryOperatorEnum;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryConditionSolr;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryGroup;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryStatement;
 import br.com.cds.connecta.presenter.util.HibernateUtil;
@@ -26,14 +27,14 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
 
     @PersistenceContext
     private EntityManager em;
-    
+
     static Logger logger = Logger.getLogger(SQLQueryBuilder.class);
 
     @Override
     public List<Object> listResultsFor(Query query, Class<Object> target) {
         javax.persistence.Query q = makeQuery(query, target);
         List resultList = q.getResultList();
-        
+
         return resultList;
     }
 
@@ -78,6 +79,8 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
 
         return nativeQuery;
     }
+    
+    
 
     private String makeConditionPredicate(QueryCondition condition, List<Object> parameters) {
         QueryPredicateStrategy strategy = getStrategyFor(condition);
@@ -125,14 +128,68 @@ public class SQLQueryBuilder implements IQueryBuilder<Object> {
 
     private String makePivot(QueryCondition condition, StringBuilder select) {
         String pivot = "";
-        if ( !select.toString().contains(String.format("attr%s ", condition.getAttribute().getId())) ) {
+        if (!select.toString().contains(String.format("attr%s ", condition.getAttribute().getId()))) {
             pivot = String.format(
-                ", MAX(CASE WHEN ma.FK_ATTRIBUTE = %s THEN ma.TXT_VALUE END) attr%s ",
-                condition.getAttribute().getId(),
-                condition.getAttribute().getId());
+                    ", MAX(CASE WHEN ma.FK_ATTRIBUTE = %s THEN ma.TXT_VALUE END) attr%s ",
+                    condition.getAttribute().getId(),
+                    condition.getAttribute().getId());
         }
-        
+
         return pivot;
     }
+    
+    
+//    @Override
+//    public String makeQuerySolr(Query query) {
+//        StringBuilder select = new StringBuilder("");
+//        String where = "";
+//        List<Object> parameters = new ArrayList<>();
+//        if (query.getStatement() instanceof QueryConditionSolr) {
+//            //select.append(makePivot((QueryCondition) query.getStatement(), select));
+//            where += makeConditionPredicateSolr((QueryConditionSolr) query.getStatement(), parameters);
+//        } else {
+//            where += makeGroupPredicateSolr((QueryGroup) query.getStatement(), select, parameters);
+//        }
+//        return where;
+//    }
+//    
+//    
+//    
+//     private String makeConditionPredicateSolr(QueryConditionSolr condition, List<Object> parameters) {
+//        QueryPredicateStrategy strategy = getStrategyForSorl(condition);
+//
+//        return strategy.getPredicateForSolr(condition, parameters);
+//    }
+//
+//    private String makeGroupPredicateSolr(QueryGroup group, StringBuilder select, List<Object> parameters) {
+//        List<String> predicates = new ArrayList<>();
+//        for (QueryStatement statement : group.getStatements()) {
+//            if (statement instanceof QueryConditionSolr) {
+//                //select.append(makePivot((QueryCondition) statement, select));
+//                predicates.add(makeConditionPredicateSolr((QueryConditionSolr) statement, parameters));
+//            } else {
+//                predicates.add(makeGroupPredicateSolr((QueryGroup) statement, select, parameters));
+//            }
+//        }
+//
+//        String operator = QueryOperatorEnum.AND.equals(group.getOperator())
+//                ? " AND " : " OR ";
+//
+//        String conditionGroup = StringUtils.join(predicates, operator);
+//
+//        return "(" + conditionGroup + ")";
+//    }
+//    
+//     private QueryPredicateStrategy getStrategyForSorl(QueryConditionSolr condition) {
+//        QueryPredicateStrategy strategy = null;
+//
+//        try {
+//            strategy = condition.getPredicate().getPredicateStrategyClass().newInstance();
+//        } catch (InstantiationException | IllegalAccessException ex) {
+//            throw new RuntimeException(ex);
+//        }
+//
+//        return strategy;
+//    }
 
 }

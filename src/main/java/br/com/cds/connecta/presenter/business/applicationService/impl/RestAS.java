@@ -6,6 +6,7 @@ import br.com.cds.connecta.presenter.business.applicationService.IRestAS;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -46,15 +47,24 @@ public class RestAS implements IRestAS {
 
         List<AnalysisColumn> analysisColumns = ws.getAnalysisColumns();
 
-        String[] JsonPathColumns = new String[analysisColumns.size()];
+        ArrayList<ConnectorColumn> columns = new ArrayList<>();
+        
         for (int i = 0; i < analysisColumns.size(); i++) {
-            JsonPathColumns[i] = analysisColumns.get(i).getFormula();
+            ConnectorColumn connectorColumn = new ConnectorColumn();
+            
+            connectorColumn.setId(analysisColumns.get(i).getId());
+            connectorColumn.setFormula(analysisColumns.get(i).getFormula());
+            connectorColumn.setLabel(analysisColumns.get(i).getLabel());
+            connectorColumn.setName(analysisColumns.get(i).getName());
+            //JsonPathColumns[i] = analysisColumns.get(i).getFormula();
+            
+           columns.add(connectorColumn);
         }
 
         Rest rest = new Rest();
         List<Map<String, Object>> factoryResultMetaModel;
         
-        List<ConnectorColumn> columns = null;
+       
         factoryResultMetaModel = rest.getResultTabular(webservice.getAddress(), columns, ws.getTablePath());
 
         return factoryResultMetaModel;

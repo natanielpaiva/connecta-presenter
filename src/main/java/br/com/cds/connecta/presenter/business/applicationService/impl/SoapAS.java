@@ -77,15 +77,11 @@ public class SoapAS implements ISoapAS {
             connectorColumn1.setName(analysisColumns.get(i).getName());
             connectorColumn1.setLabel(analysisColumns.get(i).getLabel());
             connectorColumn1.setFormula(analysisColumns.get(i).getFormula());
-            connectorColumn1.setType(analysisColumns.get(i).getType());
+            //connectorColumn1.setType(analysisColumns.get(i).getType());
             
             connectorColumn.add(connectorColumn1);
         }
 
-//        String[] xpathColumns = new String[analysisColumns.size()];    
-//        for (int i = 0; i < analysisColumns.size(); i++) {
-//          xpathColumns[i] = analysisColumns.get(i).getFormula();
-//        }
         List parameters = new ArrayList<>();
         List<WebserviceAnalysisParameter> webParameter = ws.getWebserviceAnalysisParameter();
 

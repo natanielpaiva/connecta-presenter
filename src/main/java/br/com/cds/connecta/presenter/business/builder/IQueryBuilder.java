@@ -14,4 +14,6 @@ public interface IQueryBuilder<T extends Object> {
 
     String sqlFor(Query query, Boolean split, Class<T> target);
     
+    //String makeQuerySolr(Query query);
+    
 }

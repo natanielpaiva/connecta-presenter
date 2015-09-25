@@ -1,40 +1,47 @@
 package br.com.cds.connecta.presenter.entity.analysis;
 
+import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.DynamicUpdate;
 
 
 /**
- * The persistent class for the TXT_SOLR_ANALYSIS database table.
+ * The persistent class for the TB_SOLR_ANALYSIS database table.
  *
  */
 @Entity
-@Table(name = "TXT_SOLR_ANALYSIS")
+@DynamicUpdate
+@Table(name = "TB_SOLR_ANALYSIS")
 public class SolrAnalysis extends Analysis {
 
     private static final long serialVersionUID = 1L;
 
     @Column(name = "TXT_FACET")
-    private String facet;
+    private Long facet;
 
-    @Column(name = "TXT_QUERY")
-    private String query;
-
-    public String getFacet() {
-        return facet;
-    }
-
-    public void setFacet(String facet) {
-        this.facet = facet;
-    }
-
-    public String getQuery() {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_QUERY")
+    private Query query;
+    
+    public Query getQuery() {
         return query;
     }
 
-    public void setQuery(String query) {
+    public void setQuery(Query query) {
         this.query = query;
+    }
+
+    public Long getFacet() {
+        return facet;
+    }
+
+    public void setFacet(Long facet) {
+        this.facet = facet;
     }
     
 }

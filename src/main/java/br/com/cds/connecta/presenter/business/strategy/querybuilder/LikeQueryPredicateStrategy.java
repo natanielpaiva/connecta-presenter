@@ -1,6 +1,7 @@
 package br.com.cds.connecta.presenter.business.strategy.querybuilder;
 
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
+import br.com.cds.connecta.presenter.entity.querybuilder.QueryConditionSolr;
 import java.util.List;
 
 /**
@@ -21,5 +22,15 @@ public class LikeQueryPredicateStrategy implements QueryPredicateStrategy {
         
         return " attr" + condition.getAttribute().getId() + " "
                 + negate + " LIKE ? ";
+    }
+
+    @Override
+    public String getPredicateForSolr(QueryConditionSolr condition, List<Object> parameters) {
+        
+        String negate = "+";
+        if (condition.getPredicate().isNegation()) {
+            negate = "-";
+        }
+        return "(" + negate + condition.getName() + ":/.*" + condition.getValue().getValue() + ".*/" + ")";
     }
 }

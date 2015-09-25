@@ -7,7 +7,7 @@
     <parent>
         <groupId>br.com.cds.connecta.framework</groupId>
         <artifactId>connecta-parent</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.4-SNAPSHOT</version>
     </parent>
 
     <groupId>br.com.cds.connecta.presenter</groupId>
@@ -56,11 +56,19 @@
             <version>3.1</version>
         </dependency>
         
-        <dependency>
+<!--        <dependency>
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>jaxws-rt</artifactId>
             <version>2.2.10</version>
+        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>5.3.0</version>
         </dependency>
+        
 
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

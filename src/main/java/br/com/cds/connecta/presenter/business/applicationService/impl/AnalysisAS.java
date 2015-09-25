@@ -1,7 +1,5 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,16 +10,22 @@ import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import br.com.cds.connecta.presenter.persistence.list.AnalysisListRepository;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS {
 
     @Autowired
     private IAnalysisDAO analysisDAO;
-    
+
     @Autowired
     private AnalysisListRepository analysisListRepository;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public Analysis get(Long id) {
@@ -29,23 +33,26 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     }
 
     @Override
-    public List<Analysis> list() {
-        return analysisDAO.list();
+    public Iterable<Analysis> list(AnalysisFilter filter) {
+        Pageable pageable = filter.makePageable();
+        return analysisListRepository.findAll(pageable);
+
     }
-    
+
     @Override
     public Page<Analysis> listAutoComplete(AnalysisFilter filter) {
         String name = filter.getName();
-        if(isNull(name))
+        if (isNull(name)) {
             name = "";
-        Page<Analysis> analysises = analysisListRepository.findByName("%"+name.toUpperCase()+"%", filter.makePageable());
-        
+        }
+        Page<Analysis> analysises = analysisListRepository.findByName("%" + name.toUpperCase() + "%", filter.makePageable());
+
         for (Analysis analysise : analysises) {
             Analysis analysis = analysisDAO.get(analysise.getId());
             analysise.setDatasource(analysis.getDatasource());
             analysise.setAnalysisColumns(analysis.getAnalysisColumns());
         }
-        
+
         return analysises;
     }
 
@@ -56,7 +63,8 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
     @Override
     public void delete(Long id) {
-        analysisDAO.delete(id);
+        Analysis analysis = em.find(Analysis.class, id);
+        em.remove(analysis);
     }
 
     @Override
@@ -68,7 +76,5 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     public Analysis getByIdColumns(Long id) {
         return analysisDAO.getByIdColumns(id);
     }
-
-    
 
 }

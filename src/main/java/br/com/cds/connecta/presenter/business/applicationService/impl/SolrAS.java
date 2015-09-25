@@ -1,22 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import br.com.cds.connecta.framework.connector.solr.Solr;
+import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
+import br.com.cds.connecta.presenter.business.builder.IQueryBuilderSorl;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.SolrAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
+import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.client.solrj.request.LukeRequest;
-import org.apache.solr.client.solrj.response.LukeResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,33 +27,71 @@ import org.springframework.stereotype.Service;
 @Service
 public class SolrAS implements ISolr {
 
+    @Autowired
+    private IQueryBuilderSorl builder;
+
     @PersistenceContext
     private EntityManager em;
+    
+    private Solr solr = new Solr();
 
+    private static final Logger logger = Logger.getLogger(SoapAS.class.getName());
+
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public List<AnalysisColumn> getColumns(Long id) {
-        SolrDatasource solr = em.find(SolrDatasource.class, id);
-        HttpSolrServer server = new HttpSolrServer(solr.getAddress() + solr.getPath());
+        ArrayList<AnalysisColumn> analysisColumnsList = new ArrayList<>();
 
-        ArrayList<AnalysisColumn> columns = new ArrayList<>();
+        SolrDatasource solrDatasource = em.find(SolrDatasource.class, id);
 
-        LukeRequest lukeRequest = new LukeRequest();
-        lukeRequest.setNumTerms(0);
-        LukeResponse lukeResponse;
-        try {
-            lukeResponse = lukeRequest.process(server);
-            List<LukeResponse.FieldInfo> sorted = new ArrayList<LukeResponse.FieldInfo>(lukeResponse.getFieldInfo().values());
+        List<ConnectorColumn> connectorColumns = solr.getColumns(solrDatasource.getAddress() + solrDatasource.getPath());
 
-            for (LukeResponse.FieldInfo infoEntry : sorted) {
-                AnalysisColumn column = new AnalysisColumn();
-                column.setName(infoEntry.getName());
+        for (ConnectorColumn cc : connectorColumns) {
+            AnalysisColumn analysisColumn = new AnalysisColumn();
+            analysisColumn.setFormula(cc.getFormula());
+            analysisColumn.setName(cc.getName());
+            analysisColumn.setLabel(cc.getLabel());
 
-                columns.add(column);
-            }
-        } catch (SolrServerException | IOException e) {
+            analysisColumnsList.add(analysisColumn);
         }
 
-        return columns;
+        return analysisColumnsList;
+
+    }
+
+    @Override
+    public List<Map<String, Object>> getSolrResultApplyingQuery(long id, Query query, int facet) {
+        SolrDatasource solrDatasource = em.find(SolrDatasource.class, id);
+
+        String stringQuerySolr = builder.makeQuery(query);
+
+        logger.log(Level.INFO, "Solr query: {0}", stringQuerySolr);
+
+        List<Map<String, Object>> searchSorl = null;
+        try {
+            searchSorl = solr.searchSorl(solrDatasource.getAddress() + solrDatasource.getPath(), stringQuerySolr,  facet);
+        } catch (SolrServerException | IOException ex) {
+            Logger.getLogger(SolrAS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return searchSorl;
+    }
+
+    @Override
+    public String getQueryString(Long id) {
+
+        SolrAnalysis solrAnalysis = em.find(SolrAnalysis.class, id);
+
+        Query query = em.find(Query.class, solrAnalysis.getQuery().getId());
+
+        String stringQuerySolr = builder.makeQuery(query);
+
+        return stringQuerySolr;
     }
 
 }
+

@@ -1,10 +1,10 @@
 package br.com.cds.connecta.presenter.business.applicationService.dataExtractor.impl;
 
 import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
+import br.com.cds.connecta.framework.connector.util.PrintResult;
 import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
-import br.com.cds.connecta.presenter.business.strategy.connector.DataBaseConnectorStrategy;
-import br.com.cds.connecta.presenter.business.strategy.connector.RestConnectorStrategy;
+import br.com.cds.connecta.presenter.business.strategy.connector.ConnectorStrategy;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
 import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,10 +27,7 @@ public class DataExtractorAS implements IDataExtractorAS {
     private IAnalysisDAO analysisDao;
 
     @Autowired
-    private DataBaseConnectorStrategy dataBaseStrategy;
-    
-    @Autowired
-    private RestConnectorStrategy restStrategy;
+    private ApplicationContext context;
 
     @Override
     public AnalysisViewerResult getAnalysisViewerResult(AnalysisViewer analysisViewer) {
@@ -42,10 +40,9 @@ public class DataExtractorAS implements IDataExtractorAS {
 
         return analysViewerResult;
     }
-    
+
     @Override
     public List<Map<String, Object>> getDataProvider(AnalysisViewer analysisViewer) {
-        List<Map<String, Object>> dataProvider = null;
 
         List<AnalysisViewerColumn> analysisViewerColumns = analysisViewer.getAnalysisViewerColumns();
 
@@ -54,16 +51,14 @@ public class DataExtractorAS implements IDataExtractorAS {
         Long id = ConnectorColumn.get(0).getId();
 
         Analysis analysis = analysisDao.getByIdColumns(id);
+
+        ConnectorStrategy strategy = context.getBean(analysis.getDatasource().getType().getConnectorStrategy());
+         
+        List<Map<String, Object>> dataProvider = strategy.getDataProvider(analysis, ConnectorColumn);
         
-        switch(analysis.getDatasource().getType()){
-            case DATABASE:
-                dataProvider = dataBaseStrategy.getDataProvider(analysis, ConnectorColumn);
-                break;
-            case WEBSERVICE:
-                dataProvider = restStrategy.getDataProvider(analysis, ConnectorColumn);
-            break;
-                
-        }
+        PrintResult printResult = new PrintResult();
+        printResult.print(dataProvider);
+        
         return dataProvider;
     }
 
@@ -77,7 +72,7 @@ public class DataExtractorAS implements IDataExtractorAS {
             ConnectorColumn column = new ConnectorColumn();
             column.setId(analysisVwColumn.getAnalysisColumn().getId());
             column.setLabel(analysisVwColumn.getAnalysisColumn().getLabel());
-            column.setType(analysisVwColumn.getAnalysisColumn().getType());
+            // column.setType(analysisVwColumn.getAnalysisColumn().getType());
             column.setName(analysisVwColumn.getAnalysisColumn().getName());
             column.setFormula(analysisVwColumn.getAnalysisColumn().getFormula());
 

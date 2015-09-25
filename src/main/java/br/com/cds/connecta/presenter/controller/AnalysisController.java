@@ -20,6 +20,7 @@ import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
+import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Map;
@@ -43,16 +44,16 @@ public class AnalysisController {
     private IAnalysisAS analysisService;
 
     @Autowired
-    private IDatabaseAS DatabaseService;
+    private IDatabaseAS databaseService;
 
     @Autowired
-    private ISolr SolrService;
+    private ISolr solrService;
 
     @Autowired
-    private IObieeAS ObieeService;
+    private IObieeAS obieeService;
 
     @Autowired
-    private IEndecaAS EndecaService;
+    private IEndecaAS endecaService;
 
     @Autowired
     private ISoapAS soapService;
@@ -82,20 +83,23 @@ public class AnalysisController {
         return new ResponseEntity<>(updatedAnalysis, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    protected void delete(@PathVariable("id") Long id) {
+    @RequestMapping(
+            value = "{id}",
+            method = RequestMethod.DELETE)
+    protected ResponseEntity delete(@PathVariable("id") Long id) {
         analysisService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    protected ResponseEntity<Analysis> get(Long id) {
+    protected ResponseEntity<Analysis> get(@PathVariable("id") Long id) {
         Analysis analysis = analysisService.get(id);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    protected ResponseEntity<List<Analysis>> list() {
-        List<Analysis> list = analysisService.list();
+    protected ResponseEntity<Iterable<Analysis>> list(AnalysisFilter filter) {
+        Iterable<Analysis> list = analysisService.list(filter);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -103,7 +107,7 @@ public class AnalysisController {
     @RequestMapping(value = "{id}/columns-sorl", method = RequestMethod.GET)
     public ResponseEntity<List<AnalysisColumn>> getColumnsSorl(
             @PathVariable Long id) {
-        List<AnalysisColumn> list = SolrService.getColumns(id);
+        List<AnalysisColumn> list = solrService.getColumns(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -111,7 +115,7 @@ public class AnalysisController {
     @RequestMapping(value = "{id}/columns-datasource", method = RequestMethod.GET)
     public ResponseEntity<List> getColumnsDatasource(
             @PathVariable Long id) {
-        List list = DatabaseService.getTables(id);
+        List list = databaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -127,7 +131,7 @@ public class AnalysisController {
     @RequestMapping(value = "{id}/sql-view-columns", method = RequestMethod.GET)
     public ResponseEntity<List> getSqlViewColumns(
             @PathVariable Long id) {
-        List list = DatabaseService.getTables(id);
+        List list = databaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -136,7 +140,7 @@ public class AnalysisController {
     public ResponseEntity<List> getFolderObiee(
             @PathVariable Long id,
             @RequestBody BIAnalysisCatalogPathName path) {
-        List catalog = ObieeService.getCatalog(id, path.getPath());
+        List catalog = obieeService.getCatalog(id, path.getPath());
         return new ResponseEntity<>(catalog, HttpStatus.OK);
     }
 
@@ -145,7 +149,7 @@ public class AnalysisController {
     public ResponseEntity<List<AnalysisColumn>> getColumnsObiee(
             @PathVariable Long id,
             @RequestBody BIAnalysisCatalogPathName path) {
-        List<AnalysisColumn> list = ObieeService.getColumns(id, path.getPath());
+        List<AnalysisColumn> list = obieeService.getColumns(id, path.getPath());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -153,7 +157,7 @@ public class AnalysisController {
     @RequestMapping(value = "{id}/domains-endeca", method = RequestMethod.GET)
     public ResponseEntity<List> getDomainsEndeca(
             @PathVariable Long id) {
-        List domains = EndecaService.getDomains(id);
+        List domains = endecaService.getDomains(id);
         return new ResponseEntity<>(domains, HttpStatus.OK);
     }
 
@@ -162,7 +166,7 @@ public class AnalysisController {
     public ResponseEntity<List<AnalysisColumn>> getColumnsEndeca(
             @PathVariable Long id,
             @PathVariable String domain) {
-        List<AnalysisColumn> domains = EndecaService.getColumns(id, domain);
+        List<AnalysisColumn> domains = endecaService.getColumns(id, domain);
         return new ResponseEntity<>(domains, HttpStatus.OK);
     }
 
@@ -203,17 +207,17 @@ public class AnalysisController {
 
         return new ResponseEntity<>(resultXmlXpath, HttpStatus.OK);
     }
-    
-    @RequestMapping(value = "autocomplete",method = RequestMethod.GET, 
+
+    @RequestMapping(value = "autocomplete", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    protected ResponseEntity<Iterable<Analysis>> listAutoComplete(AnalysisFilter filter){
+    protected ResponseEntity<Iterable<Analysis>> listAutoComplete(AnalysisFilter filter) {
         Page<Analysis> list;
         list = analysisService.listAutoComplete(filter);
-        
+
         Iterable<Analysis> content = list.getContent();
-        
+
         return new ResponseEntity<>(content, HttpStatus.OK);
-        
+
     }
 
     //Retorna json de Rest via get
@@ -228,13 +232,9 @@ public class AnalysisController {
     @RequestMapping(value = "{id}/get-rest-specifications",
             method = RequestMethod.GET)
     public ResponseEntity getRestSpecifications(@PathVariable Long id) {
-
         Object rest = restService.getJsonRest(id);
-
         InputStream is = new ByteArrayInputStream(rest.toString().getBytes());
-
         JSONValue parse = parser.parse(is);
-
         return new ResponseEntity<>(parse, HttpStatus.OK);
     }
 
@@ -250,9 +250,6 @@ public class AnalysisController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    
-    
-    
     //Extri parte de um json
     @RequestMapping(value = "{id}/extract-json",
             method = RequestMethod.POST,
@@ -260,24 +257,40 @@ public class AnalysisController {
     public ResponseEntity getExtractJson(
             @PathVariable Long id,
             @RequestBody WebserviceAnalysis ws) {
-                    //mudar o nome dessa funcoa
+        //mudar o nome dessa funcao
         Object result = restService.getJsonPartJsonPath(id, ws);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "{id}/solr-result-applying-query/facet/{facet}",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getSolrResultApplyingQuery(
+            @PathVariable Long id,
+            @PathVariable int facet,
+            @RequestBody Query query) {
+        List<Map<String, Object>> solrResultApplyingQuery = solrService.getSolrResultApplyingQuery(id, query, facet);
+        return new ResponseEntity<>(solrResultApplyingQuery, HttpStatus.OK);
+    }
     
-    
-    
-    //Retona o json aplicando jsonPath
-//    @RequestMapping(value = "{id}/teste",
-//                    method = RequestMethod.POST,
-//                    consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity getTeste(
-//            @PathVariable Long id,
-//            @RequestBody WebserviceAnalysis ws) throws IOException {
+    //provisorio
+//     @RequestMapping(value = "{id}/solr-result-query",
+//            method = RequestMethod.GET)
+//    public ResponseEntity getQueryString(
+//            @PathVariable Long id) {
 //        
-//        Rest rest = new Rest();
-//        //rest.teste();
-//        
-//        return new ResponseEntity<>(rest.teste(), HttpStatus.OK);
+//        String queryString = solrService.getQueryString(id);
+//        return new ResponseEntity<>(queryString, HttpStatus.OK);
 //    }
+//    //provisorio
+//     @RequestMapping(value = "{id}/solr-result-query-Solr",
+//            method = RequestMethod.GET)
+//    public ResponseEntity getQueryStringSolr(
+//            @PathVariable Long id) {
+//        
+//        String queryString = SolrService.getQueryStringSolr(id);
+//        return new ResponseEntity<>(queryString, HttpStatus.OK);
+//    }
+
+
 }
