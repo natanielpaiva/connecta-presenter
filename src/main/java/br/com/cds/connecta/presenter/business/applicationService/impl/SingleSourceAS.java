@@ -17,7 +17,7 @@ import br.com.cds.connecta.presenter.entity.UrlSingleSource;
 import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
 import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
-import br.com.cds.connecta.presenter.persistence.list.SingleSourceListRepository;
+import br.com.cds.connecta.presenter.persistence.SingleSourceRepository;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.persistence.EntityManager;
@@ -32,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class SingleSourceAS  implements ISingleSourceAS {
 
     @Autowired
-    private SingleSourceListRepository singleSourceListRepository;
+    private SingleSourceRepository singleSourceListRepository;
     
     @Autowired
     private ISingleSourceDAO singleSourceDAO; 

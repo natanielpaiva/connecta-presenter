@@ -6,7 +6,7 @@ import br.com.cds.connecta.framework.connector.database.service.IDatabaseTable;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
-import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
+import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -25,7 +25,7 @@ public class DatabaseAS implements IDatabaseAS {
     private EntityManager em;
     
     @Autowired
-    private DatasourceDAO dataSourceDao;
+    private DatasourceRepository dataSourceDao;
     
     @Override
     public List getTables(Long id) {

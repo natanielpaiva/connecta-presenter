@@ -5,7 +5,7 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasourceParameter;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
-import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
+import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import br.com.cds.connecta.presenter.persistence.impl.WebserviceDatasourceParameterDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -25,7 +25,7 @@ public class DatasourceAS implements IDatasourceAS {
     private EntityManager em;
 
     @Autowired
-    private DatasourceDAO dao;
+    private DatasourceRepository dao;
 
     @Autowired
     private WebserviceDatasourceParameterDAO parameterDAO;

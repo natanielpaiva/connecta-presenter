@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.hibernate.search.annotations.Indexed;
 
 /**
  * The persistent class for the TB_CMB_VIEWER database table.
@@ -14,6 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "TB_CMB_VIEWER")
+@Indexed
 public class CombinedAnalysisViewer extends Viewer {
 
     @ManyToOne(fetch = FetchType.LAZY)

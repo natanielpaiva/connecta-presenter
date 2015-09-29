@@ -9,7 +9,7 @@ import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysisParameter;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
-import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
+import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 public class RestConnectorStrategy implements ConnectorStrategy {
 
     @Autowired
-    private DatasourceDAO dataSourceDao;
+    private DatasourceRepository dataSourceDao;
 
     @PersistenceContext
     private EntityManager em;

@@ -16,31 +16,31 @@ import org.springframework.stereotype.Service;
 public class ViewerAS extends AbstractBaseAS<Viewer> implements IViewerAS {
 
     @Autowired
-    private IViewerDAO viewerDao;
+    private IViewerDAO dao;
     
     @Override
     public Viewer get(Long id) {
-        return viewerDao.get(id);
+        return dao.get(id);
     }
 
     @Override
     public List<Viewer> list() {
-        return viewerDao.list();
+        return dao.list();
     }
 
     @Override
     public Viewer saveOrUpdate(Viewer entity) {
-        return viewerDao.saveOrUpdate(entity);
+        return dao.saveOrUpdate(entity);
     }
 
     @Override
     public void delete(Long id) {
-        viewerDao.delete(id);
+        dao.delete(id);
     }
 
     @Override
     public void delete(Viewer entity) {
-        viewerDao.delete(entity);
+        dao.delete(entity);
     }
 
 }

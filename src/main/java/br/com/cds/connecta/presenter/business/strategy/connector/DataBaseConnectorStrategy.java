@@ -4,7 +4,7 @@ import br.com.cds.connecta.framework.connector.database.Database;
 import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
-import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
+import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class DataBaseConnectorStrategy implements ConnectorStrategy {
 
     @Autowired
-    private DatasourceDAO dataSourceDao;
+    private DatasourceRepository dataSourceDao;
     
     @Override
     public List<Map<String, Object>> getDataProvider(Analysis analysis, List<ConnectorColumn> columns) {

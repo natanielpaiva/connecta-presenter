@@ -5,7 +5,7 @@ import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
-import br.com.cds.connecta.presenter.persistence.impl.DatasourceDAO;
+import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class SolrConnectorStrategy implements ConnectorStrategy {
 
     @Autowired
-    private DatasourceDAO dataSourceDao;
+    private DatasourceRepository datasourceRepository;
 
     @Autowired
     private ISolr solrService;
@@ -33,7 +33,7 @@ public class SolrConnectorStrategy implements ConnectorStrategy {
     @Override
     public List<Map<String, Object>> getDataProvider(Analysis analysis, List<ConnectorColumn> columns) {
 
-        SolrDatasource solrDatasource = (SolrDatasource)dataSourceDao.findOne(analysis.getDatasource().getId());
+        SolrDatasource solrDatasource = (SolrDatasource)datasourceRepository.findOne(analysis.getDatasource().getId());
         
         String queryString = solrService.getQueryString(analysis.getId());
         

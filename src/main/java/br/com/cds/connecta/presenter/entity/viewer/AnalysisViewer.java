@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
+import org.hibernate.search.annotations.Indexed;
 
 /**
  * The persistent class for the TB_ANALYSIS_VIEWER database table.
@@ -18,9 +19,11 @@ import javax.persistence.OneToMany;
 @Table(name = "TB_ANALYSIS_VIEWER")
 @NamedQuery(
     name = "AnalysisViewer.get",
-    query = "SELECT a FROM AnalysisViewer a LEFT JOIN FETCH a.analysisViewerColumns av "
-        + " LEFT JOIN FETCH av.analysisColumn WHERE a.id = :id"
+    query = "SELECT a FROM AnalysisViewer a "
+        + "LEFT JOIN FETCH a.analysisViewerColumns av "
+        + "LEFT JOIN FETCH av.analysisColumn WHERE a.id = :id"
 )
+@Indexed
 public class AnalysisViewer extends Viewer {
 
     @Column(name = "NM_LABEL")

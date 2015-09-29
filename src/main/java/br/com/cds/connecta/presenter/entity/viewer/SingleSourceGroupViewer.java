@@ -10,7 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
+import org.hibernate.search.annotations.Indexed;
 
 /**
  * The persistent class for the TA_SNGL_SRC_VW_GROUP database table.
@@ -18,6 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "TA_SNGL_SRC_VW_GROUP")
+@Indexed
 public class SingleSourceGroupViewer extends Viewer {
 
     @ManyToOne(fetch = FetchType.LAZY)

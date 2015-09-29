@@ -4,6 +4,7 @@ import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.enumKeyFo
 import br.com.cds.connecta.presenter.domain.AnalysisViewerColumnDataType;
 import br.com.cds.connecta.presenter.domain.AnalysisViewerColumnType;
 import br.com.cds.connecta.presenter.domain.SingleSourceGroupViewerVisualizationEnum;
+import br.com.cds.connecta.presenter.domain.ViewerTypeEnum;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
@@ -142,6 +143,73 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.configuration.titles[0].id", equalTo("Title-1")))
                 .andExpect(jsonPath("$.configuration.titles[0].size", equalTo(15d)))
                 .andExpect(jsonPath("$.configuration.titles[0].text", equalTo("Chart Title")));
+    }
+    
+    @Test
+    public void getAnalysisViewer() throws Exception {
+        mockMvc().perform(get(RESOURCE_ID, 50)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", greaterThan(0)))
+                .andExpect(jsonPath("$.name", equalTo("Analysis viewer")))
+                .andExpect(jsonPath("$.description", nullValue()))
+                .andExpect(jsonPath("$.type", enumKeyFor(ViewerTypeEnum.ANALYSIS)))
+                .andExpect(jsonPath("$.configuration", nullValue()))
+                
+                .andExpect(jsonPath("$.updateInterval", is(1000)))
+                .andExpect(jsonPath("$.maxRows", is(5)))
+                .andExpect(jsonPath("$.label", is("Analysis label")))
+                .andExpect(jsonPath("$.analysisViewerColumns", hasSize(greaterThan(0))))
+                ;
+    }
+    
+    @Test
+    public void getSingleSourceViewer() throws Exception {
+        mockMvc().perform(get(RESOURCE_ID, 51)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", greaterThan(0)))
+                .andExpect(jsonPath("$.name", equalTo("Single source viewer")))
+                .andExpect(jsonPath("$.type", enumKeyFor(ViewerTypeEnum.SINGLESOURCE)))
+                
+                .andExpect(jsonPath("$.singleSource", notNullValue()))
+                .andExpect(jsonPath("$.singleSource.id", is(100)))
+                ;
+    }
+    
+    @Test
+    public void getSingleSourceGroupViewer() throws Exception {
+        mockMvc().perform(get(RESOURCE_ID, 52)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", greaterThan(0)))
+                .andExpect(jsonPath("$.name", equalTo("Single source group viewer")))
+                .andExpect(jsonPath("$.type", enumKeyFor(ViewerTypeEnum.SINGLESOURCE_GROUP)))
+                .andExpect(jsonPath("$.visualization", enumKeyFor(SingleSourceGroupViewerVisualizationEnum.GALLERY)))
+                
+                .andExpect(jsonPath("$.group", notNullValue()))
+                .andExpect(jsonPath("$.group.id", is(52)))
+                ;
+    }
+    
+    @Test
+    @Ignore
+    public void getCombinedViewer() throws Exception {
+        mockMvc().perform(get(RESOURCE_ID, 53)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", greaterThan(0)))
+                .andExpect(jsonPath("$.name", equalTo("TestViewer")))
+                .andExpect(jsonPath("$.description", equalTo("TestDescription")))
+                .andExpect(jsonPath("$.type", enumKeyFor(ViewerTypeEnum.COMBINED)))
+//                .andExpect(jsonPath("$.configuration.type", equalTo("combined")))
+                
+//                .andExpect(jsonPath("$.singleSource.id", is(1)))
+                ;
     }
 
     @Test

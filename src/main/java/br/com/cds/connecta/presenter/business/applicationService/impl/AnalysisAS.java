@@ -9,7 +9,7 @@ import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
-import br.com.cds.connecta.presenter.persistence.list.AnalysisListRepository;
+import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
@@ -22,7 +22,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     private IAnalysisDAO analysisDAO;
 
     @Autowired
-    private AnalysisListRepository analysisListRepository;
+    private AnalysisRepository analysisListRepository;
 
     @PersistenceContext
     private EntityManager em;
