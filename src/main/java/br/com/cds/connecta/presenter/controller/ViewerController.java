@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -79,9 +78,19 @@ public class ViewerController extends AbstractBaseController<Viewer> {
             method = RequestMethod.POST,
             value = "preview")
     @ResponseBody
-    public ResponseEntity<AnalysisViewerResult> preview(@RequestBody AnalysisViewer analysisViewer,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+    public ResponseEntity<AnalysisViewerResult> preview(@RequestBody AnalysisViewer analysisViewer) {
+        AnalysisViewerResult analysisViewerResult = dataExtratorService.getAnalysisViewerResult(analysisViewer);
+
+        return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
+    }
+    
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET,
+            value = "{id}/result")
+    @ResponseBody
+    public ResponseEntity<AnalysisViewerResult> result(@PathVariable("id") Long id){
+        
+        AnalysisViewer analysisViewer = (AnalysisViewer) viewerService.get(id);
         AnalysisViewerResult analysisViewerResult = dataExtratorService.getAnalysisViewerResult(analysisViewer);
 
         return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
