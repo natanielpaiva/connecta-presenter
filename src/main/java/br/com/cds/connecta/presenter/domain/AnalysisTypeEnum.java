@@ -9,7 +9,7 @@ public enum AnalysisTypeEnum {
     DATABASE,
     ENDECA,
     HDFS,
-    BI,
+    OBIEE,
     SOLR,
     WEBSERVICE;
     

@@ -14,7 +14,7 @@ public enum DatasourceTypeEnum {
     DATABASE(AnalysisTypeEnum.DATABASE, DataBaseConnectorStrategy.class),
     ENDECA(AnalysisTypeEnum.ENDECA, null),
     HDFS(AnalysisTypeEnum.HDFS, null),
-    BI(AnalysisTypeEnum.BI, null),
+    OBIEE(AnalysisTypeEnum.OBIEE, null),
     SOLR(AnalysisTypeEnum.SOLR, SolrConnectorStrategy.class),
     WEBSERVICE(AnalysisTypeEnum.WEBSERVICE, RestConnectorStrategy.class);
     

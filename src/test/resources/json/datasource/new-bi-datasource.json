@@ -3,7 +3,7 @@
     "path": "caminho",
     "name": "Novodatasource",
     "description": "s",
-    "type": "BI",
+    "type": "OBIEE",
     "user": "s",
     "password": "s"
 }

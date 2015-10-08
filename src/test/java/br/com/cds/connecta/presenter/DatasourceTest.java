@@ -72,7 +72,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.description", equalTo("Descrição teste")))
                 .andExpect(jsonPath("$.user", equalTo("usuario")))
                 .andExpect(jsonPath("$.password", equalTo("123456")))
-                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.DATABASE.name())));
+                .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.DATABASE)));
     }
 
     @Test
@@ -84,14 +84,14 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.driver", equalTo(DatabaseDatasourceDriverEnum.POSTGRES.name())))
+                .andExpect(jsonPath("$.driver", enumKeyFor(DatabaseDatasourceDriverEnum.POSTGRES)))
                 .andExpect(jsonPath("$.server", equalTo("teste")))
                 .andExpect(jsonPath("$.port", equalTo(666)))
                 .andExpect(jsonPath("$.sid", equalTo("teste")))
                 .andExpect(jsonPath("$.schema", equalTo("teste")))
                 .andExpect(jsonPath("$.name", equalTo("Novódatasource")))
                 .andExpect(jsonPath("$.description", equalTo("s")))
-                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.DATABASE.name())))
+                .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.DATABASE)))
                 .andExpect(jsonPath("$.user", equalTo("s")))
                 .andExpect(jsonPath("$.password", equalTo("s")))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
@@ -110,7 +110,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.address", equalTo("endereco")))
                 .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
                 .andExpect(jsonPath("$.description", equalTo("s")))
-                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.ENDECA.name())));
+                .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.ENDECA)));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.path", equalTo("caminho")))
                 .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
                 .andExpect(jsonPath("$.description", equalTo("s")))
-                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.BI.name())))
+                .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.OBIEE)))
                 .andExpect(jsonPath("$.user", equalTo("s")))
                 .andExpect(jsonPath("$.password", equalTo("s")))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
@@ -145,7 +145,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.path", equalTo("caminho")))
                 .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
                 .andExpect(jsonPath("$.description", equalTo("s")))
-                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.SOLR.name())))
+                .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.SOLR)))
                 .andExpect(jsonPath("$.user", equalTo("s")))
                 .andExpect(jsonPath("$.password", equalTo("s")))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
@@ -166,7 +166,7 @@ public class DatasourceTest extends BaseTest {
                 //.andExpect(jsonPath("$.method", equalTo("metodo")))
                 .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
                 .andExpect(jsonPath("$.description", equalTo("s")))
-                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.WEBSERVICE.name())))
+                .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.WEBSERVICE)))
                 .andExpect(jsonPath("$.parameters[*].params", allOf(
                                         peloMenosUmItem(equalTo("ww")),
                                         peloMenosUmItem(equalTo("ddd"))
@@ -192,7 +192,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.port", equalTo(666)))
                 .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
                 .andExpect(jsonPath("$.description", equalTo("s")))
-                .andExpect(jsonPath("$.type", equalTo(DatasourceTypeEnum.HDFS.name())))
+                .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.HDFS)))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
     }
 
