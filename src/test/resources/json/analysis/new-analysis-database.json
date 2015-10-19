@@ -1,0 +1,27 @@
+{
+    "name": "New Analysis",
+    "description": "Analysis Description",
+    "type": "DATABASE",
+    "datasource": {
+        "id": 1
+    },
+    "analysisColumns": [
+        {
+            "name": "ID_USUARIO",
+            "label": "ID_USUARIO",
+            "formula": "ASD.ID_USUARIO"
+        },
+        {
+            "name": "ID_EMPRESAS",
+            "label": "ID_EMPRESAS",
+            "formula": "ASD.ID_EMPRESAS"
+        },
+        {
+            "name": "NOME_USUARIO",
+            "label": "NOME_USUARIO",
+            "formula": "ASD.NOME_USUARIO"
+        }
+    ]
+}
+
+

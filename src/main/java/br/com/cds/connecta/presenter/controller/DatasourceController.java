@@ -59,7 +59,7 @@ public class DatasourceController {
 
     @RequestMapping(value = "webservice", method = RequestMethod.POST)
     public ResponseEntity<Datasource> save(@RequestBody WebserviceDatasource datasource) {
-        Datasource newDatasource = service.saveWebservice(datasource);
+        Datasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 

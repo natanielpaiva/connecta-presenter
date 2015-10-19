@@ -1,0 +1,8 @@
+{
+    "name"          : "New Analysis",
+    "description"   : "Analysis Description",
+    "type"          : "ENDECA",
+    "datasource"    : {
+        "id": 1
+    }
+}

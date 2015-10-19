@@ -19,6 +19,7 @@ import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.io.ByteArrayInputStream;
@@ -95,6 +96,13 @@ public class AnalysisController {
     protected ResponseEntity<Analysis> get(@PathVariable("id") Long id) {
         Analysis analysis = analysisService.get(id);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
+    }
+    
+    //somente para test... apagar quando terminar.
+    @RequestMapping(value = "{id}/test", method = RequestMethod.GET)
+    protected ResponseEntity<Analysis> getTest(@PathVariable("id") Long id) {
+        Analysis test = analysisService.getTest(id);
+        return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)

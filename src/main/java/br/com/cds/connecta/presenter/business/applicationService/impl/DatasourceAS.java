@@ -77,16 +77,16 @@ public class DatasourceAS implements IDatasourceAS {
         dao.delete(ds);
     }
 
-    @Override
-    public Datasource saveWebservice(WebserviceDatasource datasource) {
-        WebserviceDatasource entity = (WebserviceDatasource) save(datasource);
-
-        for (WebserviceDatasourceParameter parameter : datasource.getParameters()) {
-            parameter.setDatasource(entity);
-            em.merge(parameter);
-        }
-        
-        return entity;
-    }
+//    @Override
+//    public Datasource saveWebservice(WebserviceDatasource datasource) {
+//        WebserviceDatasource entity = (WebserviceDatasource) save(datasource);
+// 
+//        for (WebserviceDatasourceParameter parameter : datasource.getParameters()) {
+//            parameter.setDatasource(entity);
+//            em.merge(parameter);
+//        }
+//        
+//        return entity;
+//    }
 
 }

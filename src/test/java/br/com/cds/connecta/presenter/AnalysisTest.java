@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.cds.connecta.presenter;
 
 import org.junit.Test;
@@ -28,8 +23,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author pires
  */
 public class AnalysisTest extends BaseTest {
+
     static final String RESOURCE = REST_PATH.concat("analysis");
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
+
+    @Test
+    public void saveAnalysis() throws Exception {
+        mockMvc().perform(post(RESOURCE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("analysis/new-analysis-database"))
+        ).andDo(print())
+                .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.name", equalTo("New Analysis")))
+                .andExpect(jsonPath("$.description", equalTo("Analysis Description")))
+                .andExpect(jsonPath("$.type", equalTo("DATABASE")))
+                .andExpect(jsonPath("$.datasource", notNullValue()))
+                .andExpect(jsonPath("$.datasource.id", equalTo(1)))
+                
+                .andExpect(jsonPath("$.analysisColumns[0].name", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].label", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].formula", equalTo("ASD.ID_USUARIO")))
+                
+                .andExpect(jsonPath("$.analysisColumns[1].name", equalTo("ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].label", equalTo("ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].formula", equalTo("ASD.ID_EMPRESAS")))
+                
+                .andExpect(jsonPath("$.analysisColumns[2].name", equalTo("NOME_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[2].label", equalTo("NOME_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[2].formula", equalTo("ASD.NOME_USUARIO")));
+    }
+    
+    
     
 //    @Test
 //    public void sucessoBuscarAnalises() throws Exception {
@@ -60,22 +86,8 @@ public class AnalysisTest extends BaseTest {
 //            .andExpect(jsonPath("$.datasource", nullValue()));
 //    }
 //    
-//    @Test
-//    public void sucessoSalvarAnalise() throws Exception {
-//        mockMvc().perform(post(RESOURCE)
-//            .contentType(MediaType.APPLICATION_JSON)
-//            .content(getJson("analysis/new-analysis"))
-//        ).andDo(print())
-//            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//            .andExpect(status().isCreated())
-//            .andExpect(jsonPath("$", notNullValue()))
-//            .andExpect(jsonPath("$.name", equalTo("New Analysis")))
-//            .andExpect(jsonPath("$.description", equalTo("Analysis Description")))
-//            .andExpect(jsonPath("$.type", equalTo("TEST")))
-//            .andExpect(jsonPath("$.datasource", notNullValue()))
-//            .andExpect(jsonPath("$.datasource.id", equalTo(1)));
-//    }
     
+
 //    @Test
 //    public void sucessoAlterarAnalise() throws Exception {
 //        mockMvc().perform(put(RESOURCE_ID, 2)
@@ -91,7 +103,6 @@ public class AnalysisTest extends BaseTest {
 //            .andExpect(jsonPath("$.type", equalTo("TESTING")))
 //            .andExpect(jsonPath("$.datasource", nullValue()));
 //    }
-    
 //    @Test
 //    public void sucessoExcluirAnalise() throws Exception {
 //        mockMvc().perform(delete(RESOURCE_ID, 99)

@@ -7,6 +7,7 @@ import br.com.cds.connecta.framework.core.business.aplicationService.common.Abst
 import static br.com.cds.connecta.framework.core.util.Util.isNull;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
@@ -30,6 +31,11 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     @Override
     public Analysis get(Long id) {
         return analysisDAO.get(id);
+    }
+    
+    @Override
+    public DatabaseAnalysis getTest(Long id) {
+        return analysisDAO.getTest(id);
     }
 
     @Override

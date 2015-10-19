@@ -24,7 +24,7 @@ public class SolrAnalysis extends Analysis {
     @Column(name = "TXT_FACET")
     private Long facet;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "FK_QUERY")
     private Query query;
     

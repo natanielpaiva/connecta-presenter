@@ -18,6 +18,6 @@ public interface IDatasourceAS {
 
     void delete(Long id);
 
-    Datasource saveWebservice(WebserviceDatasource datasource);
+  //  Datasource saveWebservice(WebserviceDatasource datasource);
 
 }

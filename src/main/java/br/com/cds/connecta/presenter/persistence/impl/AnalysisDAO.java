@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 
 //APENAS OS MÉTODOS SALVA,ALTERAR,EXCLUIR SÃO PUBLICS ,OS OUTROS DEVEM SER IMPLEMENTADOS AQUI
@@ -28,6 +29,13 @@ public class AnalysisDAO extends AbstractBaseJpaDAO<Analysis> implements IAnalys
     @Override
     public Analysis get(Long id){
         return (Analysis) getEntityManager().createNamedQuery("Analysis.find")
+                .setParameter("id", id).getSingleResult();
+    }
+    
+    
+    @Override
+    public DatabaseAnalysis getTest(Long id){
+        return (DatabaseAnalysis) getEntityManager().createNamedQuery("DatabaseAnalysis.get")
                 .setParameter("id", id).getSingleResult();
     }
 

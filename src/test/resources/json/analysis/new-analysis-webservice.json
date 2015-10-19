@@ -1,7 +1,7 @@
 {
     "name"          : "New Analysis",
     "description"   : "Analysis Description",
-    "type"          : "TEST",
+    "type"          : "WEBSERVICE",
     "datasource"    : {
         "id": 1
     }
