@@ -1,7 +1,7 @@
 {
     "description": "Group Description",
     "name": "New Group",
-    "type": "FOLDER",
+    "type": "SELECT",
     "singleSourceGroup": [
         {
             "numOrder": 9,
