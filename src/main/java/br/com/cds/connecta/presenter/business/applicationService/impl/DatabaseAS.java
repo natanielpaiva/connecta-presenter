@@ -74,17 +74,6 @@ public class DatabaseAS implements IDatabaseAS {
                 + dataBaseDataSource.getSid();
     }
 
-    @Override
-    public List getSqlColumn(Long id) {
-
-        //fazendo
-        DatabaseDatasource datasource = em.find(DatabaseDatasource.class, id);
-        DatabaseService database = new DatabaseService();
-
-        return null;
-
-    }
-
 
     @Override
     public List<Map<String, Object>> getDataSql(Long id, DatabaseAnalysis databaseAnalysis) {

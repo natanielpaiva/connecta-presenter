@@ -12,7 +12,6 @@ import java.util.Map;
 public interface IDatabaseAS {
 
     List<AnalysisColumn> getTables(Long id);
-    List getSqlColumn(Long id);
     List<Map<String, Object>>  getDataSql(Long id, DatabaseAnalysis databaseAnalysis);
 
 }
