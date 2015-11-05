@@ -98,12 +98,6 @@ public class AnalysisController {
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
     
-    //somente para test... apagar quando terminar.
-    @RequestMapping(value = "{id}/test", method = RequestMethod.GET)
-    protected ResponseEntity<Analysis> getTest(@PathVariable("id") Long id) {
-        Analysis test = analysisService.getTest(id);
-        return new ResponseEntity<>(test, HttpStatus.OK);
-    }
 
     @RequestMapping(method = RequestMethod.GET)
     protected ResponseEntity<Iterable<Analysis>> list(AnalysisFilter filter) {
@@ -126,6 +120,16 @@ public class AnalysisController {
         List list = databaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+    //excuta SQL Banco de dados
+    @RequestMapping(value = "{id}/execut-sql", method = RequestMethod.POST)
+    public ResponseEntity getFolderObiee(
+            @PathVariable Long id,
+            @RequestBody DatabaseAnalysis databaseAnalysis) {
+        List<Map<String, Object>> dataSql = databaseService.getDataSql(id, databaseAnalysis);
+        return new ResponseEntity<>(dataSql, HttpStatus.OK);
+    }
+    
+    
 
     //retorna a análises e suas respectivas colunas
     @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)
