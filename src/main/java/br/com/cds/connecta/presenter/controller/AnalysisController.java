@@ -121,7 +121,7 @@ public class AnalysisController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     //excuta SQL Banco de dados
-    @RequestMapping(value = "{id}/execut-sql", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}/execute-sql", method = RequestMethod.POST)
     public ResponseEntity getFolderObiee(
             @PathVariable Long id,
             @RequestBody DatabaseAnalysis databaseAnalysis) {
