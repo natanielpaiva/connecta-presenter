@@ -37,16 +37,17 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
-            + "INNER JOIN FETCH t.datasource d WHERE a.id = :id "),
+            + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
 
     @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a"
-            + " INNER JOIN FETCH a.datasource d"
+            + " LEFT OUTER JOIN FETCH a.datasource d"
             + " INNER JOIN FETCH a.analysisColumns c WHERE a.id = :id ")
 })
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type"
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        visible = true
 )
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DATABASE", value = DatabaseAnalysis.class),
@@ -54,7 +55,8 @@ import javax.persistence.OneToMany;
     @JsonSubTypes.Type(name = "HDFS", value = HdfsAnalysis.class),
     @JsonSubTypes.Type(name = "BI", value = BIAnalysis.class),
     @JsonSubTypes.Type(name = "SOLR", value = SolrAnalysis.class),
-    @JsonSubTypes.Type(name = "WEBSERVICE", value = WebserviceAnalysis.class)
+    @JsonSubTypes.Type(name = "WEBSERVICE", value = WebserviceAnalysis.class),
+    @JsonSubTypes.Type(name = "CSV", value = CsvAnalysis.class)
 })
 public class Analysis extends AbstractBaseEntity {
 

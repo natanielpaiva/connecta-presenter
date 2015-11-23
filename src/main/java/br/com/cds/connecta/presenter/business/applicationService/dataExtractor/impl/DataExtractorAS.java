@@ -52,7 +52,7 @@ public class DataExtractorAS implements IDataExtractorAS {
 
         Analysis analysis = analysisDao.getByIdColumns(id);
 
-        ConnectorStrategy strategy = context.getBean(analysis.getDatasource().getType().getConnectorStrategy());
+        ConnectorStrategy strategy = context.getBean(analysis.getType().getConnectorStrategy());
          
         List<Map<String, Object>> dataProvider = strategy.getDataProvider(analysis, ConnectorColumn);
         

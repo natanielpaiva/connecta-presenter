@@ -11,6 +11,7 @@ public enum AnalysisTypeEnum {
     HDFS,
     OBIEE,
     SOLR,
-    WEBSERVICE;
+    WEBSERVICE,
+    CSV;
     
 }
