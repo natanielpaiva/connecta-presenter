@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
+import br.com.cds.connecta.presenter.business.applicationService.ICsvAS;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.business.applicationService.IEndecaAS;
 import br.com.cds.connecta.presenter.business.applicationService.IObieeAS;
@@ -19,6 +20,7 @@ import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.CsvAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
@@ -61,6 +63,9 @@ public class AnalysisController {
 
     @Autowired
     private IRestAS restService;
+    
+    @Autowired
+    private ICsvAS csvService;
 
     private JSONValueParser parser = new JSONValueParser();
 
@@ -122,13 +127,12 @@ public class AnalysisController {
     }
     //excuta SQL Banco de dados
     @RequestMapping(value = "{id}/execute-sql", method = RequestMethod.POST)
-    public ResponseEntity getFolderObiee(
+    public ResponseEntity getResultSql(
             @PathVariable Long id,
             @RequestBody DatabaseAnalysis databaseAnalysis) {
         List<Map<String, Object>> dataSql = databaseService.getDataSql(id, databaseAnalysis);
         return new ResponseEntity<>(dataSql, HttpStatus.OK);
     }
-    
     
 
     //retorna a análises e suas respectivas colunas
@@ -284,25 +288,16 @@ public class AnalysisController {
         List<Map<String, Object>> solrResultApplyingQuery = solrService.getSolrResultApplyingQuery(id, query, facet);
         return new ResponseEntity<>(solrResultApplyingQuery, HttpStatus.OK);
     }
+
     
-    //provisorio
-//     @RequestMapping(value = "{id}/solr-result-query",
-//            method = RequestMethod.GET)
-//    public ResponseEntity getQueryString(
-//            @PathVariable Long id) {
-//        
-//        String queryString = solrService.getQueryString(id);
-//        return new ResponseEntity<>(queryString, HttpStatus.OK);
-//    }
-//    //provisorio
-//     @RequestMapping(value = "{id}/solr-result-query-Solr",
-//            method = RequestMethod.GET)
-//    public ResponseEntity getQueryStringSolr(
-//            @PathVariable Long id) {
-//        
-//        String queryString = SolrService.getQueryStringSolr(id);
-//        return new ResponseEntity<>(queryString, HttpStatus.OK);
-//    }
+    //excuta CSV
+    @RequestMapping(value = "/result-csv", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getResultCSV(
+            @RequestBody CsvAnalysis csvAnalysis) {
+        List<Map<String, Object>> dataCsv = csvService.getDataCsv(csvAnalysis);
+        
+        return new ResponseEntity<>(dataCsv, HttpStatus.OK);
+    }
 
 
 }
