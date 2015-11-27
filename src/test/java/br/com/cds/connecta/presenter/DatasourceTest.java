@@ -74,6 +74,11 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.password", equalTo("123456")))
                 .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.DATABASE)));
     }
+    
+    @Test
+    public void datasourceNotFound() throws Exception {
+        doesntExist(666);
+    }
 
     @Test
     public void saveDatabaseDatasource() throws Exception {
@@ -194,6 +199,26 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$.description", equalTo("s")))
                 .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.HDFS)))
                 .andExpect(jsonPath("$.id", allOf(notNullValue(), isA(Integer.class), greaterThan(0))));
+    }
+    
+    @Test
+    public void bulkDeleteDatasources() throws Exception {
+        mockMvc().perform(delete(RESOURCE)
+                .contentType(MEDIATYPE_JSON_UTF8)
+                .content("[98,99,100]")
+        ).andDo(print())
+                .andExpect(status().isNoContent());
+        
+        doesntExist(98);
+        doesntExist(99);
+        doesntExist(100);
+    }
+    
+    private void doesntExist(int id) throws Exception {
+        mockMvc().perform(
+            get(RESOURCE_ID, id)
+        ).andDo(print())
+            .andExpect(status().isNotFound());
     }
 
 }

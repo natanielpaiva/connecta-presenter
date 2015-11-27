@@ -13,6 +13,7 @@ import br.com.cds.connecta.presenter.entity.datasource.HDFSDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +79,12 @@ public class DatasourceController {
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("id") Long id) {
         service.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+    
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity bulkDelete(@RequestBody List<Long> ids) {
+        service.deleteAll(ids);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
