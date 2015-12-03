@@ -37,7 +37,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.message", equalTo("Invalid pagination")))
-                .andExpect(jsonPath("$.type", equalTo(MessageTypeEnum.WARN.name())));
+                .andExpect(jsonPath("$.type", enumKeyFor(MessageTypeEnum.WARN)));
     }
     
     @Test
@@ -202,7 +202,7 @@ public class DatasourceTest extends BaseTest {
     }
     
     @Test
-    public void bulkDeleteDatasources() throws Exception {
+    public void bulkDeleteRecords() throws Exception {
         mockMvc().perform(delete(RESOURCE)
                 .contentType(MEDIATYPE_JSON_UTF8)
                 .content("[98,99,100]")

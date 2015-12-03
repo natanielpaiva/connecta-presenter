@@ -299,5 +299,9 @@ public class AnalysisController {
         return new ResponseEntity<>(dataCsv, HttpStatus.OK);
     }
 
-
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity bulkDelete(@RequestBody List<Long> ids) {
+        analysisService.deleteAll(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
