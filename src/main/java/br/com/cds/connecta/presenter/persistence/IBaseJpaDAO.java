@@ -3,13 +3,13 @@ package br.com.cds.connecta.presenter.persistence;
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
 public interface IBaseJpaDAO<E extends AbstractBaseEntity> {
-	
-	public E saveOrUpdate(E entity);
 
-	public void delete(Long id);
+    E saveOrUpdate(E entity);
 
-	public void delete(E entity);
-	
-	public E get(Long id);
+    void delete(Long id);
+
+    void delete(E entity);
+
+    E get(Long id);
 
 }

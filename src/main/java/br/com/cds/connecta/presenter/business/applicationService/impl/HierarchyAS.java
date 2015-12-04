@@ -40,18 +40,11 @@ public class HierarchyAS extends AbstractBaseAS<Hierarchy> implements IHierarchy
         Hierarchy h;
 
         h = dao.get(id);
-        
+
         if (isNull(h)) {
             throw new ResourceNotFoundException(Hierarchy.class.getCanonicalName());
         }
-        
-//        try {
-//            h = dao.get(id);
-//            Hibernate.initialize(h.getHierarchyItem());
-//        } catch (EmptyResultDataAccessException exception) {
-//            throw new ResourceNotFoundException(Hierarchy.class.getCanonicalName());
-//        }
-//        
+
         return h;
     }
 
@@ -81,8 +74,7 @@ public class HierarchyAS extends AbstractBaseAS<Hierarchy> implements IHierarchy
     }
 
     @Override
-    public
-            void deleteAll(List<Long> ids) {
+    public void deleteAll(List<Long> ids) {
         bulk.delete(Hierarchy.class, ids);
     }
 
