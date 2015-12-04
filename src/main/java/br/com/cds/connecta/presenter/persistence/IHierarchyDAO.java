@@ -6,6 +6,6 @@ import br.com.cds.connecta.presenter.entity.hierarchy.Hierarchy;
 
 public interface IHierarchyDAO extends IBaseJpaDAO<Hierarchy> {
 
-    public abstract List<Hierarchy> list();
+    List<Hierarchy> list();
 
 }

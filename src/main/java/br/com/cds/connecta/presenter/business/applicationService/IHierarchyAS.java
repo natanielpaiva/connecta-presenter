@@ -17,4 +17,6 @@ public interface IHierarchyAS {
 
     void delete(Long id);
 
+    void deleteAll(List<Long> ids);
+
 }

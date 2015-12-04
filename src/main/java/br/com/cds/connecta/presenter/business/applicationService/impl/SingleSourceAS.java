@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
 import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.SingleSourceRepository;
+import br.com.cds.connecta.presenter.persistence.impl.BulkActionsRepository;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.persistence.EntityManager;
@@ -25,21 +27,25 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.io.FilenameUtils;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class SingleSourceAS  implements ISingleSourceAS {
+public class SingleSourceAS implements ISingleSourceAS {
+
+    @Autowired
+    private BulkActionsRepository bulk;
 
     @Autowired
     private SingleSourceRepository singleSourceListRepository;
-    
+
     @Autowired
-    private ISingleSourceDAO singleSourceDAO; 
+    private ISingleSourceDAO singleSourceDAO;
 
     @PersistenceContext
     private EntityManager em;
-    
+
     @Autowired
     private IFileSingleSourceDAO fileSingleSourceDAO;
 
@@ -47,16 +53,16 @@ public class SingleSourceAS  implements ISingleSourceAS {
     public List<SingleSource> list() throws Exception {
         return singleSourceListRepository.findAll();
     }
-    
+
     @Override
-    public Page<SingleSource> listAutoComplete(SingleSourceFilter filter){
+    public Page<SingleSource> listAutoComplete(SingleSourceFilter filter) {
         String name = filter.getName();
-        if(isNull(name)){
+        if (isNull(name)) {
             name = "";
         }
-        
-        return singleSourceListRepository.findByName("%"+name.toUpperCase()+"%", filter.makePageable());
-                
+
+        return singleSourceListRepository.findByName("%" + name.toUpperCase() + "%", filter.makePageable());
+
     }
 
     @Override
@@ -64,7 +70,7 @@ public class SingleSourceAS  implements ISingleSourceAS {
         refreshAttribute(singleSource);
         return singleSourceListRepository.save(singleSource);
     }
-    
+
     private void refreshAttribute(SingleSource singleSource) {
         if (isNotEmpty(singleSource.getSingleSourceAttributes())) {
             for (SingleSourceAttribute singleSourceAttribute : singleSource.getSingleSourceAttributes()) {
@@ -88,7 +94,15 @@ public class SingleSourceAS  implements ISingleSourceAS {
 
     @Override
     public SingleSource get(Long id) {
-        return singleSourceDAO.getWithAttributes(id);
+        SingleSource singlesource;
+        
+        try {
+            singlesource = singleSourceDAO.getWithAttributes(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ResourceNotFoundException(SingleSource.class.getCanonicalName());
+        }
+
+        return singlesource;
     }
 
     @Override
@@ -144,6 +158,10 @@ public class SingleSourceAS  implements ISingleSourceAS {
     public List<SingleSource> getByAttributeId(Long id) {
         return singleSourceDAO.getByAttributeId(id);
     }
-    
+
+    @Override
+    public void deleteAll(List<Long> ids) {
+        bulk.delete(SingleSource.class, ids);
+    }
 
 }

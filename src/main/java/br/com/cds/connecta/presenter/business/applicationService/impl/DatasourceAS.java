@@ -74,7 +74,7 @@ public class DatasourceAS implements IDatasourceAS {
     
     @Override
     public void deleteAll(List<Long> ids) {
-        bulk.delete(Datasource.class, "id", ids);
+        bulk.delete(Datasource.class, ids);
     }
 
     private void _delete(WebserviceDatasource ds) {

@@ -18,4 +18,6 @@ public interface IViewerAS {
     void delete(Long id);
 
     void delete(Viewer group);
+
+    void deleteAll(List<Long> ids);
 }

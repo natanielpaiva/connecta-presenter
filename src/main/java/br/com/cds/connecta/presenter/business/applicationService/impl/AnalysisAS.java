@@ -101,7 +101,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
     @Override
     public void deleteAll(List<Long> ids) {
-        bulk.delete(Analysis.class, "id", ids);
+        bulk.delete(Analysis.class, ids);
     }
 
 }

@@ -66,7 +66,6 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
         Iterable<SingleSource> content = list.getContent();
         
         return new ResponseEntity<>(content, HttpStatus.OK);
-        
     }
  
     @Override
@@ -141,6 +140,12 @@ public class SingleSourceController extends AbstractBaseController<SingleSource>
 
         IOUtils.copy(bis, response.getOutputStream());
         response.flushBuffer();
+    }
+    
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity bulkDelete(@RequestBody List<Long> ids) {
+        mediaService.deleteAll(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }

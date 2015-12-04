@@ -28,7 +28,7 @@ public class HierarchyController {
     private IHierarchyAS service;
 
     @Autowired
-    private IHierarchyItemAS HierarchyItemAS;
+    private IHierarchyItemAS hierarchyItemService;
 
     @RequestMapping(
             method = RequestMethod.POST,
@@ -75,7 +75,7 @@ public class HierarchyController {
     ResponseEntity<HierarchyItem> saveItem(
             @RequestBody HierarchyItem hierarchyItem,
             @PathVariable("id") Long idItemParent) {
-        HierarchyItem newHierarchyItem = HierarchyItemAS.saveItem(hierarchyItem, idItemParent);
+        HierarchyItem newHierarchyItem = hierarchyItemService.saveItem(hierarchyItem, idItemParent);
         return new ResponseEntity<>(newHierarchyItem, HttpStatus.CREATED);
     }
 
@@ -86,7 +86,7 @@ public class HierarchyController {
     )
     protected @ResponseBody
     ResponseEntity<HierarchyItem> updateItem(@RequestBody HierarchyItem hierarchyItem) {
-        HierarchyItem newHierarchyItem = HierarchyItemAS.updateItem(hierarchyItem);
+        HierarchyItem newHierarchyItem = hierarchyItemService.updateItem(hierarchyItem);
         return new ResponseEntity<>(newHierarchyItem, HttpStatus.CREATED);
     }
 
@@ -94,18 +94,23 @@ public class HierarchyController {
             value = "hierarchy-item/{id}",
             method = RequestMethod.GET)
     public ResponseEntity<List<HierarchyItem>> getItems(@PathVariable("id") Long id) {
-        List<HierarchyItem> hierarchy = HierarchyItemAS.getChildItems(id);
+        List<HierarchyItem> hierarchy = hierarchyItemService.getChildItems(id);
         return new ResponseEntity(hierarchy, HttpStatus.OK);
     }
 
     @RequestMapping(
             value = "excluir-hierarchy-item/{id}",
-            method = RequestMethod.DELETE
-    )
-    protected @ResponseBody
-    ResponseEntity excluirHierarchyItem(@PathVariable("id") long id) {
-        HierarchyItemAS.delete(id);
+            method = RequestMethod.DELETE)
+    @ResponseBody
+    protected ResponseEntity excluirHierarchyItem(@PathVariable("id") long id) {
+        hierarchyItemService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity bulkDelete(@RequestBody List<Long> ids) {
+        service.deleteAll(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }
