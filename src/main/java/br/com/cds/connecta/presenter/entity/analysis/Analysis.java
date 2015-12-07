@@ -25,6 +25,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
+import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * The persistent class for the TB_ANALYSIS database table.
@@ -33,15 +34,19 @@ import javax.persistence.OneToMany;
 @Entity
 @Table(name = "TB_ANALYSIS")
 @Inheritance(strategy = InheritanceType.JOINED)
-@NamedQueries({
+@DynamicUpdate
+    @NamedQueries({
     @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
-            + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
-
-    @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a"
-            + " LEFT OUTER JOIN FETCH a.datasource d"
-            + " INNER JOIN FETCH a.analysisColumns c WHERE a.id = :id ")
+            //+ "LEFT JOIN FETCH t.analysisAttributes anAttr "
+            //+ "LEFT JOIN FETCH anAttr.attribute attr "
+            + "LEFT JOIN FETCH t.datasource d WHERE t.id = :id "),
+    @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a "
+            + " LEFT JOIN FETCH a.analysisAttributes anAttr "
+            + " LEFT JOIN FETCH anAttr.attribute attr "
+            + " LEFT OUTER JOIN FETCH a.datasource d WHERE a.id = :id")
+           
 })
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -82,6 +87,12 @@ public class Analysis extends AbstractBaseEntity {
     @JoinColumn(name = "FK_ANALYSIS", nullable = false)
     private List<AnalysisColumn> analysisColumns;
     
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_ANALYSIS")
+    private List<AnalysisAttribute> analysisAttributes;
+    
+    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "TP_ANALYSIS")
     private DatasourceTypeEnum type;
@@ -125,6 +136,14 @@ public class Analysis extends AbstractBaseEntity {
 
     public void setAnalysisColumns(List<AnalysisColumn> analysisColumns) {
         this.analysisColumns = analysisColumns;
+    }
+
+    public List<AnalysisAttribute> getAnalysisAttributes() {
+        return analysisAttributes;
+    }
+
+    public void setAnalysisAttributes(List<AnalysisAttribute> analysisAttributes) {
+        this.analysisAttributes = analysisAttributes;
     }
 
     public DatasourceTypeEnum getType() {

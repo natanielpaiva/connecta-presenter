@@ -105,5 +105,25 @@ public class SingleSourceTest extends BaseTest {
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
     }
+    
+    @Test
+    public void bulkDeleteRecords() throws Exception {
+        mockMvc().perform(delete(RESOURCE)
+                .contentType(MEDIATYPE_JSON_UTF8)
+                .content("[1098,1099,1100]")
+        ).andDo(print())
+                .andExpect(status().isNoContent());
+        
+        doesntExist(1098);
+        doesntExist(1099);
+        doesntExist(1100);
+    }
+    
+    private void doesntExist(int id) throws Exception {
+        mockMvc().perform(
+            get(RESOURCE_ID, id)
+        ).andDo(print())
+            .andExpect(status().isNotFound());
+    }
 
 }

@@ -1,11 +1,14 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
+import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
 import br.com.cds.connecta.presenter.business.applicationService.IGroupAS;
 import br.com.cds.connecta.presenter.entity.Group;
 import br.com.cds.connecta.presenter.persistence.IGroupDAO;
+import br.com.cds.connecta.presenter.persistence.impl.BulkActionsRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,14 +17,23 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GroupAS extends AbstractBaseAS<Group> implements IGroupAS{
+    
+    @Autowired
+    private BulkActionsRepository bulk;
 
     @Autowired
     private IGroupDAO groupDao;
     
-    
     @Override
     public Group get(Long id) {
-        return groupDao.get(id);
+        Group group = null;
+        try {
+            group = groupDao.get(id);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ResourceNotFoundException(Group.class.getCanonicalName());
+        }
+        
+        return group;
     }
 
     @Override
@@ -54,6 +66,11 @@ public class GroupAS extends AbstractBaseAS<Group> implements IGroupAS{
     @Override
     public Group getSingleSourceByGroupId(Long id) {
         return groupDao.getSingleSourceByGroupId(id);
+    }
+
+    @Override
+    public void deleteAll(List<Long> ids) {
+        bulk.delete(Group.class, ids);
     }
     
 }

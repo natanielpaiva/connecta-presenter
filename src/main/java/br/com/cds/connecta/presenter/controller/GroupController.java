@@ -122,5 +122,11 @@ public class GroupController extends AbstractBaseController<Group> {
     protected void delete(Long id, HttpServletRequest request, HttpServletResponse response) throws Exception {
         groupService.delete(id);
     }
+    
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity bulkDelete(@RequestBody List<Long> ids) {
+        groupService.deleteAll(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 }

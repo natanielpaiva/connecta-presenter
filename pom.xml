@@ -6,7 +6,7 @@
     
     <groupId>br.com.cds.connecta.presenter</groupId>
     <artifactId>connecta-presenter</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <packaging>war</packaging>
 
     <parent>
@@ -20,7 +20,6 @@
     <properties>
         <java.version>1.7</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <build.warname>presenter-${project.version}</build.warname>
     </properties>
 
     <dependencies>
@@ -51,33 +50,8 @@
        
         <!-- Other dependencies -->
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>
-            <version>5.3.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.2.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.2.1</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.1.2</version>
         </dependency>
         
         <dependency>
@@ -125,7 +99,6 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <warName>${build.warname}</warName>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>

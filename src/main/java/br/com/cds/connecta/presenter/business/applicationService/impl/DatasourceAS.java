@@ -1,15 +1,16 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
+import static br.com.cds.connecta.framework.core.util.Util.isNull;
 import br.com.cds.connecta.presenter.business.applicationService.IDatasourceAS;
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasourceParameter;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
+import br.com.cds.connecta.presenter.persistence.impl.BulkActionsRepository;
 import br.com.cds.connecta.presenter.persistence.impl.WebserviceDatasourceParameterDAO;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class DatasourceAS implements IDatasourceAS {
 
-    @PersistenceContext
-    private EntityManager em;
-
     @Autowired
     private DatasourceRepository dao;
+    
+    @Autowired
+    private BulkActionsRepository<Long> bulk;
 
     @Autowired
     private WebserviceDatasourceParameterDAO parameterDAO;
@@ -44,6 +45,10 @@ public class DatasourceAS implements IDatasourceAS {
     @Override
     public Datasource get(Long id) {
         Datasource ds = dao.findOne(id);
+        
+        if (isNull(ds)) {
+            throw new ResourceNotFoundException(Datasource.class.getCanonicalName());
+        }
 
         if (ds instanceof WebserviceDatasource) {
             WebserviceDatasource wds = (WebserviceDatasource) ds;
@@ -66,6 +71,11 @@ public class DatasourceAS implements IDatasourceAS {
             _delete(ds);
         }
     }
+    
+    @Override
+    public void deleteAll(List<Long> ids) {
+        bulk.delete(Datasource.class, ids);
+    }
 
     private void _delete(WebserviceDatasource ds) {
         List<WebserviceDatasourceParameter> parameters = parameterDAO.findAllByWebserviceDatasource(ds);
@@ -76,17 +86,5 @@ public class DatasourceAS implements IDatasourceAS {
     private void _delete(Datasource ds) {
         dao.delete(ds);
     }
-
-//    @Override
-//    public Datasource saveWebservice(WebserviceDatasource datasource) {
-//        WebserviceDatasource entity = (WebserviceDatasource) save(datasource);
-// 
-//        for (WebserviceDatasourceParameter parameter : datasource.getParameters()) {
-//            parameter.setDatasource(entity);
-//            em.merge(parameter);
-//        }
-//        
-//        return entity;
-//    }
 
 }

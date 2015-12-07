@@ -124,5 +124,11 @@ public class ViewerController extends AbstractBaseController<Viewer> {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write(json);
     }
+    
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity bulkDelete(@RequestBody List<Long> ids) {
+        viewerService.deleteAll(ids);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 }

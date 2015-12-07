@@ -12,15 +12,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ISingleSourceAS {
 
-    abstract SingleSource get(Long id);
+    SingleSource get(Long id);
 
-    abstract List<SingleSource> list() throws Exception;
+    List<SingleSource> list() throws Exception;
 
-    abstract SingleSource saveOrUpdate(SingleSource entity) throws Exception;
+    SingleSource saveOrUpdate(SingleSource entity) throws Exception;
 
-    abstract void delete(Long id) throws Exception;
+    void delete(Long id) throws Exception;
 
-    abstract void delete(SingleSource singleSource) throws Exception;
+    void delete(SingleSource singleSource) throws Exception;
 
     void validate(FileSingleSource fileSingleSource);
 
@@ -32,6 +32,8 @@ public interface ISingleSourceAS {
     
     List<SingleSource> getByAttributeId(Long id);
     
-    public Page<SingleSource> listAutoComplete(SingleSourceFilter filter);
+    Page<SingleSource> listAutoComplete(SingleSourceFilter filter);
+
+    void deleteAll(List<Long> ids);
 
 }

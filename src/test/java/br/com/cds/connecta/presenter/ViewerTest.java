@@ -250,5 +250,25 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.type", equalTo("serial")));
     }
+    
+    @Test
+    public void bulkDeleteRecords() throws Exception {
+        mockMvc().perform(delete(RESOURCE)
+                .contentType(MEDIATYPE_JSON_UTF8)
+                .content("[98,99,100]")
+        ).andDo(print())
+                .andExpect(status().isNoContent());
+        
+        doesntExist(98);
+        doesntExist(99);
+        doesntExist(100);
+    }
+    
+    private void doesntExist(int id) throws Exception {
+        mockMvc().perform(
+            get(RESOURCE_ID, id)
+        ).andDo(print())
+            .andExpect(status().isNotFound());
+    }
 
 }

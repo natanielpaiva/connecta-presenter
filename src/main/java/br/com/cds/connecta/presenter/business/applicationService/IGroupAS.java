@@ -22,7 +22,7 @@ public interface IGroupAS {
     void preValidate(Group group);
     
     Group getSingleSourceByGroupId(Long id);
-    
-    
+
+    void deleteAll(List<Long> ids);
     
 }
