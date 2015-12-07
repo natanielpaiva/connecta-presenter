@@ -8,12 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.entity.Attribute;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = "TA_ATTR_ANALYSIS")
@@ -22,20 +22,17 @@ public class AnalysisAttribute extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TA_ATTR_ANALYSIS_PKATTRIBUTE_GENERATOR", sequenceName = "TA_ATTR_ANALYSIS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_ATTR_ANALYSIS_PKATTRIBUTE_GENERATOR")
+    @SequenceGenerator(name = "TA_ATTR_ANALYSIS_SEQ", sequenceName = "TA_ATTR_ANALYSIS_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_ATTR_ANALYSIS_SEQ")
     @Column(name = "PK_ATTR_ANALYSIS")
     private Long id;
 
     @Column(name = "TXT_VALUE")
     private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_ANALYSIS")
-    private Analysis analysis;
-
-    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_ATTRIBUTE")
+    @ManyToOne(fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, 
+        CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Attribute attribute;
 
     @Override
@@ -53,14 +50,6 @@ public class AnalysisAttribute extends AbstractBaseEntity {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public Analysis getAnalysis() {
-        return analysis;
-    }
-
-    public void setAnalysis(Analysis analysis) {
-        this.analysis = analysis;
     }
 
     public Attribute getAttribute() {

@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
+import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
 import static br.com.cds.connecta.framework.core.util.Util.isNull;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
+import br.com.cds.connecta.presenter.entity.Attribute;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisAttribute;
 import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
@@ -17,6 +20,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -80,9 +84,22 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
     @Override
     public Analysis saveOrUpdate(Analysis analysis) {
+        refreshAttribute(analysis);
         return analysisDAO.saveOrUpdate(analysis);
     }
+    
+     private void refreshAttribute(Analysis analysis) {
+        if (isNotEmpty(analysis.getAnalysisAttributes())) {
+            for (AnalysisAttribute analysisAttribute : analysis.getAnalysisAttributes()) {
+                if (isNotNull(analysisAttribute.getAttribute()) && isNotNull(analysisAttribute.getAttribute().getId())) {
+                    Attribute merge = em.merge(analysisAttribute.getAttribute());
+                    analysisAttribute.setAttribute(merge);
+                }
+            }
+        }
 
+     }
+     
     @Override
     public void delete(Long id) {
         Analysis analysis = em.find(Analysis.class, id);
