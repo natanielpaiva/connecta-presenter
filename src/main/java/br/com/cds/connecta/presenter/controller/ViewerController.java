@@ -2,11 +2,11 @@ package br.com.cds.connecta.presenter.controller;
 
 import br.com.cds.connecta.framework.amcharts.ChartTemplate;
 import br.com.cds.connecta.framework.amcharts.ChartTemplateType;
-import br.com.cds.connecta.framework.amcharts.provider.ChartProvider;
 import br.com.cds.connecta.framework.core.controller.AbstractBaseController;
 import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
 import br.com.cds.connecta.presenter.business.applicationService.IViewerAS;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
+import br.com.cds.connecta.presenter.components.viewers.amcharts.provider.ChartProvider;
 import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
 import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 import java.io.IOException;

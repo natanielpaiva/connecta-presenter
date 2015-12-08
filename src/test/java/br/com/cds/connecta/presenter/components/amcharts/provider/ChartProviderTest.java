@@ -2,7 +2,7 @@ package br.com.cds.connecta.presenter.components.amcharts.provider;
 
 import br.com.cds.connecta.framework.amcharts.ChartTemplate;
 import br.com.cds.connecta.framework.amcharts.ChartTemplateType;
-import br.com.cds.connecta.framework.amcharts.provider.ChartProvider;
+import br.com.cds.connecta.presenter.components.viewers.amcharts.provider.ChartProvider;
 import java.io.File;
 import java.util.Collection;
 import static org.hamcrest.Matchers.*;
@@ -15,7 +15,7 @@ import org.junit.Test;
  */
 public class ChartProviderTest {
     
-    private static final String CHART_TEMPLATES = "/chart-templates";
+    private static final String CHART_TEMPLATES = "chart-templates";
     private final ChartProvider provider = new ChartProvider();
     
     @Test
@@ -34,12 +34,15 @@ public class ChartProviderTest {
             for (ChartTemplate template : templates) {
                 assertThat(template.getId(), notNullValue());
                 
-                File file = new File(getClass()
-                        .getResource(CHART_TEMPLATES.concat(File.separator)
-                            .concat(type.getId())
-                            .concat(File.separator)
-                            .concat(template.getId())
-                            .concat(".json")).getPath());
+                
+                String fileString = getClass().getClassLoader().getResource(CHART_TEMPLATES).getPath();
+                String completePath = fileString.concat(File.separator)
+                        .concat(type.getId())
+                        .concat(File.separator)
+                        .concat(template.getId())
+                        .concat(".json");
+                
+                File file = new File(completePath);
                 
                 assertThat(file.exists(), is(true));
             }
