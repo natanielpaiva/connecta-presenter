@@ -39,9 +39,8 @@ import org.hibernate.annotations.DynamicUpdate;
     @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
-            //+ "LEFT JOIN FETCH t.analysisAttributes anAttr "
-            //+ "LEFT JOIN FETCH anAttr.attribute attr "
-            + "LEFT JOIN FETCH t.datasource d WHERE t.id = :id "),
+            + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
+
     @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a "
             + " LEFT JOIN FETCH a.analysisAttributes anAttr "
             + " LEFT JOIN FETCH anAttr.attribute attr "
