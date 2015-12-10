@@ -28,7 +28,7 @@ public class ChartProvider {
     
     private final Logger logger = Logger.getLogger(getClass());
 
-    private static final String CHART_TEMPLATES = "classpath:chart-templates";
+    private static final String CHART_TEMPLATES = "/chart-templates";
     private static final String INVALID_TEMPLATE_ID = "Invalid template ID";
     private static final String JSON_EXT = ".json";
 
@@ -36,10 +36,13 @@ public class ChartProvider {
      * Lista todos os tipos de templates de Gráfico disponíveis populados com os
      * respectivos templates, utilizando como fonte as pastas localizadas em
      * /chart-templates no classpath.
+     * @param realPath 
      *
      * @return A lista de ChartTemplateType
      */
-    public Collection<ChartTemplateType> listTemplateTypes() {
+    public Collection<ChartTemplateType> listTemplateTypes(String realPath) {
+    	
+    	
         File templateTypeFolder = new File(getFilePath(CHART_TEMPLATES));
 
         logger.info("Chart template folder IS: "+templateTypeFolder);
