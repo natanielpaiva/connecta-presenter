@@ -40,7 +40,7 @@ public class ChartProvider {
      *
      * @return A lista de ChartTemplateType
      */
-    public Collection<ChartTemplateType> listTemplateTypes(String realPath) {
+    public Collection<ChartTemplateType> listTemplateTypes() {
     	
     	
         File templateTypeFolder = new File(getFilePath(CHART_TEMPLATES));
