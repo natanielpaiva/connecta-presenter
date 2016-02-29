@@ -11,5 +11,4 @@
     </prefer-application-packages>
     <show-archived-real-path-enabled>true</show-archived-real-path-enabled>
   </container-descriptor>
-  
 </weblogic-web-app>
