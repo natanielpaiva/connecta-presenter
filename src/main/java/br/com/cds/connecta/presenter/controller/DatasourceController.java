@@ -46,7 +46,7 @@ public class DatasourceController {
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "bi", method = RequestMethod.POST)
+    @RequestMapping(value = "obiee", method = RequestMethod.POST)
     public ResponseEntity<Datasource> save(@RequestBody BIDatasource bi) {
         Datasource newDatasource = service.save(bi);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
