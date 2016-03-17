@@ -26,8 +26,7 @@ public class ChildViewer extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TA_CHILD_VIEWER_PKCHILDVIEWER_GENERATOR", sequenceName="TA_CHILD_VIEWER_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TA_CHILD_VIEWER_PKCHILDVIEWER_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_CHILD_VIEWER")
 	private Long id;
 

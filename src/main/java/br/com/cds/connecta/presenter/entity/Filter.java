@@ -13,6 +13,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import javax.persistence.Table;
 
 
 /**
@@ -20,13 +21,13 @@ import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
  * 
  */
 @Entity
+//@Table(name = "TB_FILTER")
 @NamedQuery(name="Filter.findAll", query="SELECT f FROM Filter f")
 public class Filter extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="FILTER_PKFILTER_GENERATOR", sequenceName="FILTER_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FILTER_PKFILTER_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_FILTER")
 	private Long id;
 

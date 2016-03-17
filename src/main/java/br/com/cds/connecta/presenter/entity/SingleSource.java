@@ -47,8 +47,7 @@ public class SingleSource extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_SINGLE_SOURCE_SEQ", sequenceName = "TB_SINGLE_SOURCE_SEQ", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_SINGLE_SOURCE_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_SINGLE_SOURCE")
     private Long id;
 

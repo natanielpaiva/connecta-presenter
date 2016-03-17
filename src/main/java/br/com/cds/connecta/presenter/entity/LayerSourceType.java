@@ -23,8 +23,7 @@ public class LayerSourceType extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TD_LAYER_SOURCE_TYPE_IDSOURCETYPE_GENERATOR", sequenceName="TD_LAYER_SOURCE_TYPE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TD_LAYER_SOURCE_TYPE_IDSOURCETYPE_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ID_SOURCE_TYPE")
 	private Long id;
 

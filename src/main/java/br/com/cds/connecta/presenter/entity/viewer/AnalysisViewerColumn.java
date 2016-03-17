@@ -29,9 +29,7 @@ public class AnalysisViewerColumn extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TA_ANALYSIS_VW_COLUMNS_SEQ", sequenceName = "TA_ANALYSIS_VW_COLUMNS_SEQ",
-            allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_ANALYSIS_VW_COLUMNS_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_ANALYSIS_VW_COLUMNS")
     private Long id;
     

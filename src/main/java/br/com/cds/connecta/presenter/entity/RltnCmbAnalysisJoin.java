@@ -26,8 +26,7 @@ public class RltnCmbAnalysisJoin extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_RLTN_CMB_ANALYSIS_JOIN_PKLYRCMBANALYSISJOIN_GENERATOR", sequenceName="TB_RLTN_CMB_ANALYSIS_JOIN_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_RLTN_CMB_ANALYSIS_JOIN_PKLYRCMBANALYSISJOIN_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_LYR_CMB_ANALYSIS_JOIN")
 	private Long id;
 

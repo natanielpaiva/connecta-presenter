@@ -53,9 +53,7 @@ public class Group extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_GROUP_SEQ", sequenceName = "TB_GROUP_SEQ", 
-            allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_GROUP_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_GROUP")
     private Long id;
 

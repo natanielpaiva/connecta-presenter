@@ -17,8 +17,7 @@ import org.hibernate.annotations.DynamicUpdate;
 public class BinaryFile extends AbstractBaseEntity {
 
     @Id
-    @SequenceGenerator(name = "TB_BINARY_FILE_SEQ", sequenceName = "TB_BINARY_FILE_SEQ", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_BINARY_FILE_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_BINARY_FILE")
     private Long id;
 

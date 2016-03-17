@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author pires
  */
+@Ignore
 public class ViewerTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("viewer");

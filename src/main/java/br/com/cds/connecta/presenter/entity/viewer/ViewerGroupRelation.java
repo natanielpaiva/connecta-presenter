@@ -25,8 +25,7 @@ public class ViewerGroupRelation extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "VIEWERGROUP_RELATION_PKVIEWERGROUPRELATION_GENERATOR", sequenceName = "VIEWERGROUP_RELATION_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "VIEWERGROUP_RELATION_PKVIEWERGROUPRELATION_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_VIEWERGROUP_RELATION")
     private Long id;
 

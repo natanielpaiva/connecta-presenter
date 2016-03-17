@@ -22,8 +22,7 @@ public class AnalysisAttribute extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TA_ATTR_ANALYSIS_SEQ", sequenceName = "TA_ATTR_ANALYSIS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_ATTR_ANALYSIS_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_ATTR_ANALYSIS")
     private Long id;
 

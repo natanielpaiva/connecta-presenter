@@ -25,8 +25,7 @@ public class LayerViewerGroupLayer extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TA_LAYER_VIWR_GROUP_LAYER_SEQ", sequenceName="TA_LAYER_VIWR_GROUP_LAYER_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TA_LAYER_VIWR_GROUP_LAYER_SEQ")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ID_RELATION")
 	private Long id;
 

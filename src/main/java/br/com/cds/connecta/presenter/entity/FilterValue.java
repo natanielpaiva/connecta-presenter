@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
@@ -26,8 +25,7 @@ public class FilterValue extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_FILTER_VALUE_PKFILTERVALUE_GENERATOR", sequenceName="TB_FILTER_VALUE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_FILTER_VALUE_PKFILTERVALUE_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_FILTER_VALUE")
 	private Long id;
 

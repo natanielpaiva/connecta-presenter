@@ -26,8 +26,7 @@ public class ConfigCstmPrm extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_CONFIG_CSTM_PRM_PKCONFIGCSTMPRM_GENERATOR", sequenceName="TB_CONFIG_CSTM_PRM_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CONFIG_CSTM_PRM_PKCONFIGCSTMPRM_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_CONFIG_CSTM_PRM")
 	private Long id;
 

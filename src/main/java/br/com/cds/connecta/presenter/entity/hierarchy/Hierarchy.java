@@ -40,12 +40,7 @@ public class Hierarchy extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(
-            name = "TB_HIERARCHY_SEQ",
-            sequenceName = "TB_HIERARCHY_SEQ",
-            initialValue = 1,
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_HIERARCHY_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_HIERARCHY")
     private Long id;
 
