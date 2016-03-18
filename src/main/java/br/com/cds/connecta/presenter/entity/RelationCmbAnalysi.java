@@ -28,8 +28,7 @@ public class RelationCmbAnalysi extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_RELATION_CMB_ANALYSIS_PKRELATIONCMBANALYSIS_GENERATOR", sequenceName="TB_RELATION_CMB_ANALYSIS_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_RELATION_CMB_ANALYSIS_PKRELATIONCMBANALYSIS_GENERATOR")
+        @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_RELATION_CMB_ANALYSIS")
 	private Long id;
 

@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
@@ -22,8 +21,7 @@ public class SingleSourceGroup extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TA_SNGL_SRC_GROUP_SEQ", sequenceName = "TA_SNGL_SRC_GROUP_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_SNGL_SRC_GROUP_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_SNGL_SRC_GROUP")
     private Long id;
 

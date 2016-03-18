@@ -28,8 +28,7 @@ public class AnalysisColumn extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_ANALYSIS_COLUMNS_SEQ", sequenceName = "TB_ANALYSIS_COLUMNS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ANALYSIS_COLUMNS_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_ANALYSIS_COLUMNS")
     private Long id;
 

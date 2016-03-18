@@ -5,18 +5,30 @@ import br.com.cds.connecta.framework.amcharts.ChartTemplate;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Vinicius Pires <vinicius.pires@cds.com.br>
  */
+
+@Component
 public class ChartProvider {
 
-    private static final String CHART_TEMPLATES = "chart-templates";
+    @Autowired
+    private ApplicationContext context;
+    
+    private final Logger logger = Logger.getLogger(getClass());
+
+    private static final String CHART_TEMPLATES = "/chart-templates";
     private static final String INVALID_TEMPLATE_ID = "Invalid template ID";
     private static final String JSON_EXT = ".json";
 
@@ -24,13 +36,22 @@ public class ChartProvider {
      * Lista todos os tipos de templates de Gráfico disponíveis populados com os
      * respectivos templates, utilizando como fonte as pastas localizadas em
      * /chart-templates no classpath.
+     * @param realPath 
      *
      * @return A lista de ChartTemplateType
      */
     public Collection<ChartTemplateType> listTemplateTypes() {
+    	
+    	
         File templateTypeFolder = new File(getFilePath(CHART_TEMPLATES));
 
+        logger.info("Chart template folder IS: "+templateTypeFolder);
+        logger.info("Chart template folder exists? "+templateTypeFolder.exists());
+        logger.info("Chart template folder children "+Arrays.toString(templateTypeFolder.listFiles()));
+        logger.info("Chart template folder children length "+templateTypeFolder.listFiles().length);
+
         File[] folders = templateTypeFolder.listFiles();
+
 
         Set<ChartTemplateType> types = new HashSet<>(folders.length);
         for (File folder : folders) {
@@ -97,7 +118,16 @@ public class ChartProvider {
     }
 
     private String getFilePath(String filename) {
-        return getClass().getClassLoader().getResource(filename).getPath();
+        String path = "";
+        
+        try {
+            path = context.getResource(filename).getFile().getPath();
+            logger.info("Spring getResource returned PATH: "+path);
+        } catch (IOException ex) {
+            logger.error("Spring getResource gave IOException: ", ex);
+    }
+        return path;
+//        return getClass().getClassLoader().getResource(filename).getPath();
     }
 
     /**

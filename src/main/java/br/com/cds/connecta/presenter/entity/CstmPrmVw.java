@@ -27,8 +27,7 @@ public class CstmPrmVw extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TA_CSTM_PRM_VW_PKCSTMPRMVW_GENERATOR", sequenceName="TA_CSTM_PRM_VW_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TA_CSTM_PRM_VW_PKCSTMPRMVW_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_CSTM_PRM_VW")
 	private Long id;
 

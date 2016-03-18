@@ -25,8 +25,7 @@ public class GroupAttribute extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TA_ATTR_GROUP_PKATTRGROUP_GENERATOR", sequenceName = "TA_ATTR_GROUP_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_ATTR_GROUP_PKATTRGROUP_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_ATTR_GROUP")
     private Long id;
 

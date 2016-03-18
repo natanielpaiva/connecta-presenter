@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.cds.connecta.presenter.entity.hierarchy;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
@@ -41,12 +36,7 @@ public class HierarchyItem extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(
-            name = "TB_HIERARCHY_ITEM_SEQ",
-            sequenceName = "TB_HIERARCHY_ITEM_SEQ",
-            initialValue = 1,
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_HIERARCHY_ITEM_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_HIERARCHY_ITEM")
     private Long id;
     

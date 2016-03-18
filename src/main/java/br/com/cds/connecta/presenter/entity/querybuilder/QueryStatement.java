@@ -34,9 +34,7 @@ import javax.persistence.Table;
 public class QueryStatement implements Serializable {
     
     @Id
-    @GeneratedValue(generator = "TB_QUERY_STATEMENT_SEQ", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "TB_QUERY_STATEMENT_SEQ", sequenceName = "TB_QUERY_STATEMENT_SEQ",
-            initialValue = 1, allocationSize = 1)
+    @GeneratedValue( strategy = GenerationType.AUTO)
     @Column(name = "PK_QUERY_STATEMENT")
     protected Long id;
 

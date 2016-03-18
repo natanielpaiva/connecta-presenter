@@ -23,8 +23,7 @@ public class LayerViewerImpl extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TD_LAYER_VIEWER_IMPL_IDLVIMPL_GENERATOR", sequenceName="TD_LAYER_VIEWER_IMPL_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TD_LAYER_VIEWER_IMPL_IDLVIMPL_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="ID_LV_IMPL")
 	private Long id;
 

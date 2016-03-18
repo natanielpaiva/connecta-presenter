@@ -21,9 +21,7 @@ import javax.persistence.Table;
 public class Query implements Serializable {
 
     @Id
-    @SequenceGenerator(name = "TB_QUERY_SEQ", sequenceName = "TB_QUERY_SEQ",
-            allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_QUERY_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_QUERY")
     private Long id;
 

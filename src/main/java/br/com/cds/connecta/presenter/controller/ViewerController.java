@@ -39,7 +39,8 @@ public class ViewerController extends AbstractBaseController<Viewer> {
     @Autowired
     private IDataExtractorAS dataExtratorService;
     
-    private final ChartProvider chartProvider = new ChartProvider();
+    @Autowired
+    private ChartProvider chartProvider;
 
     @Override
     protected ResponseEntity<Viewer> get(Long id,

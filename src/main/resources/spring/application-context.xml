@@ -11,9 +11,20 @@
     <context:component-scan base-package="br.com.cds.connecta.presenter" />
     
     <!--PERSISTENCE-->
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+<!--    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="ConnectaPresenterPU" />
+    </bean>-->
+
+    
+<!--   <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="ConnectaPortalPostgresPU" />
+        <property name="packagesToScan" value="br.com.cds.connecta.presenter.entity.*" />
+    </bean>-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="ConnectaPresenterPU" />
+        <property name="packagesToScan" value="br.com.cds.connecta.presenter.entity.*" />
     </bean>
+    
     
 <!--    <bean id="solr" class="br.com.cds.connecta.framework.connector.solr.Solr" />-->
     

@@ -29,8 +29,7 @@ public class CsvData extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_CSV_DATA_PKCSVDATA_GENERATOR", sequenceName="TB_CSV_DATA_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CSV_DATA_PKCSVDATA_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_CSV_DATA")
 	private Long id;
 

@@ -23,8 +23,7 @@ public class ConfigViewer extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_CONFIG_VIEWER_PKCONFIGVIEWER_GENERATOR", sequenceName="TB_CONFIG_VIEWER_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_CONFIG_VIEWER_PKCONFIGVIEWER_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_CONFIG_VIEWER")
 	private Long id;
 

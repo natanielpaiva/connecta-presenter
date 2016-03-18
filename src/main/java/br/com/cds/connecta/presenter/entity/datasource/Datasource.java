@@ -26,12 +26,7 @@ import javax.persistence.InheritanceType;
 public class Datasource extends AbstractBaseEntity implements Serializable {
 
     @Id
-    @SequenceGenerator(
-        name = "TB_DATASOURCE_SEQ",
-        sequenceName = "TB_DATASOURCE_SEQ",
-        initialValue = 1,
-        allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_DATASOURCE_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_DATASOURCE")
     private Long id;
 

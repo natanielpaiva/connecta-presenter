@@ -30,9 +30,7 @@ public class Attribute extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_ATTRIBUTE_SEQ", sequenceName = "TB_ATTRIBUTE_SEQ", 
-            allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ATTRIBUTE_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_ATTRIBUTE")
     private Long id;
 

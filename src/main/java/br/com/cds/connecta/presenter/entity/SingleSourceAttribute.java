@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
@@ -25,8 +24,7 @@ public class SingleSourceAttribute extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TA_ATTR_SNGL_SRC_SEQ", sequenceName = "TA_ATTR_SNGL_SRC_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_ATTR_SNGL_SRC_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_ATTR_SNGL_SRC")
     private Long id;
 

@@ -23,8 +23,7 @@ public class FilterSelector extends AbstractBaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TB_FILTER_SELECTOR_PKFILTERSELECTOR_GENERATOR", sequenceName="TB_FILTER_SELECTOR_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TB_FILTER_SELECTOR_PKFILTERSELECTOR_GENERATOR")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="PK_FILTER_SELECTOR")
 	private Long id;
 

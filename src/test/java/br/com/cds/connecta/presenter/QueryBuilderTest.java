@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author pires
  */
+@Ignore
 public class QueryBuilderTest extends BaseTest {
 
     final String RESOURCE = REST_PATH.concat("group/query");

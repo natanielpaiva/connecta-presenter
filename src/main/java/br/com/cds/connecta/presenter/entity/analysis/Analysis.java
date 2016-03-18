@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
@@ -39,9 +38,8 @@ import org.hibernate.annotations.DynamicUpdate;
     @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
-            //+ "LEFT JOIN FETCH t.analysisAttributes anAttr "
-            //+ "LEFT JOIN FETCH anAttr.attribute attr "
-            + "LEFT JOIN FETCH t.datasource d WHERE t.id = :id "),
+            + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
+
     @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a "
             + " LEFT JOIN FETCH a.analysisAttributes anAttr "
             + " LEFT JOIN FETCH anAttr.attribute attr "
@@ -68,8 +66,7 @@ public class Analysis extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TB_ANALYSIS_SEQ", sequenceName = "TB_ANALYSIS_SEQ", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_ANALYSIS_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_ANALYSIS")
     private Long id;
 

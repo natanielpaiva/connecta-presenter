@@ -37,12 +37,7 @@ public class WebserviceDatasourceParameter extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(
-            name = "TB_WEBSERVICE_PARAMETERS_SEQ",
-            sequenceName = "TB_WEBSERVICE_PARAMETERS_SEQ",
-            initialValue = 1,
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_WEBSERVICE_PARAMETERS_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_WEBSERVICE_PARAMETER")
     private Long id;
 

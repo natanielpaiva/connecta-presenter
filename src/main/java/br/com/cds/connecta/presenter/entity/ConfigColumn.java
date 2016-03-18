@@ -27,8 +27,7 @@ public class ConfigColumn extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "TA_CONFIG_COLUMNS_PKCONFIGCOLUMNS_GENERATOR", sequenceName = "TA_CONFIG_COLUMNS_SEQ")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TA_CONFIG_COLUMNS_PKCONFIGCOLUMNS_GENERATOR")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_CONFIG_COLUMNS")
     private Long id;
 

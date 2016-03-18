@@ -21,12 +21,7 @@ public class WebserviceAnalysisParameter extends AbstractBaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(
-            name = "TB_WS_ANALYSIS_PARAMETER_SEQ",
-            sequenceName = "TB_WS_ANALYSIS_PARAMETER_SEQ",
-            initialValue = 1,
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TB_WS_ANALYSIS_PARAMETER_SEQ")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PK_WS_ANALYSIS_PARAMETER")
     private Long id;
     

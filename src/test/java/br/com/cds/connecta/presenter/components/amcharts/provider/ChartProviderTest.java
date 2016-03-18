@@ -2,21 +2,25 @@ package br.com.cds.connecta.presenter.components.amcharts.provider;
 
 import br.com.cds.connecta.framework.amcharts.ChartTemplate;
 import br.com.cds.connecta.framework.amcharts.ChartTemplateType;
+import br.com.cds.connecta.presenter.BaseTest;
 import br.com.cds.connecta.presenter.components.viewers.amcharts.provider.ChartProvider;
 import java.io.File;
 import java.util.Collection;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author Vinicius Pires <vinicius.pires@cds.com.br>
  */
-public class ChartProviderTest {
+public class ChartProviderTest extends BaseTest {
     
     private static final String CHART_TEMPLATES = "chart-templates";
-    private final ChartProvider provider = new ChartProvider();
+    
+    @Autowired
+    private ChartProvider provider;
     
     @Test
     public void providerListsTemplateTypes() {
@@ -33,7 +37,6 @@ public class ChartProviderTest {
             
             for (ChartTemplate template : templates) {
                 assertThat(template.getId(), notNullValue());
-                
                 
                 String fileString = getClass().getClassLoader().getResource(CHART_TEMPLATES).getPath();
                 String completePath = fileString.concat(File.separator)
