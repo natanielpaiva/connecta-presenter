@@ -7,10 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import br.com.cds.connecta.framework.core.search.annotation.ConnectaViewer;
 import br.com.cds.connecta.presenter.domain.ViewerTypeEnum;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -66,6 +66,7 @@ import org.hibernate.search.annotations.TokenizerDef;
         })
     }
 )
+@ConnectaViewer(module="presenter")
 public class Viewer extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
