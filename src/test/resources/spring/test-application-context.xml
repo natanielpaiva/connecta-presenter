@@ -16,9 +16,6 @@
 
     <import resource="classpath:META-INF/br.com.cds.connecta.framework.test.xml" />
     
-    <bean class="br.com.cds.connecta.framework.core.context.ConnectaConfigurationService"
-        factory-method="getInstance" />
-    
     <!--PERSISTENCE-->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver" />
