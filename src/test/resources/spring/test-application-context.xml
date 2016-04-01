@@ -16,8 +16,8 @@
 
     <import resource="classpath:META-INF/br.com.cds.connecta.framework.test.xml" />
     
-<!--    <bean id="solr" class="br.com.cds.connecta.framework.connector.solr.Solr" />-->
-
+    <bean class="br.com.cds.connecta.framework.core.context.ConnectaConfigurationService"
+        factory-method="getInstance" />
     
     <!--PERSISTENCE-->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

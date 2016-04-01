@@ -22,7 +22,7 @@ public class DatasourceTest extends BaseTest {
     static final String RESOURCE_DATABASE = RESOURCE.concat("/database");
     static final String RESOURCE_ENDECA = RESOURCE.concat("/endeca");
     static final String RESOURCE_HDFS = RESOURCE.concat("/hdfs");
-    static final String RESOURCE_BI = RESOURCE.concat("/bi");
+    static final String RESOURCE_BI = RESOURCE.concat("/obiee");
     static final String RESOURCE_SOLR = RESOURCE.concat("/solr");
     static final String RESOURCE_WEBSERVICE = RESOURCE.concat("/webservice");
 
