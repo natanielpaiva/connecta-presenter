@@ -6,5 +6,6 @@ package br.com.cds.connecta.presenter.domain;
  */
 public enum DatabaseDatasourceDriverEnum {
     ORACLE_SID,
-    POSTGRES;
+    POSTGRESQL,
+    MYSQL;
 }
