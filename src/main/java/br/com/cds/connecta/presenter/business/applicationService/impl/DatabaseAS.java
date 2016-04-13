@@ -1,14 +1,11 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
-import br.com.cds.connecta.framework.connector.database.Database;
 import br.com.cds.connecta.framework.connector.database.DatabaseService;
-import br.com.cds.connecta.framework.connector.database.service.DatabaseTable;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseColumn;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseTable;
 import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
-import br.com.cds.connecta.presenter.business.strategy.connector.DataBaseConnectorStrategy;
-import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnectorStrategy;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
@@ -16,11 +13,7 @@ import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.apache.metamodel.DataContext;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +24,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class DatabaseAS implements IDatabaseAS {
 
-    @PersistenceContext
-    private EntityManager em;
-
     @Autowired
     private DatasourceRepository dataSourceDao;
 
     @Autowired
-    private DataBaseConnectorStrategy dataBaseConnectorStrategy;
+    private DatabaseConnectorStrategy dataBaseConnectorStrategy;
+    
+    private final Logger logger = Logger.getLogger(DatabaseAS.class);
 
     @Override
     public List getTables(Long id) {
@@ -62,6 +54,7 @@ public class DatabaseAS implements IDatabaseAS {
                 columns.add(column);
             }
         }
+        
         return databaseTables;
     }
 
@@ -74,41 +67,9 @@ public class DatabaseAS implements IDatabaseAS {
                 + dataBaseDataSource.getSid();
     }
 
-
     @Override
     public List<Map<String, Object>> getDataSql(Long id, DatabaseAnalysis databaseAnalysis) {
-        List<Map<String, Object>> dataProvider;
-        List<ConnectorColumn> connectorColumn = new ArrayList<>();
-
-        List<AnalysisColumn> analysisColumns = databaseAnalysis.getAnalysisColumns();
-
-        if (analysisColumns != null) {
-            for (AnalysisColumn analysisColumn : analysisColumns) {
-                ConnectorColumn column = new ConnectorColumn();
-                column.setId(analysisColumn.getId());
-                column.setLabel(analysisColumn.getLabel());
-                column.setName(analysisColumn.getName());
-                column.setFormula(analysisColumn.getFormula());
-                connectorColumn.add(column);
-            }
-         dataProvider = dataBaseConnectorStrategy.getDataProvider(databaseAnalysis, connectorColumn);
-        }else{
-             DataContext dataContext;
-                Database database = new Database();
-                DatabaseDatasource datasource = (DatabaseDatasource) dataSourceDao.findOne(id);
-                
-                dataContext = database.getDados(
-                datasource.getDriver().toString(),
-                datasource.getServer(),
-                datasource.getPort().toString(),
-                datasource.getSid(),
-                datasource.getUser(),
-                datasource.getPassword());
-            
-         dataProvider= database.getResultSql(dataContext, databaseAnalysis.getSql());
-        }
-
-        return dataProvider;
+        return dataBaseConnectorStrategy.getDataProvider(databaseAnalysis, null);
     }
 
 }

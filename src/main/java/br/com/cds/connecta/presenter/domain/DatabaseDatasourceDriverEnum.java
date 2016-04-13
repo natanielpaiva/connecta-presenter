@@ -6,6 +6,7 @@ package br.com.cds.connecta.presenter.domain;
  */
 public enum DatabaseDatasourceDriverEnum {
     ORACLE_SID,
+    ORACLE_SNM, // service name
     POSTGRESQL,
     MYSQL;
 }
