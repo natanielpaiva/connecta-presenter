@@ -43,10 +43,6 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
         DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(analysis.getDatasource().getId());
         List<br.com.cds.connecta.framework.connector2.common.ConnectorColumn> connectorColumns = new ArrayList<>();
 
-        // FIXME Passar os dados inteiros das colunas
-        logger.info("ANALYSIS HAS COLUMNS: " + (databaseAnalysis.getAnalysisColumns() != null));
-        logger.info("ANALYSIS COLUMNS SIZE: " + databaseAnalysis.getAnalysisColumns().size());
-
         if (Util.isNotEmpty(columns)) {
             parseConnectorColumns1To2(columns, connectorColumns);
         } else {
