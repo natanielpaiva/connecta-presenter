@@ -60,14 +60,14 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
             QueryContext query = new QueryContext()
                     .setSchema(datasource.getSchema())
                     .setTable(databaseAnalysis.getTable())
-                    .setConnectorColumns(connectorColumns);
+                    .setListColumns(connectorColumns);
 
             Request request = new Request(dataContextFactory, query);
             dataProvider = fusionClient.getAll(request);
         } else { // if (databaseAnalysis.getSql() != null)
             logger.info("MANUAL SQL ANALYSIS");
             DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(databaseAnalysis.getSql(), driver, datasource.getUser(), datasource.getPassword());
-            QueryContext query = new QueryContext().setConnectorColumns(connectorColumns);
+            QueryContext query = new QueryContext().setListColumns(connectorColumns);
 
             Request request = new Request(dataContextFactory, query);
             dataProvider = fusionClient.getAll(request);
