@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.hibernate.annotations.Type;
 
 /**
  * The persistent class for the TB_DB_ANALYSIS database table.
@@ -33,6 +34,7 @@ public class DatabaseAnalysis extends Analysis {
     private String table;
     
     @Column(name = "TXT_SQL")
+    @Type(type = "text")
     private String sql;
 
     public String getFields() {
