@@ -2,7 +2,7 @@ package br.com.cds.connecta.presenter.domain;
 
 import br.com.cds.connecta.presenter.business.strategy.connector.ConnectorStrategy;
 import br.com.cds.connecta.presenter.business.strategy.connector.CsvConnectorStrategy;
-import br.com.cds.connecta.presenter.business.strategy.connector.DataBaseConnectorStrategy;
+import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnectorStrategy;
 import br.com.cds.connecta.presenter.business.strategy.connector.RestConnectorStrategy;
 import br.com.cds.connecta.presenter.business.strategy.connector.SolrConnectorStrategy;
 
@@ -12,7 +12,7 @@ import br.com.cds.connecta.presenter.business.strategy.connector.SolrConnectorSt
  */
 public enum DatasourceTypeEnum {
 
-    DATABASE(AnalysisTypeEnum.DATABASE, DataBaseConnectorStrategy.class),
+    DATABASE(AnalysisTypeEnum.DATABASE, DatabaseConnectorStrategy.class),
     ENDECA(AnalysisTypeEnum.ENDECA, null),
     HDFS(AnalysisTypeEnum.HDFS, null),
     OBIEE(AnalysisTypeEnum.OBIEE, null),

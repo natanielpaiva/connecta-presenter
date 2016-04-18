@@ -22,7 +22,7 @@ public class DatasourceTest extends BaseTest {
     static final String RESOURCE_DATABASE = RESOURCE.concat("/database");
     static final String RESOURCE_ENDECA = RESOURCE.concat("/endeca");
     static final String RESOURCE_HDFS = RESOURCE.concat("/hdfs");
-    static final String RESOURCE_BI = RESOURCE.concat("/bi");
+    static final String RESOURCE_BI = RESOURCE.concat("/obiee");
     static final String RESOURCE_SOLR = RESOURCE.concat("/solr");
     static final String RESOURCE_WEBSERVICE = RESOURCE.concat("/webservice");
 
@@ -89,7 +89,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.driver", enumKeyFor(DatabaseDatasourceDriverEnum.POSTGRES)))
+                .andExpect(jsonPath("$.driver", enumKeyFor(DatabaseDatasourceDriverEnum.POSTGRESQL)))
                 .andExpect(jsonPath("$.server", equalTo("teste")))
                 .andExpect(jsonPath("$.port", equalTo(666)))
                 .andExpect(jsonPath("$.sid", equalTo("teste")))
@@ -194,7 +194,7 @@ public class DatasourceTest extends BaseTest {
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.server", equalTo("server")))
                 .andExpect(jsonPath("$.path", equalTo("caminho")))
-                .andExpect(jsonPath("$.port", equalTo(666)))
+                .andExpect(jsonPath("$.hdfsPort", equalTo(666)))
                 .andExpect(jsonPath("$.name", equalTo("Novodatasource")))
                 .andExpect(jsonPath("$.description", equalTo("s")))
                 .andExpect(jsonPath("$.type", enumKeyFor(DatasourceTypeEnum.HDFS)))

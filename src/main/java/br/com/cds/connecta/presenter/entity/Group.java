@@ -32,15 +32,15 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @NamedQueries({
     @NamedQuery(name = "Group.findAll", query = "SELECT t FROM Group t"),
-    @NamedQuery(name = "Group.getByWhitSingleSourceId", query = "SELECT g FROM Group g "
+    @NamedQuery(name = "Group.getByWithSingleSourceId", query = "SELECT g FROM Group g "
             + "LEFT JOIN FETCH g.singleSourceGroup sgg "
             + "LEFT JOIN FETCH sgg.singleSource k "
             + "WHERE g.id = :id"),
-    @NamedQuery(name = "Group.getByWhitAttributeId", query = "SELECT g FROM Group g "
+    @NamedQuery(name = "Group.getByWithAttributeId", query = "SELECT g FROM Group g "
             + "LEFT JOIN FETCH g.groupAttribute sgg "
             + "LEFT JOIN FETCH sgg.attribute k "
             + "WHERE g.id = :id"),
-    @NamedQuery(name = "Group.getByWhitQueryId", query = "SELECT g FROM Group g "
+    @NamedQuery(name = "Group.getByWithQueryId", query = "SELECT g FROM Group g "
             + "LEFT JOIN FETCH g.query q "
             + "WHERE g.id = :id"),
     @NamedQuery(name = "Group.getSingleSourceByGroupId", query = "SELECT g FROM Group g "

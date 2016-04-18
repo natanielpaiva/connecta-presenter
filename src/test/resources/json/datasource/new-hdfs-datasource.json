@@ -1,6 +1,6 @@
 {
     "path": "caminho",
-    "port": 666,
+    "hdfsPort": 666,
     "server": "server",
     "name": "Novodatasource",
     "description": "s",
