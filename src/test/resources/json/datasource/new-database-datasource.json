@@ -1,5 +1,5 @@
 {
-    "driver": "POSTGRES",
+    "driver": "POSTGRESQL",
     "server": "teste",
     "port": 666,
     "sid": "teste",

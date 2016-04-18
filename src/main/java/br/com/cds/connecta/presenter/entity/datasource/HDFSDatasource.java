@@ -19,7 +19,7 @@ public class HDFSDatasource extends Datasource {
     private String path;
 
     @Column(name = "TXT_PORT")
-    private Integer port;
+    private Integer hdfsPort;
 
     @Column(name = "TXT_SERVER")
     private String server;
@@ -32,12 +32,12 @@ public class HDFSDatasource extends Datasource {
         this.path = path;
     }
 
-    public Integer getPort() {
-        return port;
+    public Integer getHdfsPort() {
+        return hdfsPort;
     }
 
-    public void setPort(Integer port) {
-        this.port = port;
+    public void setHdfsPort(Integer hdfsPort) {
+        this.hdfsPort = hdfsPort;
     }
 
     public String getServer() {
