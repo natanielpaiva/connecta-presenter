@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	<import resource="classpath:META-INF/br.com.cds.connecta.framework.core.xml" />
+    <import resource="classpath:META-INF/br.com.cds.connecta.framework.core.xml" />
 
-	<context:component-scan base-package="br.com.cds.connecta.presenter" />
+    <context:component-scan base-package="br.com.cds.connecta.presenter" />
 
-	<!--PERSISTENCE -->
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="ConnectaPresenterPU" />
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="br.com.cds.connecta.presenter.entity" />
-		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-		</property>
-		<property name="jpaProperties">
-			<props>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<!--<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop> -->
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect </prop>
-				<!--<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop> -->
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.archive.autodetection">class,hbm</prop>
-				<prop key="hibernate.use_sql_comments">false</prop>
-				<prop key="hibernate.c3p0.min_size">5</prop>
-				<prop key="hibernate.c3p0.max_size">35</prop>
-				<prop key="hibernate.c3p0.timeout">30000</prop>
-				<prop key="hibernate.c3p0.max_statements">180</prop>
-				<prop key="hibernate.c3p0.idle_test_period">30000</prop>
-<!-- 				<prop key="hibernate.transaction.manager_lookup_class"> -->
-<!-- 					org.hibernate.transaction.WeblogicTransactionManagerLookup -->
-<!-- 				</prop> -->
-				<prop key="hibernate.transaction.manager_lookup_class">
-					org.hibernate.transaction.JBossTransactionManagerLookup
-				</prop>
-				<prop key="hibernate.search.default.directory_provider">
-					org.hibernate.search.store.impl.RAMDirectoryProvider
-				</prop>
-				<prop key="hibernate.search.default.worker.backend">
-					br.com.cds.connecta.framework.core.search.HibernateSearchSolrIndexer
-				</prop>
-			</props>
-		</property>
-	</bean>
+    <!--PERSISTENCE -->
+    <bean id="entityManagerFactory"
+              class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="ConnectaPresenterPU" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="br.com.cds.connecta.presenter.entity" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop> 
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect </prop>-->
+                <!--<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop> -->
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.archive.autodetection">class,hbm</prop>
+                <prop key="hibernate.use_sql_comments">false</prop>
+                <prop key="hibernate.c3p0.min_size">5</prop>
+                <prop key="hibernate.c3p0.max_size">35</prop>
+                <prop key="hibernate.c3p0.timeout">30000</prop>
+                <prop key="hibernate.c3p0.max_statements">180</prop>
+                <prop key="hibernate.c3p0.idle_test_period">30000</prop>
+                <!-- 				<prop key="hibernate.transaction.manager_lookup_class"> -->
+                <!-- 					org.hibernate.transaction.WeblogicTransactionManagerLookup -->
+                <!-- 				</prop> -->
+                <prop key="hibernate.transaction.manager_lookup_class">
+                    org.hibernate.transaction.JBossTransactionManagerLookup
+                </prop>
+                <prop key="hibernate.search.default.directory_provider">
+                    org.hibernate.search.store.impl.RAMDirectoryProvider
+                </prop>
+                <prop key="hibernate.search.default.worker.backend">
+                    br.com.cds.connecta.framework.core.search.HibernateSearchSolrIndexer
+                </prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName">
-			<value>ConnectaPresenterMysqlDS</value>
-		</property>
-	</bean>
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>ConnectaPresenterDS</value>
+        </property>
+    </bean>
 
-	<!--TRANSACTION -->
-	<import
-		resource="classpath:META-INF/br.com.cds.connecta.framework.transaction.xml" />
+    <!--TRANSACTION -->
+    <import
+        resource="classpath:META-INF/br.com.cds.connecta.framework.transaction.xml" />
 
 </beans>
