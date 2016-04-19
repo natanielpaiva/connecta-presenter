@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.entity.viewer;
 
+import br.com.cds.connecta.presenter.entity.Filter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,8 +19,8 @@ import org.hibernate.search.annotations.Indexed;
 @Entity
 @Table(name = "TB_ANALYSIS_VIEWER")
 @NamedQuery(
-    name = "AnalysisViewer.get",
-    query = "SELECT a FROM AnalysisViewer a "
+        name = "AnalysisViewer.get",
+        query = "SELECT a FROM AnalysisViewer a "
         + "LEFT JOIN FETCH a.analysisViewerColumns av "
         + "LEFT JOIN FETCH av.analysisColumn WHERE a.id = :id"
 )
@@ -38,6 +39,10 @@ public class AnalysisViewer extends Viewer {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS_VIEWER")
     private List<AnalysisViewerColumn> analysisViewerColumns;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_ANALYSIS_VIEWER")
+    private List<Filter> filters;
 
     public String getLabel() {
         return label;
@@ -70,4 +75,13 @@ public class AnalysisViewer extends Viewer {
     public void setAnalysisViewerColumns(List<AnalysisViewerColumn> analysisViewerColumns) {
         this.analysisViewerColumns = analysisViewerColumns;
     }
+
+    public List<Filter> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(List<Filter> filters) {
+        this.filters = filters;
+    }
+
 }
