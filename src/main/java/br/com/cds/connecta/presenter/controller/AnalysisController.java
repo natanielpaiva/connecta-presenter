@@ -37,6 +37,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
@@ -69,8 +70,6 @@ public class AnalysisController {
 
     private JSONValueParser parser = new JSONValueParser();
 
-    private static final Logger logger = Logger.getLogger(AnalysisController.class);
-
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<Analysis> save(@RequestBody Analysis analysis) {
 
@@ -83,7 +82,8 @@ public class AnalysisController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    protected ResponseEntity<Analysis> update(@PathVariable Long id, @RequestBody Analysis analysis) {
+    protected ResponseEntity<Analysis> 
+    				update(@PathVariable Long id, @RequestBody Analysis analysis) {
         analysis.setId(id);
         Analysis updatedAnalysis = analysisService.saveOrUpdate(analysis);
         return new ResponseEntity<>(updatedAnalysis, HttpStatus.OK);
@@ -92,20 +92,24 @@ public class AnalysisController {
     @RequestMapping(
             value = "{id}",
             method = RequestMethod.DELETE)
-    protected ResponseEntity delete(@PathVariable("id") Long id) {
-        analysisService.delete(id);
+    protected ResponseEntity delete(@PathVariable("id") Long id,
+    		@RequestHeader("Domain") String domain) {
+        analysisService.delete(id,domain);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    protected ResponseEntity<Analysis> get(@PathVariable("id") Long id) {
-        Analysis analysis = analysisService.get(id);
+    protected ResponseEntity<Analysis> get(@PathVariable("id") Long id,
+    		@RequestHeader("Domain") String domain) {
+        Analysis analysis = analysisService.get(id, domain);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
     
 
     @RequestMapping(method = RequestMethod.GET)
-    protected ResponseEntity<Iterable<Analysis>> list(AnalysisFilter filter) {
+    protected ResponseEntity<Iterable<Analysis>> list(AnalysisFilter filter,
+    		@RequestHeader("Domain") String domain) {
+    	filter.setDomain(domain);
         Iterable<Analysis> list = analysisService.list(filter);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -195,7 +199,8 @@ public class AnalysisController {
     }
 
     //Retona a resposta do Soap no formato json
-    @RequestMapping(value = "{id}/soap/operation/{operation}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "{id}/soap/operation/{operation}", 
+    		method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<XMLNode> getSoap(
             @PathVariable Long id,
             @PathVariable String operation,
@@ -226,14 +231,14 @@ public class AnalysisController {
 
     @RequestMapping(value = "autocomplete", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    protected ResponseEntity<Iterable<Analysis>> listAutoComplete(AnalysisFilter filter) {
-        Page<Analysis> list;
-        list = analysisService.listAutoComplete(filter);
-
+    protected ResponseEntity<Iterable<Analysis>> listAutoComplete(AnalysisFilter filter,
+    		@RequestHeader("Domain") String domain) {
+    	filter.setDomain(domain);
+    	
+        Page<Analysis> list = analysisService.listAutoComplete(filter);
         Iterable<Analysis> content = list.getContent();
 
         return new ResponseEntity<>(content, HttpStatus.OK);
-
     }
 
     //Retorna json de Rest via get
@@ -285,13 +290,15 @@ public class AnalysisController {
             @PathVariable Long id,
             @PathVariable int facet,
             @RequestBody Query query) {
-        List<Map<String, Object>> solrResultApplyingQuery = solrService.getSolrResultApplyingQuery(id, query, facet);
+        List<Map<String, Object>> solrResultApplyingQuery = 
+        		solrService.getSolrResultApplyingQuery(id, query, facet);
         return new ResponseEntity<>(solrResultApplyingQuery, HttpStatus.OK);
     }
 
     
     //excuta CSV
-    @RequestMapping(value = "/result-csv", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/result-csv", method = RequestMethod.POST, 
+    		consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getResultCSV(
             @RequestBody CsvAnalysis csvAnalysis) {
         List<Map<String, Object>> dataCsv = csvService.getDataCsv(csvAnalysis);
@@ -300,8 +307,9 @@ public class AnalysisController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity bulkDelete(@RequestBody List<Long> ids) {
-        analysisService.deleteAll(ids);
+    public ResponseEntity bulkDelete(@RequestBody List<Long> ids,
+    		@RequestHeader("Domain") String domain) {
+        analysisService.deleteAll(ids, domain);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

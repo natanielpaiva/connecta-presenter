@@ -1,30 +1,34 @@
 package br.com.cds.connecta.presenter.entity.analysis;
 
-import br.com.cds.connecta.presenter.entity.datasource.Datasource;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.domain.DatasourceTypeEnum;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.NamedQueries;
-import javax.persistence.OneToMany;
-import org.hibernate.annotations.DynamicUpdate;
+import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 
 /**
  * The persistent class for the TB_ANALYSIS database table.
@@ -86,13 +90,14 @@ public class Analysis extends AbstractBaseEntity {
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS")
-    private List<AnalysisAttribute> analysisAttributes;
+    private Set<AnalysisAttribute> analysisAttributes;
     
-    
-
     @Enumerated(EnumType.STRING)
     @Column(name = "TP_ANALYSIS")
     private DatasourceTypeEnum type;
+    
+    @Column(name = "NM_DOMAIN")
+    private String domain;
 
     @Override
     public Long getId() {
@@ -135,11 +140,11 @@ public class Analysis extends AbstractBaseEntity {
         this.analysisColumns = analysisColumns;
     }
 
-    public List<AnalysisAttribute> getAnalysisAttributes() {
+    public Set<AnalysisAttribute> getAnalysisAttributes() {
         return analysisAttributes;
     }
 
-    public void setAnalysisAttributes(List<AnalysisAttribute> analysisAttributes) {
+    public void setAnalysisAttributes(Set<AnalysisAttribute> analysisAttributes) {
         this.analysisAttributes = analysisAttributes;
     }
 
@@ -150,4 +155,12 @@ public class Analysis extends AbstractBaseEntity {
     public void setType(DatasourceTypeEnum type) {
         this.type = type;
     }
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 }

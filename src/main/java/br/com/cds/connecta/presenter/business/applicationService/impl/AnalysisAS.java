@@ -1,36 +1,33 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
+import static br.com.cds.connecta.framework.core.util.Util.isNull;
+import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
-import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
-import static br.com.cds.connecta.framework.core.util.Util.isNull;
 import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.entity.Attribute;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisAttribute;
-import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
-import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
-import br.com.cds.connecta.presenter.persistence.impl.BulkActionsRepository;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
+import br.com.cds.connecta.presenter.persistence.specification.AnalysisSpecification;
 
 @Service
 public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS {
 
-    @Autowired
-    private BulkActionsRepository<Long> bulk;
-    
     @Autowired
     private IAnalysisDAO analysisDAO;
     
@@ -41,45 +38,35 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     private EntityManager em;
 
     @Override
-    public Analysis get(Long id) {
-        Analysis analysis;
+    public Analysis get(Long id, String domain) {
+        Analysis analysis = analysisListRepository
+        		.findOne(AnalysisSpecification.byIdAndDomainWithCompleteFetch(id, domain));
         
-        try {
-            analysis = analysisDAO.get(id);
-        } catch(NoResultException|EmptyResultDataAccessException exception) {
-            throw new ResourceNotFoundException(Analysis.class.getCanonicalName());
+        if (isNull(analysis)) {
+            throw new ResourceNotFoundException(Analysis.class.getSimpleName());
         }
-        
         return analysis;
     }
     
     @Override
-    public DatabaseAnalysis getTest(Long id) {
-        return analysisDAO.getTest(id);
-    }
-
-    @Override
     public Iterable<Analysis> list(AnalysisFilter filter) {
         Pageable pageable = filter.makePageable();
-        return analysisListRepository.findAll(pageable);
-
+        return analysisListRepository.findAll
+        		(AnalysisSpecification.byDomain(filter.getDomain()), pageable);
     }
 
     @Override
     public Page<Analysis> listAutoComplete(AnalysisFilter filter) {
+    	Pageable pageable = filter.makePageable();
         String name = filter.getName();
         if (isNull(name)) {
             name = "";
         }
-        Page<Analysis> analysises = analysisListRepository.findByName("%" + name.toUpperCase() + "%", filter.makePageable());
+        Page<Analysis> analyses = analysisListRepository
+        		.findAll(AnalysisSpecification.byNameAndDomainWithSimpleFetch(name, 
+        				filter.getDomain()), pageable);
 
-        for (Analysis analysise : analysises) {
-            Analysis analysis = analysisDAO.get(analysise.getId());
-            analysise.setDatasource(analysis.getDatasource());
-            analysise.setAnalysisColumns(analysis.getAnalysisColumns());
-        }
-
-        return analysises;
+        return analyses;
     }
 
     @Override
@@ -101,14 +88,9 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
      }
      
     @Override
-    public void delete(Long id) {
-        Analysis analysis = em.find(Analysis.class, id);
-        em.remove(analysis);
-    }
-
-    @Override
-    public void delete(Analysis analysi) {
-        analysisDAO.delete(analysi);
+    public void delete(Long id, String domain) {
+        Analysis analysis = get(id, domain);
+        analysisListRepository.delete(analysis);
     }
 
     @Override
@@ -117,8 +99,10 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     }
 
     @Override
-    public void deleteAll(List<Long> ids) {
-        bulk.delete(Analysis.class, ids);
+    public void deleteAll(List<Long> ids, String domain) {
+    	List<Analysis> listAnalysis = analysisListRepository.findAll
+    			(AnalysisSpecification.byIdsAndDomain(ids, domain));
+    	analysisListRepository.delete(listAnalysis);
     }
 
 }

@@ -1,27 +1,28 @@
 package br.com.cds.connecta.presenter.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.domain.GroupType;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * The persistent class for the TB_GROUP database table.
@@ -78,6 +79,9 @@ public class Group extends AbstractBaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_GROUP")
     private List<GroupAttribute> groupAttribute;
+    
+    @Column(name = "NM_DOMAIN")
+    private String domain;
 
     /**
      *
@@ -139,6 +143,14 @@ public class Group extends AbstractBaseEntity {
     public void setType(GroupType type) {
         this.type = type;
     }
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
     
     
 }

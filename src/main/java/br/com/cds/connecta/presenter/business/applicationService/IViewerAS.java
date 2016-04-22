@@ -9,15 +9,13 @@ import java.util.List;
  */
 public interface IViewerAS {
     
-    Viewer get(Long id);
+    Viewer get(Long id, String domain, boolean initialize);
 
-    List<Viewer> list();
+    List<Viewer> list(String domain);
 
     Viewer saveOrUpdate(Viewer entity);
 
-    void delete(Long id);
+    void delete(Long id, String domain);
 
-    void delete(Viewer group);
-
-    void deleteAll(List<Long> ids);
+    void deleteAll(List<Long> ids, String domain);
 }
