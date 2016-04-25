@@ -30,8 +30,9 @@ public class SolrConnectorStrategy implements ConnectorStrategy {
     
     List<Map<String, Object>> dataProvider;
 
+    // FIXME passar colunas para o Connector do Solr
     @Override
-    public List<Map<String, Object>> getDataProvider(Analysis analysis, List<ConnectorColumn> columns) {
+    public List<Map<String, Object>> getDataProvider(Analysis analysis) {
 
         SolrDatasource solrDatasource = (SolrDatasource)datasourceRepository.findOne(analysis.getDatasource().getId());
         
@@ -49,5 +50,25 @@ public class SolrConnectorStrategy implements ConnectorStrategy {
         }
         return dataProvider;
     }
+
+//    @Override
+//    public List<Map<String, Object>> getDataProvider(Analysis analysis, List<ConnectorColumn> columns) {
+//
+//        SolrDatasource solrDatasource = (SolrDatasource)datasourceRepository.findOne(analysis.getDatasource().getId());
+//        
+//        String queryString = solrService.getQueryString(analysis.getId());
+//        
+//        Solr sorlConnector = new Solr();
+//        try {
+//           dataProvider =  sorlConnector.searchSorl(
+//                   solrDatasource.getAddress()+solrDatasource.getPath(),
+//                   queryString , 10);
+//        } catch (SolrServerException ex) {
+//            Logger.getLogger(SolrConnectorStrategy.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(SolrConnectorStrategy.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return dataProvider;
+//    }
 
 }

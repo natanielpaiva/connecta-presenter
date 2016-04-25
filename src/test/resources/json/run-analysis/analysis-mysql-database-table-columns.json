@@ -1,0 +1,26 @@
+{
+    "name": "New Analysis",
+    "type": "DATABASE",
+    "requestType": "TABLE",
+    "datasource": {
+        "id": 50
+    },
+    "table": "tb_projeto",
+    "analysisColumns":[
+        {
+            "name":"id_projeto",
+            "formula":"id_projeto",
+            "label":"ID do Projeto"
+        },
+        {
+            "name":"descricao",
+            "formula":"descricao",
+            "label":"Descrição"
+        },
+        {
+            "name":"ativo",
+            "formula":"ativo",
+            "label":"Ativo?"
+        }
+    ]
+}

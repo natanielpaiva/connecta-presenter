@@ -43,18 +43,15 @@ public class DataExtractorAS implements IDataExtractorAS {
 
     @Override
     public List<Map<String, Object>> getDataProvider(AnalysisViewer analysisViewer) {
+        List<ConnectorColumn> connectorColumns = getAnalysisColumn(analysisViewer.getAnalysisViewerColumns());
 
-        List<AnalysisViewerColumn> analysisViewerColumns = analysisViewer.getAnalysisViewerColumns();
-
-        List<ConnectorColumn> ConnectorColumn = getAnalysisColumn(analysisViewerColumns);
-
-        Long id = ConnectorColumn.get(0).getId();
+        Long id = connectorColumns.get(0).getId();
 
         Analysis analysis = analysisDao.getByIdColumns(id);
 
         ConnectorStrategy strategy = context.getBean(analysis.getType().getConnectorStrategy());
          
-        List<Map<String, Object>> dataProvider = strategy.getDataProvider(analysis, ConnectorColumn);
+        List<Map<String, Object>> dataProvider = strategy.getDataProvider(analysis);
         
         PrintResult printResult = new PrintResult();
         printResult.print(dataProvider);

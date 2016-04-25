@@ -1,0 +1,26 @@
+{
+    "name": "New Analysis",
+    "type": "DATABASE",
+    "requestType": "TABLE",
+    "datasource": {
+        "id": 51
+    },
+    "table": "TB_VIEWER",
+    "analysisColumns":[
+        {
+            "name":"PK_VIEWER",
+            "formula":"PK_VIEWER",
+            "label":"ID do Visualizador"
+        },
+        {
+            "name":"NM_VIEWER",
+            "formula":"NM_VIEWER",
+            "label":"Nome do visualizador"
+        },
+        {
+            "name":"TP_VIEWER",
+            "formula":"TP_VIEWER",
+            "label":"Tipo de visualizador"
+        }
+    ]
+}

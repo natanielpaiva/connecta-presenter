@@ -129,16 +129,37 @@ public class AnalysisController {
         List list = databaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    //excuta SQL Banco de dados
+    
+    /**
+     * Executa uma análise de banco de dados
+     * 
+     * @param databaseAnalysis
+     * @return 
+     */
+    @RequestMapping(value = "execute-sql", method = RequestMethod.POST)
+    public ResponseEntity getResultSql(@RequestBody DatabaseAnalysis databaseAnalysis) {
+        
+        List<Map<String, Object>> dataSql = databaseService.getDataSql(databaseAnalysis);
+        
+        return new ResponseEntity<>(dataSql, HttpStatus.OK);
+    }
+    
+    /**
+     * Executa uma análise de banco de dados
+     * 
+     * FIXME APAGAR - Nao precisa de ID do datasource na URL pra funcionar, apenas no json
+     * @param id
+     * @param databaseAnalysis
+     * @return 
+     */
     @RequestMapping(value = "{id}/execute-sql", method = RequestMethod.POST)
     public ResponseEntity getResultSql(
             @PathVariable Long id,
             @RequestBody DatabaseAnalysis databaseAnalysis) {
-        List<Map<String, Object>> dataSql = databaseService.getDataSql(id, databaseAnalysis);
+        List<Map<String, Object>> dataSql = databaseService.getDataSql(databaseAnalysis);
         return new ResponseEntity<>(dataSql, HttpStatus.OK);
     }
     
-
     //retorna a análises e suas respectivas colunas
     @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)
     public ResponseEntity<Analysis> getAnalysisColumns(
