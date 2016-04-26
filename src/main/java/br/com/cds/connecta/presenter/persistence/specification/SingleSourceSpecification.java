@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -11,7 +12,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
 import br.com.cds.connecta.presenter.entity.SingleSource;
-import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 
 public class SingleSourceSpecification {
 	public static Specification<SingleSource> byDomain(final String domain) {
@@ -63,7 +63,7 @@ public class SingleSourceSpecification {
 					CriteriaQuery<?> query, CriteriaBuilder builder) {
 				Class<?> clazz = query.getResultType();
 				if(clazz.equals(SingleSource.class)){
-					root.fetch("singleSourceAttributes");
+					root.fetch("singleSourceAttributes", JoinType.LEFT);
 				}
 				return null;
 			}

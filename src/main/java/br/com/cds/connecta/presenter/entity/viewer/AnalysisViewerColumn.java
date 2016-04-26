@@ -49,7 +49,7 @@ public class AnalysisViewerColumn extends AbstractBaseEntity {
     @Column(name = "TXT_MASK_FORMAT")
     private String maskFormat;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
     private AnalysisColumn analysisColumn;
 
