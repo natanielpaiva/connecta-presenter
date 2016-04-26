@@ -3,7 +3,7 @@ package br.com.cds.connecta.presenter.business.strategy.connector;
 import br.com.cds.connecta.framework.connector2.FusionClient;
 import br.com.cds.connecta.framework.connector2.Request;
 import br.com.cds.connecta.framework.connector2.common.ConnectorColumn;
-import br.com.cds.connecta.framework.connector2.common.QueryContext;
+import br.com.cds.connecta.framework.connector2.common.QueryBuilder;
 import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver;
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
@@ -52,10 +52,10 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
             logger.info(String.format("TABLE ANALYSIS %s.%s", datasource.getSchema(), databaseAnalysis.getTable()));
             DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(driver, datasource.getUser(), datasource.getPassword());
             
-            QueryContext query = new QueryContext()
+            QueryBuilder query = new QueryBuilder()
                     .setSchema(datasource.getSchema())
                     .setTable(databaseAnalysis.getTable())
-                    .setListColumns(
+                    .setColumns(
                         toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
                     )
                     ;
@@ -68,7 +68,7 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
             logger.info("MANUAL SQL ANALYSIS");
             DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(databaseAnalysis.getSql(), driver, datasource.getUser(), datasource.getPassword());
             
-            QueryContext query = new QueryContext().setListColumns(
+            QueryBuilder query = new QueryBuilder().setColumns(
                 toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
             );
 
