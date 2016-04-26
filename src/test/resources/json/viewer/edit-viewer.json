@@ -3,6 +3,7 @@
     "name": "TestViewerEdit",
     "description":"TestDescriptionEdit",
     "types":"serial",
+    "domain" : "cds",
     "configuration":
             {
                 "type": "serial",

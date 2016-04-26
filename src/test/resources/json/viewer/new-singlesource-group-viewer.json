@@ -1,6 +1,7 @@
 {
     "name": "TestViewer",
     "description": "TestDescription",
+    "domain" : "cds",
     "type" : "SINGLESOURCE_GROUP",
     "configuration": {
         "type": "singlesourcegroup"

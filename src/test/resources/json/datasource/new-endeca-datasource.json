@@ -2,5 +2,6 @@
     "address": "endereco",
     "name": "Novodatasource",
     "description": "s",
-    "type": "ENDECA"
+    "type": "ENDECA",
+    "domain" : "cds"
 }

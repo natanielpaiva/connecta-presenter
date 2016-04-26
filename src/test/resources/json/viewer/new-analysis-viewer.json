@@ -2,6 +2,7 @@
     "name": "TestViewer",
     "description": "TestDescription",
     "type" : "ANALYSIS",
+    "domain" : "cds",
     "configuration": {
         "type": "serial",
         "path": "https://www.amcharts.com/lib/3/",

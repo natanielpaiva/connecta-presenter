@@ -28,6 +28,7 @@ public class GroupTest extends BaseTest {
     public void listGroup() throws Exception {
         mockMvc().perform(get(RESOURCE)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -53,6 +54,7 @@ public class GroupTest extends BaseTest {
     public void getGroupById() throws Exception {
         mockMvc().perform(get(RESOURCE_ID, 1)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -80,6 +82,7 @@ public class GroupTest extends BaseTest {
     public void deleteGroup() throws Exception {
         mockMvc().perform(delete(RESOURCE_ID, 999)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
@@ -90,6 +93,7 @@ public class GroupTest extends BaseTest {
         mockMvc().perform(delete(RESOURCE)
                 .contentType(MEDIATYPE_JSON_UTF8)
                 .content("[98,99,100]")
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(status().isNoContent());
         
@@ -101,6 +105,7 @@ public class GroupTest extends BaseTest {
     private void doesntExist(int id) throws Exception {
         mockMvc().perform(
             get(RESOURCE_ID, id)
+            .header("Domain", "cds")
         ).andDo(print())
             .andExpect(status().isNotFound());
     }
