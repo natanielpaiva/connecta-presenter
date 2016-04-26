@@ -1,7 +1,7 @@
 {
     "name": "TestViewer",
     "description": "TestDescription",
-    "type" : "ANALYSIS",
+    "type": "ANALYSIS",
     "domain" : "cds",
     "configuration": {
         "type": "serial",
@@ -55,7 +55,6 @@
             }
         ]
     },
-    
     "label": "Test",
     "updateInterval": 1000,
     "maxRows": 2,
@@ -76,6 +75,18 @@
             "maskFormat": ".*",
             "analysisColumn": {
                 "id": 2
+            }
+        }
+    ],
+    "filters": [
+        {
+            "analysisColumn": {
+                "id":1
+            }
+        },
+        {
+            "analysisColumn": {
+                "id":2
             }
         }
     ]

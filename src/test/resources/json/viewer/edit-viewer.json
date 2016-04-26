@@ -1,9 +1,10 @@
 {
-    "id" : 1,
+    "id": 1,
     "name": "TestViewerEdit",
-    "description":"TestDescriptionEdit",
-    "types":"serial",
-    "domain" : "cds",
+    "description": "TestDescriptionEdit",
+    "type": "ANALYSIS",
+    "types": "serial",
+    "domain": "cds",
     "configuration":
             {
                 "type": "serial",
@@ -71,5 +72,12 @@
                         "column-2": 3
                     }
                 ]
+            },
+    "filters": [
+        {
+            "analysisColumn": {
+                "id": 2
             }
+        }
+    ]
 }

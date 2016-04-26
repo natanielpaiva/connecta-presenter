@@ -66,7 +66,7 @@ public class ViewerController {
     @RequestMapping(method = RequestMethod.POST, 
     		produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Viewer> save(@RequestBody Viewer viewer){
+    public ResponseEntity<Viewer> save(@RequestBody Viewer viewer)throws Exception{
         Viewer resultViewer = viewerService.saveOrUpdate(viewer);
         return new ResponseEntity<>(resultViewer, HttpStatus.CREATED);
     }
@@ -76,10 +76,10 @@ public class ViewerController {
     		produces = MediaType.APPLICATION_JSON_VALUE, 
     		consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Viewer> update(@PathVariable Long id,@RequestBody Viewer group){
-    	group.setId(id);
-        Viewer updateGroup = viewerService.saveOrUpdate(group);
-        return new ResponseEntity<>(updateGroup, HttpStatus.OK);
+    public ResponseEntity<Viewer> update(@PathVariable Long id,@RequestBody Viewer viewer){
+    	viewer.setId(id);
+        Viewer updateViewer= viewerService.saveOrUpdate(viewer);
+        return new ResponseEntity<>(updateViewer, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
