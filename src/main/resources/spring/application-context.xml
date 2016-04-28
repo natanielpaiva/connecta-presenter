@@ -8,6 +8,8 @@
     <import resource="classpath:META-INF/br.com.cds.connecta.framework.core.xml" />
 
     <context:component-scan base-package="br.com.cds.connecta.presenter" />
+    
+    <bean name="authFilter" class="br.com.cds.connecta.presenter.filter.AuthFilter"/>
 
     <!--PERSISTENCE -->
     <bean id="entityManagerFactory"
@@ -21,8 +23,8 @@
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
-<!--                 <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>  -->
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect </prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop> 
+<!--                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect </prop> -->
                 <!--<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop> -->
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
@@ -51,10 +53,10 @@
 
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName">
-            <value>ConnectaPresenterMysqlDS</value>
+            <value>ConnectaPresenterDS</value>
         </property>
     </bean>
-
+    
     <!--TRANSACTION -->
     <import
         resource="classpath:META-INF/br.com.cds.connecta.framework.transaction.xml" />
