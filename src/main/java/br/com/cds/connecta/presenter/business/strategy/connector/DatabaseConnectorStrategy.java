@@ -3,7 +3,7 @@ package br.com.cds.connecta.presenter.business.strategy.connector;
 import br.com.cds.connecta.framework.connector2.FusionClient;
 import br.com.cds.connecta.framework.connector2.Request;
 import br.com.cds.connecta.framework.connector2.common.ConnectorColumn;
-import br.com.cds.connecta.framework.connector2.common.QueryBuilder;
+import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
 import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver;
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
