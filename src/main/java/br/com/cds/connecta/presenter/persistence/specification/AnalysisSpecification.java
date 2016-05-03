@@ -64,7 +64,7 @@ public class AnalysisSpecification {
 				if(clazz.equals(Analysis.class)){
 					root.fetch("analysisColumns");
 					root.fetch("analysisAttributes",JoinType.LEFT);
-					root.fetch("datasource");
+					root.fetch("datasource", JoinType.LEFT);
 				}
 				return null;
 			}
@@ -79,7 +79,7 @@ public class AnalysisSpecification {
 				Class<?> clazz = query.getResultType();
 				if(clazz.equals(Analysis.class)){
 					root.fetch("analysisColumns");
-					root.fetch("datasource");
+					root.fetch("datasource", JoinType.LEFT);
 				}
 				return null;
 			}
