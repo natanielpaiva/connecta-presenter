@@ -98,6 +98,7 @@ public class Viewer extends AbstractBaseEntity {
     @Column(name = "BN_PREVIEW")
     private byte[] preview;
     
+    @Field
     @Column(name = "NM_DOMAIN")
     private String domain;
 

@@ -94,7 +94,7 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
     private List<ConnectorColumn> toConnectorColumns(List<AnalysisColumn> analysisColumns) {
         List<ConnectorColumn> connectorColumns = null;
         
-        if (analysisColumns != null) {
+        if (analysisColumns != null && !analysisColumns.isEmpty()) {
             connectorColumns = new ArrayList<>();
             for (AnalysisColumn analysisColumn : analysisColumns) {
                 ConnectorColumn column = new ConnectorColumn();
