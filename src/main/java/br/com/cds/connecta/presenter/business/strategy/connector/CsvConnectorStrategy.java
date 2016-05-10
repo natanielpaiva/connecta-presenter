@@ -2,6 +2,7 @@ package br.com.cds.connecta.presenter.business.strategy.connector;
 
 import br.com.cds.connecta.framework.connector.csv.Csv;
 import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.CsvAnalysis;
@@ -32,9 +33,9 @@ public class CsvConnectorStrategy implements ConnectorStrategy{
 //    }
     
     @Override
-    public List<Map<String, Object>> getDataProvider(Analysis analysis) {
+    public List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) {
         
-        CsvAnalysis csvAnalysis = (CsvAnalysis)analysis;
+        CsvAnalysis csvAnalysis = (CsvAnalysis) analysisExecuteRequest.getAnalysis();
         
         Csv csv = new Csv();
         return csv.getResult(

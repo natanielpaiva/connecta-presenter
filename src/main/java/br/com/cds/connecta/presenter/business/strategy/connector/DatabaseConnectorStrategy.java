@@ -9,9 +9,11 @@ import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
 import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
 import br.com.cds.connecta.framework.connector2.domain.DatabaseRequestTypeEnum;
+import static br.com.cds.connecta.framework.core.util.Util.isNotEmpty;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisFilter;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
-import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
@@ -39,18 +41,17 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
     private final Logger logger = Logger.getLogger(DatabaseConnectorStrategy.class);
 
     @Override
-    public List<Map<String, Object>> getDataProvider(Analysis analysis) {
+    public List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) {
         List<Map<String, Object>> dataProvider = null;
         FusionClient fusionClient = new FusionClient();
-        DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysis;
+        DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
 
-        DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(analysis.getDatasource().getId());
+        DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
 
         ConnectorDriver driver = service.makeConnectorDriver(datasource);
 
         if (DatabaseRequestTypeEnum.TABLE.equals(databaseAnalysis.getRequestType())) {
-            logger.info(String.format("TABLE ANALYSIS %s.%s", datasource.getSchema(), databaseAnalysis.getTable()));
-            DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(driver, datasource.getUser(), datasource.getPassword());
+            DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(driver, databaseAnalysis.getTable(), datasource.getUser(), datasource.getPassword());
             
             QueryBuilder query = new QueryBuilder()
                     .setSchema(datasource.getSchema())
@@ -59,18 +60,19 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
                         toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
                     )
                     ;
+            
+            addFiltersIfDefined(query, analysisExecuteRequest, dataContextFactory);
 
             Request request = new Request(dataContextFactory, query);
             dataProvider = fusionClient.getAll(request);
-            
         } else if (DatabaseRequestTypeEnum.SQL.equals(databaseAnalysis.getRequestType())) {
-            
-            logger.info("MANUAL SQL ANALYSIS");
             DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(databaseAnalysis.getSql(), driver, datasource.getUser(), datasource.getPassword());
             
             QueryBuilder query = new QueryBuilder().setColumns(
                 toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
             );
+            
+            addFiltersIfDefined(query, analysisExecuteRequest, dataContextFactory);
 
             Request request = new Request(dataContextFactory, query);
             dataProvider = fusionClient.getAll(request);
@@ -111,4 +113,19 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
         
         return connectorColumns;
     }
+
+    private void addFiltersIfDefined(QueryBuilder queryBuilder, AnalysisExecuteRequest analysisExecuteRequest, DatabaseDataContextFactory dataContextFactory) {
+        if (isNotEmpty(analysisExecuteRequest.getFilters())) {
+            for(AnalysisFilter analysisFilter :  analysisExecuteRequest.getFilters()) {
+                
+                queryBuilder.addFilter(
+                    dataContextFactory.getColumn(analysisFilter.getColumnName()),
+                    analysisFilter.getOperator(),
+                    analysisFilter.getValue()
+                );
+                
+            }
+        }
+    }
+
 }

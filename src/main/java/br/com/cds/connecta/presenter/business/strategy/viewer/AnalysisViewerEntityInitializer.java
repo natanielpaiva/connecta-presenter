@@ -18,7 +18,9 @@ public class AnalysisViewerEntityInitializer implements ViewerEntityInitializer 
         TypedQuery<AnalysisViewer> query = em.createNamedQuery("AnalysisViewer.get", AnalysisViewer.class)
                 .setParameter("id", viewer.getId());
         
-        return query.getSingleResult();
+        AnalysisViewer analysisViewer = query.getSingleResult();
+        
+        return analysisViewer;
     }
 
 }

@@ -1,6 +1,7 @@
 package br.com.cds.connecta.presenter.business.applicationService.dataExtractor;
 
 import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
@@ -21,5 +22,7 @@ public interface IDataExtractorAS {
     List<ConnectorColumn> getConnectorColumn(List<AnalysisViewerColumn> analysisVwColumns);
 
     List<Map<String, Object>> getDataProvider(AnalysisViewer analysisViewer);
+    
+    List<Map<String, Object>> executeAnalysis(AnalysisExecuteRequest analysisExecuteRequest);
 
 }

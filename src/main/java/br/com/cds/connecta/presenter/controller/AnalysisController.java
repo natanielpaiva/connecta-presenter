@@ -1,7 +1,8 @@
 package br.com.cds.connecta.presenter.controller;
 
-import br.com.cds.connecta.presenter.bean.analysis.BIAnalysisCatalogPathName;
+import br.com.cds.connecta.presenter.bean.analysis.obiee.BIAnalysisCatalogPathName;
 import br.com.cds.connecta.framework.connector.soap.service.Parameters;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.bean.analysis.json.JSONValue;
 import br.com.cds.connecta.presenter.bean.analysis.json.JSONValueParser;
 import br.com.cds.connecta.presenter.bean.analysis.xml.XMLNodeParser;
@@ -18,10 +19,10 @@ import br.com.cds.connecta.presenter.business.applicationService.IObieeAS;
 import br.com.cds.connecta.presenter.business.applicationService.IRestAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
+import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.CsvAnalysis;
-import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.io.ByteArrayInputStream;
@@ -29,7 +30,6 @@ import java.io.InputStream;
 import java.util.Map;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import javax.xml.transform.dom.DOMSource;
-import org.apache.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,8 +67,11 @@ public class AnalysisController {
     
     @Autowired
     private ICsvAS csvService;
+    
+    @Autowired
+    private IDataExtractorAS extractor;
 
-    private JSONValueParser parser = new JSONValueParser();
+    private final JSONValueParser parser = new JSONValueParser();
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<Analysis> save(@RequestBody Analysis analysis) {
@@ -131,34 +134,33 @@ public class AnalysisController {
     }
     
     /**
-     * Executa uma análise de banco de dados
+     * Executa Análises de acordo com o AnalysisExecuteRequest
      * 
-     * @param databaseAnalysis
+     * @param analysisExecuteRequest
      * @return 
      */
-    @RequestMapping(value = "execute-sql", method = RequestMethod.POST)
-    public ResponseEntity getResultSql(@RequestBody DatabaseAnalysis databaseAnalysis) {
+    @RequestMapping(value = "result", method = RequestMethod.POST)
+    public ResponseEntity<List<Map<String, Object>>> getResult(@RequestBody AnalysisExecuteRequest analysisExecuteRequest) {
+        List<Map<String, Object>> result = extractor.executeAnalysis(analysisExecuteRequest);
         
-        List<Map<String, Object>> dataSql = databaseService.getDataSql(databaseAnalysis);
-        
-        return new ResponseEntity<>(dataSql, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
-    /**
-     * Executa uma análise de banco de dados
-     * 
-     * FIXME APAGAR - Nao precisa de ID do datasource na URL pra funcionar, apenas no json
-     * @param id
-     * @param databaseAnalysis
-     * @return 
-     */
-    @RequestMapping(value = "{id}/execute-sql", method = RequestMethod.POST)
-    public ResponseEntity getResultSql(
-            @PathVariable Long id,
-            @RequestBody DatabaseAnalysis databaseAnalysis) {
-        List<Map<String, Object>> dataSql = databaseService.getDataSql(databaseAnalysis);
-        return new ResponseEntity<>(dataSql, HttpStatus.OK);
-    }
+//    /**
+//     * Executa uma análise de banco de dados
+//     * 
+//     * FIXME APAGAR - Nao precisa de ID do datasource na URL pra funcionar, apenas no json
+//     * @param id
+//     * @param databaseAnalysis
+//     * @return 
+//     */
+//    @RequestMapping(value = "{id}/execute-sql", method = RequestMethod.POST)
+//    public ResponseEntity getResultSql(
+//            @PathVariable Long id,
+//            @RequestBody DatabaseAnalysis databaseAnalysis) {
+//        List<Map<String, Object>> dataSql = databaseService.getDataSql(databaseAnalysis);
+//        return new ResponseEntity<>(dataSql, HttpStatus.OK);
+//    }
     
     //retorna a análises e suas respectivas colunas
     @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)

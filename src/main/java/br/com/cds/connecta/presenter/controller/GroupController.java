@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import br.com.cds.connecta.presenter.business.applicationService.IGroupAS;
 import br.com.cds.connecta.presenter.business.applicationService.IQueryAS;
@@ -134,24 +133,6 @@ public class GroupController {
     public ResponseEntity<Group> getSingleSourceByGroupId(@PathVariable("id") Long id){
         Group group = groupService.getSingleSourceByGroupId(id);
         return new ResponseEntity<>(group, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/upload", 
-    		method = RequestMethod.POST, 
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<Group> 
-    		createWithUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
-
-    @RequestMapping(value = "/upload/{id}", 
-    		method = RequestMethod.PUT, 
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<Group> updateWithUpload(@PathVariable Long id, 
-    		MultipartHttpServletRequest multipartRequest) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
 }

@@ -1,0 +1,20 @@
+{
+    "analysis": {
+        "name": "New Analysis",
+        "type": "DATABASE",
+        "requestType": "TABLE",
+        "datasource": {
+            "id": 50
+        },
+        "table": "tb_projeto"
+    },
+    "filters":[
+        {
+            "columnName":"id_projeto",
+            "operator":"GREATER_THAN",
+            "value":{
+                "value":100
+            }
+        }
+    ]
+}

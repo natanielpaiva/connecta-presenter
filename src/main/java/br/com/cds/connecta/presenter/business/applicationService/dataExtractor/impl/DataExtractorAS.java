@@ -1,7 +1,7 @@
 package br.com.cds.connecta.presenter.business.applicationService.dataExtractor.impl;
 
 import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
-import br.com.cds.connecta.framework.connector.util.PrintResult;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.business.strategy.connector.ConnectorStrategy;
@@ -13,6 +13,7 @@ import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
  * @author Nataniel Paiva
  */
 @Service
+@Deprecated
 public class DataExtractorAS implements IDataExtractorAS {
 
     @Autowired
@@ -52,14 +54,18 @@ public class DataExtractorAS implements IDataExtractorAS {
       
         analysis.setAnalysisColumns(getAnalysisColumn(analysisViewer.getAnalysisViewerColumns()));
       
-        ConnectorStrategy strategy = context.getBean(analysis.getType().getConnectorStrategy());
-         
-        List<Map<String, Object>> dataProvider = strategy.getDataProvider(analysis);
+        AnalysisExecuteRequest analysisExecuteRequest = new AnalysisExecuteRequest();
+        analysisExecuteRequest.setAnalysis(analysis);
+        return executeAnalysis(analysisExecuteRequest);
+    }
+
+    @Override
+    public List<Map<String, Object>> executeAnalysis(AnalysisExecuteRequest analysisExecuteRequest) {
+        ConnectorStrategy strategy = context.getBean(
+            analysisExecuteRequest.getAnalysis().getType().getConnectorStrategy()
+        );
         
-        PrintResult printResult = new PrintResult();
-        printResult.print(dataProvider);
-        
-        return dataProvider;
+        return strategy.getDataProvider(analysisExecuteRequest);
     }
 
     @Override

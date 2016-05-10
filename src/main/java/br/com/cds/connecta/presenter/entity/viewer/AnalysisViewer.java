@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.entity.viewer;
 
-import br.com.cds.connecta.presenter.entity.Filter;
+import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,8 +8,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -36,13 +40,15 @@ public class AnalysisViewer extends Viewer {
     @Column(name = "NU_MAX_LINHAS")
     private Long maxRows;
 
+    @Basic(optional = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_ANALYSIS")
+    private Analysis analysis;
+    
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS_VIEWER")
     private List<AnalysisViewerColumn> analysisViewerColumns;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "FK_ANALYSIS_VIEWER")
-    private List<Filter> filters;
 
     public String getLabel() {
         return label;
@@ -68,20 +74,20 @@ public class AnalysisViewer extends Viewer {
         this.maxRows = maxRows;
     }
 
+    public Analysis getAnalysis() {
+        return analysis;
+    }
+
+    public void setAnalysis(Analysis analysis) {
+        this.analysis = analysis;
+    }
+
     public List<AnalysisViewerColumn> getAnalysisViewerColumns() {
         return analysisViewerColumns;
     }
 
     public void setAnalysisViewerColumns(List<AnalysisViewerColumn> analysisViewerColumns) {
         this.analysisViewerColumns = analysisViewerColumns;
-    }
-
-    public List<Filter> getFilters() {
-        return filters;
-    }
-
-    public void setFilters(List<Filter> filters) {
-        this.filters = filters;
     }
 
 }

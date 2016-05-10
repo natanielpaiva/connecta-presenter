@@ -10,12 +10,10 @@ import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnectorStrategy;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
-import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,21 +63,6 @@ public class DatabaseAS implements IDatabaseAS {
         ConnectorDriver driver = makeConnectorDriver(databaseDatasource);
         
         return driver.jdbcUrl();
-        
-//        String sidOrSchema = dataBaseDataSource.getSid();
-//        // Jeito provisório de fazer funcionar com bancos que não tem SID
-//        if (sidOrSchema==null) {
-//            sidOrSchema = dataBaseDataSource.getSchema();
-//        }
-//        
-//        logger.info("SID? "+(dataBaseDataSource.getSid()==null)+" sidOrSchema: "+sidOrSchema);
-//        
-//        return "jdbc:oracle:thin:@"
-//                + dataBaseDataSource.getServer()
-//                + ":"
-//                + dataBaseDataSource.getPort()
-//                + ":"
-//                + sidOrSchema;
     }
     
     @Override
@@ -95,9 +78,9 @@ public class DatabaseAS implements IDatabaseAS {
         return driver;
     }
 
-    @Override
-    public List<Map<String, Object>> getDataSql(DatabaseAnalysis databaseAnalysis) {
-        return dataBaseConnectorStrategy.getDataProvider(databaseAnalysis);
-    }
+//    @Override
+//    public List<Map<String, Object>> getDataSql(AnalysisExecuteRequest analysisExecuteRequest) {
+//        return dataBaseConnectorStrategy.getDataProvider(analysisExecuteRequest);
+//    }
 
 }

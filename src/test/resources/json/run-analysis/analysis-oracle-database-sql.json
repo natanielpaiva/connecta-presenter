@@ -1,9 +1,11 @@
 {
-    "name": "New Analysis",
-    "type": "DATABASE",
-    "requestType": "SQL",
-    "datasource": {
-        "id": 51
-    },
-    "sql": "SELECT COUNT(DS.TP_DATASOURCE) QT, DS.TP_DATASOURCE TP FROM (SELECT * FROM TB_ANALYSIS) A JOIN TB_DATASOURCE DS ON A.FK_DATASOURCE = DS.PK_DATASOURCE GROUP BY DS.TP_DATASOURCE"
+    "analysis": {
+        "name": "New Analysis",
+        "type": "DATABASE",
+        "requestType": "SQL",
+        "datasource": {
+            "id": 51
+        },
+        "sql": "SELECT COUNT(DS.TP_DATASOURCE) QT, DS.TP_DATASOURCE TP FROM (SELECT * FROM TB_ANALYSIS) A JOIN TB_DATASOURCE DS ON A.FK_DATASOURCE = DS.PK_DATASOURCE GROUP BY DS.TP_DATASOURCE"
+    }
 }

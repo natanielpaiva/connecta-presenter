@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ExecuteDatabaseAnalysisTest extends BaseTest {
 
     private static final String RESOURCE = REST_PATH.concat("analysis");
-    private static final String RESOURCE_SQL = RESOURCE.concat("/execute-sql");
+    private static final String RESOURCE_SQL = RESOURCE.concat("/result");
 //    private final String MOCK_H2_ORACLE = "jdbc:h2:mem:connecta;INIT=create schema if not exists PRESENTER2;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
 //    private final String MOCK_H2_MYSQL = "jdbc:h2:mem:connecta;INIT=create schema if not exists PRESENTER2;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
     

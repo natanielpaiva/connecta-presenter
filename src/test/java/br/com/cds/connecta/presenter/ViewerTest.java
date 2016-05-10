@@ -17,7 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author pires
  */
-
 public class ViewerTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("viewer");
@@ -72,7 +71,9 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.analysisViewerColumns[1].maskFormat", equalTo(".*")))
                 .andExpect(jsonPath("$.analysisViewerColumns[1].analysisColumn.id", equalTo(2)))
                 
-                .andExpect(jsonPath("$.filters[0].analysisColumn.id", equalTo(1)));
+                .andExpect(jsonPath("$.analysisViewerColumns[2].analysisColumn.id", equalTo(1)))
+                .andExpect(jsonPath("$.analysisViewerColumns[2].columnType", enumKeyFor(AnalysisViewerColumnType.FILTER)))
+                ;
     }
     
     @Test
@@ -143,7 +144,9 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.configuration.titles[0].size", equalTo(15d)))
                 .andExpect(jsonPath("$.configuration.titles[0].text", equalTo("Chart Title")))
                 
-                .andExpect(jsonPath("$.filters[0].analysisColumn.id", equalTo(2)));
+                .andExpect(jsonPath("$.analysisViewerColumns[0].analysisColumn.id", equalTo(2)))
+                .andExpect(jsonPath("$.analysisViewerColumns[0].columnType", enumKeyFor(AnalysisViewerColumnType.FILTER)))
+                ;
     }
     
     @Test
@@ -212,9 +215,6 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.name", equalTo("TestViewer")))
                 .andExpect(jsonPath("$.description", equalTo("TestDescription")))
                 .andExpect(jsonPath("$.type", enumKeyFor(ViewerTypeEnum.COMBINED)))
-//                .andExpect(jsonPath("$.configuration.type", equalTo("combined")))
-                
-//                .andExpect(jsonPath("$.singleSource.id", is(1)))
                 ;
     }
 
