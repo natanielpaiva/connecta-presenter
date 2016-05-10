@@ -38,7 +38,7 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 @Table(name = "TB_ANALYSIS")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
-    @NamedQueries({
+@NamedQueries({
     @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
@@ -48,7 +48,7 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
             + " LEFT JOIN FETCH a.analysisAttributes anAttr "
             + " LEFT JOIN FETCH anAttr.attribute attr "
             + " LEFT OUTER JOIN FETCH a.datasource d WHERE a.id = :id")
-           
+
 })
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -87,15 +87,15 @@ public class Analysis extends AbstractBaseEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS", nullable = false)
     private List<AnalysisColumn> analysisColumns;
-    
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS")
     private Set<AnalysisAttribute> analysisAttributes;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "TP_ANALYSIS")
     private DatasourceTypeEnum type;
-    
+
     @Column(name = "NM_DOMAIN")
     private String domain;
 
@@ -156,11 +156,11 @@ public class Analysis extends AbstractBaseEntity {
         this.type = type;
     }
 
-	public String getDomain() {
-		return domain;
-	}
+    public String getDomain() {
+        return domain;
+    }
 
-	public void setDomain(String domain) {
-		this.domain = domain;
-	}
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 }

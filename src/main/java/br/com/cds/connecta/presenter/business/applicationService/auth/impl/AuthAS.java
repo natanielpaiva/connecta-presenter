@@ -16,7 +16,7 @@ public class AuthAS implements IAuthAS {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AuthAS.class);
 	
-	private static final String SERVER_URL = "http://localhost:8080/connecta-portal/";
+	private static final String SERVER_URL = "http://connectad.cds.com.br/connecta-portal/";
 	private static final String ENDPOINT_URL = "user/validarToken";
 
 	public boolean validateToken(String token){

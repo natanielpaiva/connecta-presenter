@@ -30,7 +30,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
     @Autowired
     private IAnalysisDAO analysisDAO;
-    
+
     @Autowired
     private AnalysisRepository analysisListRepository;
 
@@ -40,31 +40,37 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     @Override
     public Analysis get(Long id, String domain) {
         Analysis analysis = analysisListRepository
-        		.findOne(AnalysisSpecification.byIdAndDomainWithCompleteFetch(id, domain));
-        
+                .findOne(AnalysisSpecification.byIdAndDomainWithCompleteFetch(id, domain));
+
         if (isNull(analysis)) {
             throw new ResourceNotFoundException(Analysis.class.getSimpleName());
         }
         return analysis;
     }
-    
+
     @Override
     public Iterable<Analysis> list(AnalysisFilter filter) {
-        Pageable pageable = filter.makePageable();
-        return analysisListRepository.findAll
-        		(AnalysisSpecification.byDomain(filter.getDomain()), pageable);
+        Iterable<Analysis> analysisList;
+        if (isNull(filter.getPage()) || isNull(filter.getCount())) {
+            analysisList = analysisListRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()));
+        } else {
+            Pageable pageable = filter.makePageable();
+            analysisList = analysisListRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()), pageable);
+        }
+
+        return analysisList;
     }
 
     @Override
     public Page<Analysis> listAutoComplete(AnalysisFilter filter) {
-    	Pageable pageable = filter.makePageable();
+        Pageable pageable = filter.makePageable();
         String name = filter.getName();
         if (isNull(name)) {
             name = "";
         }
         Page<Analysis> analyses = analysisListRepository
-        		.findAll(AnalysisSpecification.byNameAndDomainWithSimpleFetch(name, 
-        				filter.getDomain()), pageable);
+                .findAll(AnalysisSpecification.byNameAndDomainWithSimpleFetch(name,
+                        filter.getDomain()), pageable);
 
         return analyses;
     }
@@ -74,8 +80,8 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
         refreshAttribute(analysis);
         return analysisDAO.saveOrUpdate(analysis);
     }
-    
-     private void refreshAttribute(Analysis analysis) {
+
+    private void refreshAttribute(Analysis analysis) {
         if (isNotEmpty(analysis.getAnalysisAttributes())) {
             for (AnalysisAttribute analysisAttribute : analysis.getAnalysisAttributes()) {
                 if (isNotNull(analysisAttribute.getAttribute()) && isNotNull(analysisAttribute.getAttribute().getId())) {
@@ -85,8 +91,8 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
             }
         }
 
-     }
-     
+    }
+
     @Override
     public void delete(Long id, String domain) {
         Analysis analysis = get(id, domain);
@@ -100,9 +106,8 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
     @Override
     public void deleteAll(List<Long> ids, String domain) {
-    	List<Analysis> listAnalysis = analysisListRepository.findAll
-    			(AnalysisSpecification.byIdsAndDomain(ids, domain));
-    	analysisListRepository.delete(listAnalysis);
+        List<Analysis> listAnalysis = analysisListRepository.findAll(AnalysisSpecification.byIdsAndDomain(ids, domain));
+        analysisListRepository.delete(listAnalysis);
     }
 
 }
