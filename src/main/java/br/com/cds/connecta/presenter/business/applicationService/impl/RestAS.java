@@ -64,12 +64,10 @@ public class RestAS implements IRestAS {
         Rest rest = new Rest();
         List<Map<String, Object>> factoryResultMetaModel;
         
-       
         factoryResultMetaModel = rest.getResultTabular(webservice.getAddress(), columns, ws.getTablePath());
 
         return factoryResultMetaModel;
     }
-    
     
     @Override
     public Object getJsonPartJsonPath(Long id, WebserviceAnalysis ws) {
@@ -80,7 +78,6 @@ public class RestAS implements IRestAS {
         
         Object extractPartJson = rest.extractPartJson(webservice.getAddress(), ws.getTablePath());
         
-
         return extractPartJson;
     }
 

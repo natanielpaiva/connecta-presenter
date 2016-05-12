@@ -1,7 +1,8 @@
 {
     "name": "TestViewer",
     "description": "TestDescription",
-    "type" : "ANALYSIS",
+    "type": "ANALYSIS",
+    "domain": "cds",
     "configuration": {
         "type": "serial",
         "path": "https://www.amcharts.com/lib/3/",
@@ -54,10 +55,13 @@
             }
         ]
     },
-    
     "label": "Test",
     "updateInterval": 1000,
     "maxRows": 2,
+    "analysis": {
+        "id": 1,
+        "type": "DATABASE"
+    },
     "analysisViewerColumns": [
         {
             "columnDataType": "NUMBER",
@@ -75,6 +79,12 @@
             "maskFormat": ".*",
             "analysisColumn": {
                 "id": 2
+            }
+        },
+        {
+            "columnType": "FILTER",
+            "analysisColumn": {
+                "id": 1
             }
         }
     ]

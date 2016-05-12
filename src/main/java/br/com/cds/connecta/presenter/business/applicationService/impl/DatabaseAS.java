@@ -3,16 +3,17 @@ package br.com.cds.connecta.presenter.business.applicationService.impl;
 import br.com.cds.connecta.framework.connector.database.DatabaseService;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseColumn;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseTable;
-import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
+import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver;
+import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
+import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnectorStrategy;
+import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
-import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,18 +59,28 @@ public class DatabaseAS implements IDatabaseAS {
         return databaseTables;
     }
 
-    private String getParamsConnection(DatabaseDatasource dataBaseDataSource) {
-        return "jdbc:oracle:thin:@"
-                + dataBaseDataSource.getServer()
-                + ":"
-                + dataBaseDataSource.getPort()
-                + ":"
-                + dataBaseDataSource.getSid();
+    private String getParamsConnection(DatabaseDatasource databaseDatasource) {
+        ConnectorDriver driver = makeConnectorDriver(databaseDatasource);
+        
+        return driver.jdbcUrl();
+    }
+    
+    @Override
+    public ConnectorDriver makeConnectorDriver(DatabaseDatasource datasource) {
+        ConnectorDriver driver = null;
+        if (DatabaseDatasourceDriverEnum.ORACLE_SID.equals(datasource.getDriver())) {
+            driver = new OracleDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSid());
+        }
+        if (DatabaseDatasourceDriverEnum.MYSQL.equals(datasource.getDriver())) {
+            driver = new MySQLDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
+        }
+
+        return driver;
     }
 
-    @Override
-    public List<Map<String, Object>> getDataSql(Long id, DatabaseAnalysis databaseAnalysis) {
-        return dataBaseConnectorStrategy.getDataProvider(databaseAnalysis, null);
-    }
+//    @Override
+//    public List<Map<String, Object>> getDataSql(AnalysisExecuteRequest analysisExecuteRequest) {
+//        return dataBaseConnectorStrategy.getDataProvider(analysisExecuteRequest);
+//    }
 
 }

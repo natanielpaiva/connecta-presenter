@@ -21,7 +21,8 @@
             "label": "NOME_USUARIO",
             "formula": "ASD.NOME_USUARIO"
         }
-    ]
+    ],
+    "domain" : "cds"
 }
 
 

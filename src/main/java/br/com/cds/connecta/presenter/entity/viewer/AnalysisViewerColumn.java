@@ -1,15 +1,14 @@
 package br.com.cds.connecta.presenter.entity.viewer;
 
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
@@ -48,7 +47,7 @@ public class AnalysisViewerColumn extends AbstractBaseEntity {
     @Column(name = "TXT_MASK_FORMAT")
     private String maskFormat;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
     private AnalysisColumn analysisColumn;
 

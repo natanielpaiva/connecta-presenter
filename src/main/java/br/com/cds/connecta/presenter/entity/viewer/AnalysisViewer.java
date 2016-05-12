@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.entity.viewer;
 
+import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -7,8 +8,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import org.hibernate.search.annotations.Indexed;
 
 /**
@@ -18,8 +23,10 @@ import org.hibernate.search.annotations.Indexed;
 @Entity
 @Table(name = "TB_ANALYSIS_VIEWER")
 @NamedQuery(
-    name = "AnalysisViewer.get",
-    query = "SELECT a FROM AnalysisViewer a "
+        name = "AnalysisViewer.get",
+        query = "SELECT a FROM AnalysisViewer a "
+        + "LEFT JOIN FETCH a.analysis an "
+        + "LEFT JOIN FETCH an.datasource d "
         + "LEFT JOIN FETCH a.analysisViewerColumns av "
         + "LEFT JOIN FETCH av.analysisColumn WHERE a.id = :id"
 )
@@ -35,6 +42,12 @@ public class AnalysisViewer extends Viewer {
     @Column(name = "NU_MAX_LINHAS")
     private Long maxRows;
 
+    @Basic(optional = false)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_ANALYSIS")
+    private Analysis analysis;
+    
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS_VIEWER")
     private List<AnalysisViewerColumn> analysisViewerColumns;
@@ -63,6 +76,14 @@ public class AnalysisViewer extends Viewer {
         this.maxRows = maxRows;
     }
 
+    public Analysis getAnalysis() {
+        return analysis;
+    }
+
+    public void setAnalysis(Analysis analysis) {
+        this.analysis = analysis;
+    }
+
     public List<AnalysisViewerColumn> getAnalysisViewerColumns() {
         return analysisViewerColumns;
     }
@@ -70,4 +91,5 @@ public class AnalysisViewer extends Viewer {
     public void setAnalysisViewerColumns(List<AnalysisViewerColumn> analysisViewerColumns) {
         this.analysisViewerColumns = analysisViewerColumns;
     }
+
 }

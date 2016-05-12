@@ -10,5 +10,6 @@ public enum AnalysisViewerColumnType {
     XFIELD,
     YFIELD,
     VALUEFIELD,
-    COLUMN
+    COLUMN,
+    FILTER
 }

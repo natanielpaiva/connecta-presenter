@@ -1,0 +1,20 @@
+{
+    "analysis": {
+        "name": "New Analysis",
+        "type": "DATABASE",
+        "requestType": "TABLE",
+        "datasource": {
+            "id": 51
+        },
+        "table": "TB_VIEWER"
+    },
+    "filters":[
+        {
+            "columnName":"TP_VIEWER",
+            "operator":"ENDS_WITH",
+            "value":{
+                "value":"SIS"
+            }
+        }
+    ]
+}

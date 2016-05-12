@@ -17,7 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author pires
  */
-@Ignore
 public class ViewerTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("viewer");
@@ -62,17 +61,18 @@ public class ViewerTest extends BaseTest {
                 
                 .andExpect(jsonPath("$.label", equalTo("Test")))
                 .andExpect(jsonPath("$.maxRows", equalTo(2)))
-                .andExpect(jsonPath("$.analysisViewerColumns[0].id", equalTo(1)))
                 .andExpect(jsonPath("$.analysisViewerColumns[0].columnDataType", enumKeyFor(AnalysisViewerColumnDataType.NUMBER)))
                 .andExpect(jsonPath("$.analysisViewerColumns[0].columnType", enumKeyFor(AnalysisViewerColumnType.METRIC)))
                 .andExpect(jsonPath("$.analysisViewerColumns[0].maskFormat", equalTo("########-##")))
                 .andExpect(jsonPath("$.analysisViewerColumns[0].analysisColumn.id", equalTo(1)))
                 
-                .andExpect(jsonPath("$.analysisViewerColumns[1].id", equalTo(2)))
                 .andExpect(jsonPath("$.analysisViewerColumns[1].columnDataType", enumKeyFor(AnalysisViewerColumnDataType.TEXT)))
                 .andExpect(jsonPath("$.analysisViewerColumns[1].columnType", enumKeyFor(AnalysisViewerColumnType.DESCRIPTION)))
                 .andExpect(jsonPath("$.analysisViewerColumns[1].maskFormat", equalTo(".*")))
                 .andExpect(jsonPath("$.analysisViewerColumns[1].analysisColumn.id", equalTo(2)))
+                
+                .andExpect(jsonPath("$.analysisViewerColumns[2].analysisColumn.id", equalTo(1)))
+                .andExpect(jsonPath("$.analysisViewerColumns[2].columnType", enumKeyFor(AnalysisViewerColumnType.FILTER)))
                 ;
     }
     
@@ -112,7 +112,6 @@ public class ViewerTest extends BaseTest {
     }
     
     @Test
-    @Ignore
     public void updateViewer() throws Exception {
         mockMvc().perform(put(RESOURCE_ID, 1)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -143,13 +142,18 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.configuration.legend.useGraphSettings", equalTo(true)))
                 .andExpect(jsonPath("$.configuration.titles[0].id", equalTo("Title-1")))
                 .andExpect(jsonPath("$.configuration.titles[0].size", equalTo(15d)))
-                .andExpect(jsonPath("$.configuration.titles[0].text", equalTo("Chart Title")));
+                .andExpect(jsonPath("$.configuration.titles[0].text", equalTo("Chart Title")))
+                
+                .andExpect(jsonPath("$.analysisViewerColumns[0].analysisColumn.id", equalTo(2)))
+                .andExpect(jsonPath("$.analysisViewerColumns[0].columnType", enumKeyFor(AnalysisViewerColumnType.FILTER)))
+                ;
     }
     
     @Test
     public void getAnalysisViewer() throws Exception {
         mockMvc().perform(get(RESOURCE_ID, 50)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", greaterThan(0)))
@@ -169,6 +173,7 @@ public class ViewerTest extends BaseTest {
     public void getSingleSourceViewer() throws Exception {
         mockMvc().perform(get(RESOURCE_ID, 51)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", greaterThan(0)))
@@ -181,9 +186,11 @@ public class ViewerTest extends BaseTest {
     }
     
     @Test
+    @Ignore
     public void getSingleSourceGroupViewer() throws Exception {
         mockMvc().perform(get(RESOURCE_ID, 52)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", greaterThan(0)))
@@ -201,22 +208,21 @@ public class ViewerTest extends BaseTest {
     public void getCombinedViewer() throws Exception {
         mockMvc().perform(get(RESOURCE_ID, 53)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", greaterThan(0)))
                 .andExpect(jsonPath("$.name", equalTo("TestViewer")))
                 .andExpect(jsonPath("$.description", equalTo("TestDescription")))
                 .andExpect(jsonPath("$.type", enumKeyFor(ViewerTypeEnum.COMBINED)))
-//                .andExpect(jsonPath("$.configuration.type", equalTo("combined")))
-                
-//                .andExpect(jsonPath("$.singleSource.id", is(1)))
                 ;
     }
 
     @Test
     public void deleteViewer() throws Exception {
-        mockMvc().perform(delete(RESOURCE_ID, 1)
+        mockMvc().perform(delete(RESOURCE_ID, 50)
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
@@ -257,6 +263,7 @@ public class ViewerTest extends BaseTest {
         mockMvc().perform(delete(RESOURCE)
                 .contentType(MEDIATYPE_JSON_UTF8)
                 .content("[98,99,100]")
+                .header("Domain", "cds")
         ).andDo(print())
                 .andExpect(status().isNoContent());
         
@@ -268,6 +275,7 @@ public class ViewerTest extends BaseTest {
     private void doesntExist(int id) throws Exception {
         mockMvc().perform(
             get(RESOURCE_ID, id)
+            .header("Domain", "cds")
         ).andDo(print())
             .andExpect(status().isNotFound());
     }

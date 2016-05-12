@@ -32,7 +32,7 @@ public class SingleSourceAttribute extends AbstractBaseEntity {
     private String value;
 
     @JoinColumn(name = "FK_ATTRIBUTE")
-    @ManyToOne(fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, 
+    @ManyToOne(fetch = FetchType.EAGER, cascade ={CascadeType.PERSIST, 
         CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     private Attribute attribute;
 

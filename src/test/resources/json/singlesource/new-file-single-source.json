@@ -2,6 +2,7 @@
     "name"          : "New Midia",
     "description"   : "Midia Description",
     "type"          : "FILE",
-    "filename"      : "Batata.png"
+    "filename"      : "Batata.png",
+    "domain"		: "cds"
     
 }
