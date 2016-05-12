@@ -4,7 +4,6 @@ import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,8 +47,8 @@ public class AnalysisViewerColumn extends AbstractBaseEntity {
     @Column(name = "TXT_MASK_FORMAT")
     private String maskFormat;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
+    @ManyToOne
+    @JoinColumn(name = "FK_ANALYSIS_COLUMNS", insertable = false, updatable = false)
     private AnalysisColumn analysisColumn;
 
     @Override

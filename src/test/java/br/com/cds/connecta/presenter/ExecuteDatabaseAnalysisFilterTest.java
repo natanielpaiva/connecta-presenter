@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author pires
  */
-//@Ignore
+@Ignore
 public class ExecuteDatabaseAnalysisFilterTest extends BaseTest {
 
     private static final String ANALYSIS_RESULT = REST_PATH.concat("analysis/result");
