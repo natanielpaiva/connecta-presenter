@@ -48,7 +48,7 @@ public class AnalysisViewerColumn extends AbstractBaseEntity {
     private String maskFormat;
 
     @ManyToOne
-    @JoinColumn(name = "FK_ANALYSIS_COLUMNS", insertable = false, updatable = false)
+    @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
     private AnalysisColumn analysisColumn;
 
     @Override
