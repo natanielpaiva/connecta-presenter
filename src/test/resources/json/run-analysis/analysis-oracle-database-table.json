@@ -1,0 +1,11 @@
+{
+    "analysis": {
+        "name": "New Analysis",
+        "type": "DATABASE",
+        "requestType": "TABLE",
+        "datasource": {
+            "id": 51
+        },
+        "table": "TB_VIEWER"
+    }
+}

@@ -6,5 +6,6 @@
     "description": "s",
     "type": "HDFS",
     "user": "s",
-    "password": "s"
+    "password": "s",
+    "domain" : "cds"
 }

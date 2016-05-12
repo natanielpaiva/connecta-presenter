@@ -1,18 +1,22 @@
 package br.com.cds.connecta.presenter.entity.analysis;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import javax.persistence.NamedQuery;
-import org.hibernate.annotations.DynamicUpdate;
+import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
+
+import javax.persistence.OneToMany;
+
 
 /**
  * The persistent class for the TB_ANALYSIS_COLUMNS database table.
@@ -20,9 +24,7 @@ import org.hibernate.annotations.DynamicUpdate;
  */
 @Entity
 @Table(name = "TB_ANALYSIS_COLUMNS")
-@DynamicUpdate
-@NamedQuery(name = "AnalysisColumn.get", query = "SELECT t FROM AnalysisColumn t "
-        + " WHERE t.id = :id ")
+//@DynamicUpdate
 public class AnalysisColumn extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +45,10 @@ public class AnalysisColumn extends AbstractBaseEntity {
 
     @Column(name = "TP_COLUMN")
     private BigDecimal type;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
+    private List<AnalysisViewerColumn> analysisViewerColumns;
 
     @Override
     public Long getId() {

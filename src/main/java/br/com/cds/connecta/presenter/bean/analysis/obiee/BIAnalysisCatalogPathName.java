@@ -1,4 +1,4 @@
-package br.com.cds.connecta.presenter.bean.analysis;
+package br.com.cds.connecta.presenter.bean.analysis.obiee;
 
 /**
  *

@@ -14,8 +14,9 @@ import br.com.cds.connecta.framework.core.search.filter.PaginationFilter;
 public class SingleSourceFilter extends PaginationFilter {
     
     private String name;
-
-    public String getName() {
+    private String domain;
+    
+	public String getName() {
         return name;
     }
 
@@ -23,4 +24,11 @@ public class SingleSourceFilter extends PaginationFilter {
         this.name = name;
     }
     
+    public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 }

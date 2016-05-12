@@ -8,5 +8,6 @@
     
     "singleSource":{
         "id": 1
-    }
+    },
+    "domain" : "cds"
 }

@@ -1,15 +1,19 @@
 package br.com.cds.connecta.presenter.business.strategy.connector;
 
-import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
 import br.com.cds.connecta.framework.connector2.FusionClient;
 import br.com.cds.connecta.framework.connector2.Request;
-import br.com.cds.connecta.framework.connector2.common.QueryContext;
+import br.com.cds.connecta.framework.connector2.common.ConnectorColumn;
+import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
 import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
-import br.com.cds.connecta.framework.connector2.context.database.Driver;
-import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleConnection;
-import br.com.cds.connecta.framework.core.util.Util;
+import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver;
+import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
+import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
+import br.com.cds.connecta.framework.connector2.domain.DatabaseRequestTypeEnum;
+import static br.com.cds.connecta.framework.core.util.Util.isNotEmpty;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisFilter;
+import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
-import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
@@ -17,8 +21,8 @@ import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
+import org.apache.metamodel.schema.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,64 +35,80 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
 
     @Autowired
     private DatasourceRepository repository;
+    
+    @Autowired
+    private IDatabaseAS service;
 
     private final Logger logger = Logger.getLogger(DatabaseConnectorStrategy.class);
 
     @Override
-    public List<Map<String, Object>> getDataProvider(Analysis analysis, List<ConnectorColumn> columns) {
-        List<Map<String, Object>> dataProvider;
+    public List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) {
         FusionClient fusionClient = new FusionClient();
-        DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysis;
-
-        DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(analysis.getDatasource().getId());
-        List<br.com.cds.connecta.framework.connector2.common.ConnectorColumn> connectorColumns = new ArrayList<>();
-
-        if (Util.isNotEmpty(columns)) {
-            parseConnectorColumns1To2(columns, connectorColumns);
-        } else {
-            organizeAnalysisColumns(databaseAnalysis, connectorColumns);
-        }
-
-        Driver driver = makeConnectionDriver(datasource);
-
-        if (databaseAnalysis.getTable() != null) {
-            logger.info(String.format("TABLE ANALYSIS %s . %s", datasource.getSchema(), databaseAnalysis.getTable()));
-            DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(driver, datasource.getUser(), datasource.getPassword());
-            // FIXME Fazer o de tabela
-            //List cl = dataContextFactory.getColumns();
-            
-            QueryContext query = new QueryContext()
-                    .setSchema(datasource.getSchema())
-                    .setTable(databaseAnalysis.getTable())
-                    .setListColumns(connectorColumns);
-
-            Request request = new Request(dataContextFactory, query);
-            dataProvider = fusionClient.getAll(request);
-        } else { // if (databaseAnalysis.getSql() != null)
-            logger.info("MANUAL SQL ANALYSIS");
-            DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(databaseAnalysis.getSql(), driver, datasource.getUser(), datasource.getPassword());
-            QueryContext query = new QueryContext().setListColumns(connectorColumns);
-
-            Request request = new Request(dataContextFactory, query);
-            dataProvider = fusionClient.getAll(request);
-        }
-
-        return dataProvider;
+        Request request = makeRequest(analysisExecuteRequest);
+        
+        return fusionClient.getAll(request);
+    }
+    
+    @Override
+    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) {
+        FusionClient fusionClient = new FusionClient();
+        Request request = makeRequest(analysisExecuteRequest);
+        
+        return fusionClient.possibleValuesFor(request, filter);
     }
 
-    public Driver makeConnectionDriver(DatabaseDatasource datasource) {
-        Driver driver = null;
+    private Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) {
+        DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
+        DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
+        
+        ConnectorDriver driver = service.makeConnectorDriver(datasource);
+        
+        DatabaseDataContextFactory dataContextFactory;
+        QueryBuilder query;
+        
+        if (DatabaseRequestTypeEnum.TABLE.equals(databaseAnalysis.getRequestType())) {
+            dataContextFactory = new DatabaseDataContextFactory(driver, databaseAnalysis.getTable(), datasource.getUser(), datasource.getPassword());
+            query = new QueryBuilder()
+                    .setSchema(datasource.getSchema())
+                    .setTable(databaseAnalysis.getTable())
+                    .setColumns(
+                            toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
+                    )
+                    ;
+        } else {  // if (DatabaseRequestTypeEnum.SQL.equals(databaseAnalysis.getRequestType()))
+            dataContextFactory = new DatabaseDataContextFactory(databaseAnalysis.getSql(), driver, datasource.getUser(), datasource.getPassword());
+            
+            query = new QueryBuilder().setColumns(
+                    toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
+            );
+        }
+        
+        addFiltersIfDefined(query, analysisExecuteRequest, dataContextFactory);
+        Request request = new Request(dataContextFactory, query);
+        
+        return request;
+    }
+    
+    public ConnectorDriver makeConnectorDriver(DatabaseDatasource datasource) {
+        ConnectorDriver driver = null;
+        
         if (DatabaseDatasourceDriverEnum.ORACLE_SID.equals(datasource.getDriver())) {
-            driver = new OracleConnection(datasource.getServer(), datasource.getPort().toString(), datasource.getSid());
+            driver = new OracleDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSid());
+        }
+        if (DatabaseDatasourceDriverEnum.MYSQL.equals(datasource.getDriver())) {
+            driver = new MySQLDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
         }
 
         return driver;
     }
 
-    private void organizeAnalysisColumns(DatabaseAnalysis databaseAnalysis, List<br.com.cds.connecta.framework.connector2.common.ConnectorColumn> connectorColumns) {
-        if (databaseAnalysis.getAnalysisColumns() != null) {
-            for (AnalysisColumn analysisColumn : databaseAnalysis.getAnalysisColumns()) {
-                br.com.cds.connecta.framework.connector2.common.ConnectorColumn column = new br.com.cds.connecta.framework.connector2.common.ConnectorColumn();
+    private List<ConnectorColumn> toConnectorColumns(List<AnalysisColumn> analysisColumns) {
+        List<ConnectorColumn> connectorColumns = null;
+        
+        if (analysisColumns != null && !analysisColumns.isEmpty()) {
+            connectorColumns = new ArrayList<>();
+            for (AnalysisColumn analysisColumn : analysisColumns) {
+                ConnectorColumn column = new ConnectorColumn();
                 column.setId(analysisColumn.getId());
                 column.setLabel(analysisColumn.getLabel());
                 column.setName(analysisColumn.getName());
@@ -99,19 +119,21 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
                 connectorColumns.add(column);
             }
         }
+        
+        return connectorColumns;
     }
 
-    private void parseConnectorColumns1To2(List<ConnectorColumn> columns1, List<br.com.cds.connecta.framework.connector2.common.ConnectorColumn> columns2) {
-        for (ConnectorColumn column1 : columns1) {
-            br.com.cds.connecta.framework.connector2.common.ConnectorColumn column2 = new br.com.cds.connecta.framework.connector2.common.ConnectorColumn();
-            column2.setId(column1.getId());
-            column2.setLabel(column1.getLabel());
-            column2.setName(column1.getName());
-            column2.setFormula(column1.getFormula());
-
-            logger.info("CONVERTING FROM OLD COLUMN TO NEW: " + column1.getName());
-
-            columns2.add(column2);
+    private void addFiltersIfDefined(QueryBuilder queryBuilder, AnalysisExecuteRequest analysisExecuteRequest, DatabaseDataContextFactory dataContextFactory) {
+        if (isNotEmpty(analysisExecuteRequest.getFilters())) {
+            for(AnalysisFilter analysisFilter :  analysisExecuteRequest.getFilters()) {
+                
+                queryBuilder.addFilter(
+                    dataContextFactory.getColumn(analysisFilter.getColumnName()),
+                    analysisFilter.getOperator(),
+                    analysisFilter.getValue()
+                );
+                
+            }
         }
     }
 

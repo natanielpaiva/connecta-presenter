@@ -1,0 +1,20 @@
+{
+    "analysis": {
+        "name": "New Analysis",
+        "type": "DATABASE",
+        "requestType": "TABLE",
+        "datasource": {
+            "id": 51
+        },
+        "table": "TB_VIEWER"
+    },
+    "filters":[
+        {
+            "columnName":"PK_VIEWER",
+            "operator":"LESS_THAN",
+            "value":{
+                "value":700
+            }
+        }
+    ]
+}

@@ -1,12 +1,24 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
-import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import static br.com.cds.connecta.framework.core.util.Util.isNull;
+import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
+import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.ISingleSourceAS;
 import br.com.cds.connecta.presenter.domain.FileExtensionEnum;
 import br.com.cds.connecta.presenter.entity.Attribute;
@@ -19,23 +31,10 @@ import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
 import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.SingleSourceRepository;
-import br.com.cds.connecta.presenter.persistence.impl.BulkActionsRepository;
-import java.io.IOException;
-import java.util.Arrays;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.apache.commons.io.FilenameUtils;
-import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.web.multipart.MultipartFile;
+import br.com.cds.connecta.presenter.persistence.specification.SingleSourceSpecification;
 
 @Service
 public class SingleSourceAS implements ISingleSourceAS {
-
-    @Autowired
-    private BulkActionsRepository bulk;
 
     @Autowired
     private SingleSourceRepository singleSourceListRepository;
@@ -50,8 +49,8 @@ public class SingleSourceAS implements ISingleSourceAS {
     private IFileSingleSourceDAO fileSingleSourceDAO;
 
     @Override
-    public List<SingleSource> list() throws Exception {
-        return singleSourceListRepository.findAll();
+    public List<SingleSource> list(String domain) {
+        return singleSourceListRepository.findAll(SingleSourceSpecification.byDomain(domain));
     }
 
     @Override
@@ -61,12 +60,13 @@ public class SingleSourceAS implements ISingleSourceAS {
             name = "";
         }
 
-        return singleSourceListRepository.findByName("%" + name.toUpperCase() + "%", filter.makePageable());
-
+        return singleSourceListRepository.findAll
+        		(SingleSourceSpecification.byNameAndDomain(name, filter.getDomain()), 
+        				filter.makePageable());
     }
 
     @Override
-    public SingleSource saveOrUpdate(SingleSource singleSource) throws Exception {
+    public SingleSource saveOrUpdate(SingleSource singleSource){
         refreshAttribute(singleSource);
         return singleSourceListRepository.save(singleSource);
     }
@@ -83,23 +83,23 @@ public class SingleSourceAS implements ISingleSourceAS {
     }
 
     @Override
-    public void delete(Long id) throws Exception {
-        singleSourceListRepository.delete(id);
+    public void delete(Long id, String domain){
+    	SingleSource s = get(id, domain);
+        singleSourceListRepository.delete(s);
     }
 
     @Override
-    public void delete(SingleSource entity) throws Exception {
+    public void delete(SingleSource entity, String domain){
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SingleSource get(Long id) {
-        SingleSource singlesource;
+    public SingleSource get(Long id, String domain) {
+    	SingleSource singlesource = singleSourceListRepository
+    			.findOne(SingleSourceSpecification.byIdAndDomainWithAttributeFetch(id, domain));
         
-        try {
-            singlesource = singleSourceDAO.getWithAttributes(id);
-        } catch (EmptyResultDataAccessException exception) {
-            throw new ResourceNotFoundException(SingleSource.class.getCanonicalName());
+    	if(Util.isNull(singlesource)){
+            throw new ResourceNotFoundException(SingleSource.class.getSimpleName());
         }
 
         return singlesource;
@@ -160,8 +160,10 @@ public class SingleSourceAS implements ISingleSourceAS {
     }
 
     @Override
-    public void deleteAll(List<Long> ids) {
-        bulk.delete(SingleSource.class, ids);
+    public void deleteAll(List<Long> ids, String domain) {
+    	List<SingleSource> listSingleSource = singleSourceListRepository
+    			.findAll(SingleSourceSpecification.byIdsAndDomain(ids, domain));
+    	singleSourceListRepository.delete(listSingleSource);
     }
 
 }

@@ -8,5 +8,6 @@
     "description": "s",
     "type": "DATABASE",
     "user": "s",
-    "password": "s"
+    "password": "s",
+    "domain" : "cds"
 }

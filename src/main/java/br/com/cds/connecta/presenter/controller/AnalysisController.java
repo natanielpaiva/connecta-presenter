@@ -1,7 +1,8 @@
 package br.com.cds.connecta.presenter.controller;
 
-import br.com.cds.connecta.presenter.bean.analysis.BIAnalysisCatalogPathName;
+import br.com.cds.connecta.presenter.bean.analysis.obiee.BIAnalysisCatalogPathName;
 import br.com.cds.connecta.framework.connector.soap.service.Parameters;
+import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.bean.analysis.json.JSONValue;
 import br.com.cds.connecta.presenter.bean.analysis.json.JSONValueParser;
 import br.com.cds.connecta.presenter.bean.analysis.xml.XMLNodeParser;
@@ -18,10 +19,10 @@ import br.com.cds.connecta.presenter.business.applicationService.IObieeAS;
 import br.com.cds.connecta.presenter.business.applicationService.IRestAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
+import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.CsvAnalysis;
-import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.io.ByteArrayInputStream;
@@ -29,7 +30,6 @@ import java.io.InputStream;
 import java.util.Map;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import javax.xml.transform.dom.DOMSource;
-import org.apache.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,7 +37,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("analysis")
@@ -66,10 +68,11 @@ public class AnalysisController {
     
     @Autowired
     private ICsvAS csvService;
+    
+    @Autowired
+    private IDataExtractorAS extractor;
 
-    private JSONValueParser parser = new JSONValueParser();
-
-    private static final Logger logger = Logger.getLogger(AnalysisController.class);
+    private final JSONValueParser parser = new JSONValueParser();
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<Analysis> save(@RequestBody Analysis analysis) {
@@ -83,7 +86,8 @@ public class AnalysisController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    protected ResponseEntity<Analysis> update(@PathVariable Long id, @RequestBody Analysis analysis) {
+    protected ResponseEntity<Analysis> 
+    				update(@PathVariable Long id, @RequestBody Analysis analysis) {
         analysis.setId(id);
         Analysis updatedAnalysis = analysisService.saveOrUpdate(analysis);
         return new ResponseEntity<>(updatedAnalysis, HttpStatus.OK);
@@ -92,20 +96,24 @@ public class AnalysisController {
     @RequestMapping(
             value = "{id}",
             method = RequestMethod.DELETE)
-    protected ResponseEntity delete(@PathVariable("id") Long id) {
-        analysisService.delete(id);
+    protected ResponseEntity delete(@PathVariable("id") Long id,
+    		@RequestHeader("Domain") String domain) {
+        analysisService.delete(id,domain);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    protected ResponseEntity<Analysis> get(@PathVariable("id") Long id) {
-        Analysis analysis = analysisService.get(id);
+    protected ResponseEntity<Analysis> get(@PathVariable("id") Long id,
+    		@RequestHeader("Domain") String domain) {
+        Analysis analysis = analysisService.get(id, domain);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
     
 
     @RequestMapping(method = RequestMethod.GET)
-    protected ResponseEntity<Iterable<Analysis>> list(AnalysisFilter filter) {
+    protected ResponseEntity<Iterable<Analysis>> list(AnalysisFilter filter,
+    		@RequestHeader("Domain") String domain) {
+    	filter.setDomain(domain);
         Iterable<Analysis> list = analysisService.list(filter);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -125,16 +133,46 @@ public class AnalysisController {
         List list = databaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    //excuta SQL Banco de dados
-    @RequestMapping(value = "{id}/execute-sql", method = RequestMethod.POST)
-    public ResponseEntity getResultSql(
-            @PathVariable Long id,
-            @RequestBody DatabaseAnalysis databaseAnalysis) {
-        List<Map<String, Object>> dataSql = databaseService.getDataSql(id, databaseAnalysis);
-        return new ResponseEntity<>(dataSql, HttpStatus.OK);
+    
+    /**
+     * Executa Análises de acordo com o AnalysisExecuteRequest
+     * 
+     * @param analysisExecuteRequest
+     * @return 
+     */
+    @RequestMapping(value = "result", method = RequestMethod.POST)
+    public ResponseEntity<List<Map<String, Object>>> getResult(@RequestBody AnalysisExecuteRequest analysisExecuteRequest) {
+        List<Map<String, Object>> result = extractor.executeAnalysis(analysisExecuteRequest);
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
-
+    @RequestMapping(value = "filter-value", method = RequestMethod.POST)
+    public ResponseEntity<List<Object>> possibleValuesForFilter(
+            @RequestBody AnalysisExecuteRequest analysisExecuteRequest,
+            @RequestParam("column") Object column) {
+        
+        List<Object> result = extractor.possibleValuesFor(analysisExecuteRequest, column);
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
+//    /**
+//     * Executa uma análise de banco de dados
+//     * 
+//     * FIXME APAGAR - Nao precisa de ID do datasource na URL pra funcionar, apenas no json
+//     * @param id
+//     * @param databaseAnalysis
+//     * @return 
+//     */
+//    @RequestMapping(value = "{id}/execute-sql", method = RequestMethod.POST)
+//    public ResponseEntity getResultSql(
+//            @PathVariable Long id,
+//            @RequestBody DatabaseAnalysis databaseAnalysis) {
+//        List<Map<String, Object>> dataSql = databaseService.getDataSql(databaseAnalysis);
+//        return new ResponseEntity<>(dataSql, HttpStatus.OK);
+//    }
+    
     //retorna a análises e suas respectivas colunas
     @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)
     public ResponseEntity<Analysis> getAnalysisColumns(
@@ -195,7 +233,8 @@ public class AnalysisController {
     }
 
     //Retona a resposta do Soap no formato json
-    @RequestMapping(value = "{id}/soap/operation/{operation}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "{id}/soap/operation/{operation}", 
+    		method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<XMLNode> getSoap(
             @PathVariable Long id,
             @PathVariable String operation,
@@ -226,14 +265,14 @@ public class AnalysisController {
 
     @RequestMapping(value = "autocomplete", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    protected ResponseEntity<Iterable<Analysis>> listAutoComplete(AnalysisFilter filter) {
-        Page<Analysis> list;
-        list = analysisService.listAutoComplete(filter);
-
+    protected ResponseEntity<Iterable<Analysis>> listAutoComplete(AnalysisFilter filter,
+    		@RequestHeader("Domain") String domain) {
+    	filter.setDomain(domain);
+    	
+        Page<Analysis> list = analysisService.listAutoComplete(filter);
         Iterable<Analysis> content = list.getContent();
 
         return new ResponseEntity<>(content, HttpStatus.OK);
-
     }
 
     //Retorna json de Rest via get
@@ -285,13 +324,15 @@ public class AnalysisController {
             @PathVariable Long id,
             @PathVariable int facet,
             @RequestBody Query query) {
-        List<Map<String, Object>> solrResultApplyingQuery = solrService.getSolrResultApplyingQuery(id, query, facet);
+        List<Map<String, Object>> solrResultApplyingQuery = 
+        		solrService.getSolrResultApplyingQuery(id, query, facet);
         return new ResponseEntity<>(solrResultApplyingQuery, HttpStatus.OK);
     }
 
     
     //excuta CSV
-    @RequestMapping(value = "/result-csv", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/result-csv", method = RequestMethod.POST, 
+    		consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getResultCSV(
             @RequestBody CsvAnalysis csvAnalysis) {
         List<Map<String, Object>> dataCsv = csvService.getDataCsv(csvAnalysis);
@@ -300,8 +341,9 @@ public class AnalysisController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity bulkDelete(@RequestBody List<Long> ids) {
-        analysisService.deleteAll(ids);
+    public ResponseEntity bulkDelete(@RequestBody List<Long> ids,
+    		@RequestHeader("Domain") String domain) {
+        analysisService.deleteAll(ids, domain);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

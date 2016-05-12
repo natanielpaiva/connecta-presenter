@@ -6,5 +6,6 @@
     "urlType": "jpg",
     "url": "http://bolinha.batata.com",
     "user": null,
-    "password": null
+    "password": null,
+    "domain" : "cds"
 }

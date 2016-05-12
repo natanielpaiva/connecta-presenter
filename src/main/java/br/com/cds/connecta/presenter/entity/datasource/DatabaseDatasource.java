@@ -6,6 +6,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
+import javax.persistence.Basic;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.NamedQueries;
@@ -35,6 +36,7 @@ public class DatabaseDatasource extends Datasource {
     @Column(name = "TXT_SID")
     private String sid;
 
+    @Basic(optional = true)
     @Column(name = "TXT_SCHEMA")
     private String schema;
 

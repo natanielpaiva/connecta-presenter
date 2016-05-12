@@ -61,9 +61,12 @@ public class SingleSource extends AbstractBaseEntity {
     @Enumerated(EnumType.STRING)
     private SingleSourceTypeEnum type;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_SINGLE_SOURCE")
     private List<SingleSourceAttribute> singleSourceAttributes;
+    
+    @Column(name = "NM_DOMAIN")
+    private String domain;
 
     @Override
     public Long getId() {
@@ -105,5 +108,13 @@ public class SingleSource extends AbstractBaseEntity {
     public void setSingleSourceAttributes(List<SingleSourceAttribute> singleSourceAttributes) {
         this.singleSourceAttributes = singleSourceAttributes;
     }
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 
 }

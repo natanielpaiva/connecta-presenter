@@ -3,6 +3,7 @@
     "description": "Group Description Edit",
     "name": "Edit Group",
     "type": "SELECT",
+    "domain" : "cds",
     "singleSourceGroup": [
         {
             "numOrder": 9,

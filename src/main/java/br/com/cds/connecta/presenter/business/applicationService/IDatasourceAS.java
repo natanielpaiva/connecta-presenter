@@ -14,10 +14,10 @@ public interface IDatasourceAS {
 
     Iterable<Datasource> list(DatasourceFilter filter);
 
-    Datasource get(Long id);
+    Datasource get(Long id, String domain);
 
-    void delete(Long id);
+    void delete(Long id, String domain);
 
-    void deleteAll(List<Long> ids);
+    void deleteAll(List<Long> ids, String domain);
 
 }

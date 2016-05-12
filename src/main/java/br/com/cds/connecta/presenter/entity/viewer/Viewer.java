@@ -97,6 +97,10 @@ public class Viewer extends AbstractBaseEntity {
     @Lob
     @Column(name = "BN_PREVIEW")
     private byte[] preview;
+    
+    @Field
+    @Column(name = "NM_DOMAIN")
+    private String domain;
 
     @Override
     public Long getId() {
@@ -146,4 +150,12 @@ public class Viewer extends AbstractBaseEntity {
     public void setPreview(byte[] preview) {
         this.preview = preview;
     }
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 }
