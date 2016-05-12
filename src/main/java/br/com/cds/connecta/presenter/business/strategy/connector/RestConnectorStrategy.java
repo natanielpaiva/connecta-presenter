@@ -126,4 +126,9 @@ public class RestConnectorStrategy implements ConnectorStrategy {
 //        }
 //        return dataProvider;
 //    }
+
+    @Override
+    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

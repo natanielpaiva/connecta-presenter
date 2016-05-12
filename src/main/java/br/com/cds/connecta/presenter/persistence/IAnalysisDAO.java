@@ -11,9 +11,6 @@ public interface IAnalysisDAO extends IBaseJpaDAO<Analysis> {
 
     Analysis getByIdColumns(Long id);
 
-    @Override
-    Analysis get(Long id);
-
     DatabaseAnalysis getTest(Long id);
 
 }

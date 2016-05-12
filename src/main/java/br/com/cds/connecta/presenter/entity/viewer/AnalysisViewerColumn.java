@@ -2,7 +2,6 @@ package br.com.cds.connecta.presenter.entity.viewer;
 
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

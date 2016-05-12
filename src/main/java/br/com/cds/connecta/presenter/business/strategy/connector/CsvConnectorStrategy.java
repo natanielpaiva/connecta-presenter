@@ -60,5 +60,10 @@ public class CsvConnectorStrategy implements ConnectorStrategy{
         
         return connectorColumns;
     }
+
+    @Override
+    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

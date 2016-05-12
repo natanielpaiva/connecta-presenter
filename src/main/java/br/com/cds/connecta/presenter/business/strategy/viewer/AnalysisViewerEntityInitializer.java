@@ -5,6 +5,7 @@ import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +20,8 @@ public class AnalysisViewerEntityInitializer implements ViewerEntityInitializer 
                 .setParameter("id", viewer.getId());
         
         AnalysisViewer analysisViewer = query.getSingleResult();
+        
+        Hibernate.initialize(analysisViewer.getAnalysis().getAnalysisColumns());
         
         return analysisViewer;
     }

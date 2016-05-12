@@ -15,10 +15,8 @@ import javax.persistence.Table;
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
 
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.DynamicUpdate;
 
 /**
  * The persistent class for the TB_ANALYSIS_COLUMNS database table.
@@ -26,9 +24,7 @@ import org.hibernate.annotations.DynamicUpdate;
  */
 @Entity
 @Table(name = "TB_ANALYSIS_COLUMNS")
-@DynamicUpdate
-@NamedQuery(name = "AnalysisColumn.get", query = "SELECT t FROM AnalysisColumn t "
-        + " WHERE t.id = :id ")
+//@DynamicUpdate
 public class AnalysisColumn extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;

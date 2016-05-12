@@ -20,11 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.cds.connecta.framework.amcharts.ChartTemplate;
 import br.com.cds.connecta.framework.amcharts.ChartTemplateType;
-import br.com.cds.connecta.presenter.bean.analysisviewer.AnalysisViewerResult;
 import br.com.cds.connecta.presenter.business.applicationService.IViewerAS;
-import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.components.viewers.amcharts.provider.ChartProvider;
-import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
 import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 
 /**
@@ -37,9 +34,6 @@ public class ViewerController {
 
     @Autowired
     private IViewerAS viewerService;
-    
-    @Autowired
-    private IDataExtractorAS dataExtratorService;
     
     @Autowired
     private ChartProvider chartProvider;
@@ -76,7 +70,7 @@ public class ViewerController {
     		produces = MediaType.APPLICATION_JSON_VALUE, 
     		consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Viewer> update(@PathVariable Long id,@RequestBody Viewer viewer){
+    public ResponseEntity<Viewer> update(@PathVariable Long id, @RequestBody Viewer viewer){
     	viewer.setId(id);
         Viewer updateViewer= viewerService.saveOrUpdate(viewer);
         return new ResponseEntity<>(updateViewer, HttpStatus.OK);
@@ -89,15 +83,15 @@ public class ViewerController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
     
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.POST,
-            value = "preview")
-    @ResponseBody
-    public ResponseEntity<AnalysisViewerResult> preview(@RequestBody AnalysisViewer analysisViewer) {
-        AnalysisViewerResult analysisViewerResult = dataExtratorService.getAnalysisViewerResult(analysisViewer);
-
-        return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
-    }
+//    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+//            method = RequestMethod.POST,
+//            value = "preview")
+//    @ResponseBody
+//    public ResponseEntity<AnalysisViewerResult> preview(@RequestBody AnalysisViewer analysisViewer) {
+//        AnalysisViewerResult analysisViewerResult = dataExtratorService.getAnalysisViewerResult(analysisViewer);
+//
+//        return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
+//    }
     
 //    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
 //            method = RequestMethod.GET,

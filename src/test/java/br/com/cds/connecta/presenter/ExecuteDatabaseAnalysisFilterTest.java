@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import static org.hamcrest.Matchers.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -19,10 +18,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author pires
  */
-@Ignore
+//@Ignore
 public class ExecuteDatabaseAnalysisFilterTest extends BaseTest {
 
-    private static final String ENDPOINT = REST_PATH.concat("analysis/result");
+    private static final String ANALYSIS_RESULT = REST_PATH.concat("analysis/result");
+    private static final String FILTER_VALUES = REST_PATH.concat("analysis/filter-value");
+    
 //    private final String MOCK_H2_ORACLE = "jdbc:h2:mem:connecta;INIT=create schema if not exists PRESENTER2;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
 //    private final String MOCK_H2_MYSQL = "jdbc:h2:mem:connecta;INIT=create schema if not exists PRESENTER2;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE";
 
@@ -46,263 +47,201 @@ public class ExecuteDatabaseAnalysisFilterTest extends BaseTest {
         }
     }
 
-//    @Test
-//    public void listPossibleValuesForFilterWithoutPreviousFiltersTableMySQL() {
-//        String table = "tb_projeto";
-//        String columnName = "id_usuario_gerente";
-//
-//        ContextFactory contextFactory = makeMySQLTableContextFactory(table);
-//
-//        QueryBuilder queryContext = new QueryBuilder();
-//
-//        Request request = new Request(contextFactory, queryContext);
-//
-//        List<Object> all = client.possibleValuesFor(request, contextFactory.getColumn(columnName));
-//
-//        assertThat(all, hasSize(greaterThan(0)));
-//
-//        for (Object possibleValue : all) {
-//            logger.info("VALUE: " + possibleValue);
-//            assertThat((String) possibleValue, anyOf(
-//                    is("91"),
-//                    is("99"),
-//                    is("224")
-//            ));
-//        }
-//    }
-//
-//    @Test
-//    public void listPossibleValuesForFilterWithPreviousFiltersTableMySQL() {
-//        String table = "tb_projeto";
-//        String columnName = "cod_projeto_primavera";
-//        String value = "CDS.Comercial";
-//        String columnPossibleValuesName = "id_usuario_gerente";
-//
-//        ContextFactory contextFactory = makeMySQLTableContextFactory(table);
-//
-//        Column column = contextFactory.getColumn(columnName);
-//
-//        QueryBuilder queryContext = new QueryBuilder()
-//                .addFilter(column, QueryFilterOperator.EQUAL, new QueryFilterValue(value));
-//
-//        Request request = new Request(contextFactory, queryContext);
-//
-//        List<Object> all = client.possibleValuesFor(request, contextFactory.getColumn(columnPossibleValuesName));
-//
-//        assertThat(all, hasSize(greaterThan(0)));
-//
-//        for (Object possibleValue : all) {
-//            assertThat((String) possibleValue, anyOf(is("91"), is("99")));
-//        }
-//    }
-//
-//    @Test
-//    public void listPossibleValuesForFilterWithoutPreviousFiltersSQLMySQL() {
-//        String columnName = "tipo";
-//
-//        ContextFactory contextFactory = makeMySQLSQLContextFactory();
-//
-//        QueryBuilder queryContext = new QueryBuilder();
-//
-//        Request request = new Request(contextFactory, queryContext);
-//
-//        List<Object> all = client.possibleValuesFor(request, contextFactory.getColumn(columnName));
-//
-//        assertThat(all, hasSize(greaterThan(0)));
-//
-//        for (Object possibleValue : all) {
-//            logger.info("VALUE: " + possibleValue);
-//            assertThat((String) possibleValue, anyOf(
-//                    is("Reembolso"),
-//                    is("Despesas"),
-//                    is("Despesa"),
-//                    is("Compra de Material")
-//            ));
-//        }
-//    }
-//
-//    @Test
-//    public void listPossibleValuesForFilterWithPreviousFiltersSQLMySQL() {
-//        String columnName = "tipo";
-//        String value = "Reembolso";
-//        String columnPossibleValuesName = "projeto";
-//
-//        ContextFactory contextFactory = makeMySQLSQLContextFactory();
-//
-//        Column column = contextFactory.getColumn(columnName);
-//
-//        QueryBuilder queryContext = new QueryBuilder()
-//                .addFilter(column, QueryFilterOperator.EQUAL, new QueryFilterValue(value));
-//
-//        Request request = new Request(contextFactory, queryContext);
-//
-//        List<Object> all = client.possibleValuesFor(request, contextFactory.getColumn(columnPossibleValuesName));
-//
-//        assertThat(all, hasSize(greaterThan(0)));
-//
-//        assertThat(all, containsInAnyOrder((Object) "NTC", (Object) "Prospecção Comercial"));
-//    }
-//
-//    @Test
-//    public void listPossibleValuesForFilterWithoutPreviousFiltersTableOracle() {
-//        String table = "TB_VIEWER";
-//        String columnName = "TP_VIEWER";
-//
-//        ContextFactory contextFactory = makeOracleTableContextFactory(table);
-//
-//        QueryBuilder builder = new QueryBuilder();
-//
-//        Request request = new Request(contextFactory, builder);
-//
-//        List<Object> all = client.possibleValuesFor(
-//                request,
-//                contextFactory.getColumn(columnName));
-//
-//        assertThat(all, hasSize(greaterThan(0)));
-//
-//        for (Object possibleValue : all) {
-//            logger.info("VALUE: " + possibleValue);
-//            assertThat((String) possibleValue, anyOf(
-//                    is("SINGLESOURCE"),
-//                    is("ANALYSIS")
-//            ));
-//        }
-//    }
-//
-//    @Test
-//    public void listPossibleValuesForFilterWithPreviousFiltersTableOracle() {
-//        String table = "TB_DATASOURCE";
-//        String columnName = "TP_DATASOURCE";
-//        String value = "DATABASE";
-//        String columnPossibleValuesName = "TXT_USUARIO";
-//
-//        ContextFactory contextFactory = makeOracleTableContextFactory(table);
-//
-//        Column column = contextFactory.getColumn(columnName);
-//
-//        QueryBuilder queryContext = new QueryBuilder()
-//                .addFilter(column, QueryFilterOperator.EQUAL, new QueryFilterValue(value));
-//
-//        Request request = new Request(contextFactory, queryContext);
-//
-//        List<Object> all = client.possibleValuesFor(request, contextFactory.getColumn(columnPossibleValuesName));
-//
-//        assertThat(all, hasSize(greaterThan(0)));
-//
-//        for (Object possibleValue : all) {
-//            assertThat((String) possibleValue, anyOf(
-//                    is("PRESENTER2"),
-//                    is("PRESENTER_ANALYTICS"),
-//                    is("poc_caixa"),
-//                    is("root")
-//            ));
-//        }
-//    }
-//
-//    @Test
-//    public void listPossibleValuesForFilterWithoutPreviousFiltersSQLOracle() {
-//        String columnName = "TP";
-//
-//        ContextFactory contextFactory = makeOracleSQLContextFactory();
-//
-//        QueryBuilder queryContext = new QueryBuilder();
-//
-//        Request request = new Request(contextFactory, queryContext);
-//
-//        List<Object> all = client.possibleValuesFor(request, contextFactory.getColumn(columnName));
-//
-//        assertThat(all, hasSize(greaterThan(0)));
-//
-//        for (Object possibleValue : all) {
-//            logger.info("VALUE: " + possibleValue);
-//            assertThat((String) possibleValue, anyOf(
-//                    is("DATABASE"),
-//                    is("WEBSERVICE"),
-//                    is("HDFS")
-//            ));
-//        }
-//    }
-//
-//    @Test
-//    public void listPossibleValuesForFilterWithPreviousFiltersSQLOracle() {
-//        String columnName = "TP";
-//        String value = "DATABASE";
-//        String columnPossibleValuesName = "QT";
-//
-//        ContextFactory contextFactory = makeOracleSQLContextFactory();
-//
-//        Column column = contextFactory.getColumn(columnName);
-//
-//        QueryBuilder queryContext = new QueryBuilder()
-//                .addFilter(column, QueryFilterOperator.EQUAL, new QueryFilterValue(value));
-//
-//        Request request = new Request(contextFactory, queryContext);
-//
-//        List<Object> all = client.possibleValuesFor(request, contextFactory.getColumn(columnPossibleValuesName));
-//
-//        assertThat(all, hasSize(greaterThan(0)));
-//
-//        for (Object possibleValue : all) {
-//            logger.info("VALUE: " + possibleValue);
-//            assertThat((String) possibleValue, anyOf(
-//                    is("4")
-//            ));
-//        }
-//    }
+    @Test
+    public void listPossibleValuesForFilterTableMySQL() throws Exception {
+        makeFilterValuesRequest("run-analysis/analysis-mysql-database-table", "cod_projeto_primavera")
+            .andExpect(jsonPath("$[*]", todosOsItens(anyOf(
+                nullValue(),
+                equalTo("ALEP.032"),
+                equalTo("APEX.080"),
+                equalTo("APEX.087"),
+                equalTo("BanPara.082"),
+                equalTo("BEC.078"),
+                equalTo("CDS.BI"),
+                equalTo("CDS.BI PRIMAVERA"),
+                equalTo("CDS.BPM"),
+                equalTo("CDS.Comercial"),
+                equalTo("CDS.Desenvolvimento"),
+                equalTo("CDS.GEO"),
+                equalTo("CDS.INFRA"),
+                equalTo("CDS.MEMORANDO"),
+                equalTo("CDS.MIRA"),
+                equalTo("CDS.PMO"),
+                equalTo("CDS.REQUISITOS"),
+                equalTo("CDS.SOA"),
+                equalTo("CEF.040"),
+                equalTo("CEF.041"),
+                equalTo("CNIPE.044"),
+                equalTo("CNJ.047"),
+                equalTo("CNJ.061"),
+                equalTo("CNJ.070"),
+                equalTo("DATASUS.053"),
+                equalTo("DATASUS.054"),
+                equalTo("DATASUS.055"),
+                equalTo("DATASUS.056"),
+                equalTo("DATASUS.059"),
+                equalTo("DATASUS.063"),
+                equalTo("DATASUS.064"),
+                equalTo("DATASUS.OS01.043"),
+                equalTo("DATASUS.OS02.043"),
+                equalTo("DATASUS.OS03.043"),
+                equalTo("DATASUS.OS04.043"),
+                equalTo("DATASUS.OS05.043"),
+                equalTo("DATASUS.OS06.043"),
+                equalTo("DATASUS.OS07.043"),
+                equalTo("DATASUS.OS08.043"),
+                equalTo("DATASUS.OS09.043"),
+                equalTo("DATASUS.OS10.043"),
+                equalTo("DATASUS.OS11.043"),
+                equalTo("DATASUS.OS12.043"),
+                equalTo("DATASUS.OS13.043"),
+                equalTo("DATASUS.OS14.043"),
+                equalTo("DATASUS.OS15.043"),
+                equalTo("DPF.085"),
+                equalTo("IBAMA.023"),
+                equalTo("IBAMA.066"),
+                equalTo("IBAMA.069"),
+                equalTo("IBAMA.077"),
+                equalTo("INEP.049"),
+                equalTo("MPT.075"),
+                equalTo("POC.MEC.2013"),
+                equalTo("PRODESP.087"),
+                equalTo("RENNER.031"),
+                equalTo("RENNER.050"),
+                equalTo("RENNER.052"),
+                equalTo("RENNER.067"),
+                equalTo("SASCAR.057"),
+                equalTo("SASCAR.057.G"),
+                equalTo("SEFA.062"),
+                equalTo("SEFAZ-SC.084"),
+                equalTo("SEFAZ-SP.048"),
+                equalTo("SFMSP.072"),
+                equalTo("SICREDI.060"),
+                equalTo("SICREDI.076"),
+                equalTo("SKY.068"),
+                equalTo("SKY.083"),
+                equalTo("TERRACAP.024"),
+                equalTo("TERRACAP.074"),
+                equalTo("TJDFT.079"),
+                equalTo("TJRO.073"),
+                equalTo("TJSP.032"),
+                equalTo("TJSP.033"),
+                equalTo("TJSP.034"),
+                equalTo("Treinamento"),
+                equalTo("VALEC.065"),
+                equalTo("CDS.Comercial")
+            ))));
+        
+        makeFilterValuesRequest("run-analysis/analysis-mysql-database-table-filter-equal", "id_usuario_gerente")
+            .andExpect(jsonPath("$[*]", todosOsItens(anyOf(
+                equalTo(91),
+                equalTo(99)
+            ))));
+    }
+
+    @Test
+    public void listPossibleValuesForFilterSQLMySQL() throws Exception {
+        makeFilterValuesRequest("run-analysis/analysis-mysql-database-sql", "tipo")
+            .andExpect(jsonPath("$[*]", todosOsItens(anyOf(
+                equalTo("Reembolso"),
+                equalTo("Despesas"),
+                equalTo("Despesa"),
+                equalTo("Compra de Material")
+            ))));
+        
+        makeFilterValuesRequest("run-analysis/analysis-mysql-database-sql-filter-equal", "projeto")
+            .andExpect(jsonPath("$[*]", todosOsItens(anyOf(
+                equalTo("NTC"),
+                equalTo("Prospecção Comercial")
+            ))));
+    }
+
+    @Test
+    public void listPossibleValuesForFilterTableOracle() throws Exception {
+        makeFilterValuesRequest("run-analysis/analysis-oracle-database-table", "TP_VIEWER")
+            .andExpect(jsonPath("$[*]", todosOsItens(anyOf(
+                equalTo("SINGLESOURCE"),
+                equalTo("ANALYSIS")
+            ))));
+        
+        makeFilterValuesRequest("run-analysis/analysis-oracle-database-table-filter-equal", "NM_DOMAIN")
+            .andExpect(jsonPath("$[*]", todosOsItens(anyOf(
+                equalTo("SalaSituacao"),
+                equalTo("Santander"),
+                equalTo("Domínio Connecta"),
+                equalTo("Projetos")
+            ))));
+    }
+
+    @Test
+    public void listPossibleValuesForFilterSQLOracle() throws Exception {
+        makeFilterValuesRequest("run-analysis/analysis-oracle-database-sql", "TP")
+            .andExpect(jsonPath("$[*]", todosOsItens(anyOf(
+                equalTo("DATABASE"),
+                equalTo("WEBSERVICE"),
+                equalTo("HDFS")
+            ))));
+        
+        makeFilterValuesRequest("run-analysis/analysis-oracle-database-sql-filter-equal", "QT")
+            .andExpect(jsonPath("$[*]", todosOsItens(anyOf(
+                equalTo(5)
+            ))));
+    }
+
     @Test
     public void filterOneColumnDatabaseTableMySQL() throws Exception {
         testOneColumnFilterEqual(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-equal"),
                 "cod_projeto_primavera",
                 "CDS.Comercial"
         );
         testOneColumnFilterNotEqual(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-not-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-not-equal"),
                 "cod_projeto_primavera",
                 "CDS.Comercial"
         );
         testOneColumnFilterGreaterThan(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-greater-than"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-greater-than"),
                 "id_projeto",
                 100
         );
         testOneColumnFilterLessThan(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-less-than"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-less-than"),
                 "id_projeto",
                 100
         );
         testOneColumnFilterGreaterThanOrEqualTo(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-greater-than-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-greater-than-equal"),
                 "id_projeto",
                 99
         );
         testOneColumnFilterLessThanOrEqualTo(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-less-than-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-less-than-equal"),
                 "id_projeto",
                 99
         );
         testOneColumnFilterBetween(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-between"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-between"),
                 "id_projeto",
                 99, 240
         );
         testOneColumnFilterIn(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-in"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-in"),
                 "id_projeto",
                 new Integer[]{99, 240}
         );
         testOneColumnFilterContains(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-contains"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-contains"),
                 "cod_projeto_primavera",
                 "S.Com"
         );
         testOneColumnFilterStartsWith(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-starts-with"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-starts-with"),
                 "cod_projeto_primavera",
                 "CDS"
         );
         testOneColumnFilterEndsWith(
-                makeBackendRequest("run-analysis/analysis-mysql-database-table-filter-ends-with"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-table-filter-ends-with"),
                 "cod_projeto_primavera",
                 "ercial"
         );
@@ -335,57 +274,57 @@ public class ExecuteDatabaseAnalysisFilterTest extends BaseTest {
     @Test
     public void filterOneColumnDatabaseSQLMySQL() throws Exception {
         testOneColumnFilterEqual(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-equal"),
                 "tipo",
                 "Reembolso"
         );
         testOneColumnFilterNotEqual(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-not-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-not-equal"),
                 "tipo",
                 "Reembolso"
         );
         testOneColumnFilterGreaterThan(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-greater-than"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-greater-than"),
                 "cod",
                 6650
         );
         testOneColumnFilterLessThan(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-less-than"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-less-than"),
                 "cod",
                 6650
         );
         testOneColumnFilterGreaterThanOrEqualTo(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-greater-than-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-greater-than-equal"),
                 "cod",
                 6657
         );
         testOneColumnFilterLessThanOrEqualTo(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-less-than-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-less-than-equal"),
                 "cod",
                 6657
         );
         testOneColumnFilterBetween(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-between"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-between"),
                 "cod",
                 6633, 6670
         );
         testOneColumnFilterIn(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-in"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-in"),
                 "tipo",
                 new String[]{"Reembolso", "Despesas"}
         );
         testOneColumnFilterContains(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-contains"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-contains"),
                 "tipo",
                 "bol"
         );
         testOneColumnFilterStartsWith(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-starts-with"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-starts-with"),
                 "tipo",
                 "Reem"
         );
         testOneColumnFilterEndsWith(
-                makeBackendRequest("run-analysis/analysis-mysql-database-sql-filter-ends-with"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-mysql-database-sql-filter-ends-with"),
                 "tipo",
                 "bolso"
         );
@@ -417,57 +356,57 @@ public class ExecuteDatabaseAnalysisFilterTest extends BaseTest {
     @Test
     public void filterOneColumnDatabaseTableOracle() throws Exception {
         testOneColumnFilterEqual(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-equal"),
                 "TP_VIEWER",
                 "ANALYSIS"
         );
         testOneColumnFilterNotEqual(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-not-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-not-equal"),
                 "TP_VIEWER",
                 "ANALYSIS"
         );
         testOneColumnFilterGreaterThan(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-greater-than"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-greater-than"),
                 "PK_VIEWER",
                 700
         );
         testOneColumnFilterLessThan(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-less-than"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-less-than"),
                 "PK_VIEWER",
                 700
         );
         testOneColumnFilterGreaterThanOrEqualTo(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-greater-than-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-greater-than-equal"),
                 "PK_VIEWER",
                 390
         );
         testOneColumnFilterLessThanOrEqualTo(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-less-than-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-less-than-equal"),
                 "PK_VIEWER",
                 390
         );
         testOneColumnFilterBetween(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-between"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-between"),
                 "PK_VIEWER",
                 390, 554
         );
         testOneColumnFilterIn(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-in"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-in"),
                 "PK_VIEWER",
                 new Integer[]{390, 554}
         );
         testOneColumnFilterContains(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-contains"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-contains"),
                 "TP_VIEWER",
                 "ALY"
         );
         testOneColumnFilterStartsWith(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-starts-with"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-starts-with"),
                 "TP_VIEWER",
                 "ANA"
         );
         testOneColumnFilterEndsWith(
-                makeBackendRequest("run-analysis/analysis-oracle-database-table-filter-ends-with"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-table-filter-ends-with"),
                 "TP_VIEWER",
                 "SIS"
         );
@@ -500,57 +439,57 @@ public class ExecuteDatabaseAnalysisFilterTest extends BaseTest {
     @Test
     public void filterOneColumnDatabaseSQLOracle() throws Exception {
         testOneColumnFilterEqual(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-equal"),
                 "TP",
                 "DATABASE"
         );
         testOneColumnFilterNotEqual(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-not-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-not-equal"),
                 "TP",
                 "SOLR"
         );
         testOneColumnFilterGreaterThan(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-greater-than"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-greater-than"),
                 "QT",
                 3
         );
         testOneColumnFilterLessThan(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-less-than"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-less-than"),
                 "QT",
                 10
         );
         testOneColumnFilterGreaterThanOrEqualTo(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-greater-than-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-greater-than-equal"),
                 "QT",
                 2
         );
         testOneColumnFilterLessThanOrEqualTo(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-less-than-equal"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-less-than-equal"),
                 "QT",
                 5
         );
         testOneColumnFilterBetween(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-between"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-between"),
                 "QT",
                 2, 10
         );
         testOneColumnFilterIn(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-in"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-in"),
                 "TP",
                 new String[]{"DATABASE", "WEBSERVICE"}
         );
         testOneColumnFilterContains(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-contains"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-contains"),
                 "TP",
                 "ABA"
         );
         testOneColumnFilterStartsWith(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-starts-with"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-starts-with"),
                 "TP",
                 "DATA"
         );
         testOneColumnFilterEndsWith(
-                makeBackendRequest("run-analysis/analysis-oracle-database-sql-filter-ends-with"),
+                makeAnalysisExecutionRequest("run-analysis/analysis-oracle-database-sql-filter-ends-with"),
                 "TP",
                 "BASE"
         );
@@ -602,10 +541,23 @@ public class ExecuteDatabaseAnalysisFilterTest extends BaseTest {
 //            }
 //        }
 //    }
-    private ResultActions makeBackendRequest(String analysisJsonPath) throws Exception {
-        ResultActions resultActions = mockMvc().perform(post(ENDPOINT)
+    private ResultActions makeAnalysisExecutionRequest(String analysisJsonPath) throws Exception {
+        ResultActions resultActions = mockMvc().perform(post(ANALYSIS_RESULT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getJson(analysisJsonPath))
+        ).andDo(print())
+                .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$[*]", hasSize(greaterThan(0))));
+        return resultActions;
+    }
+    
+    private ResultActions makeFilterValuesRequest(String analysisJsonPath, String column) throws Exception {
+        ResultActions resultActions = mockMvc().perform(
+                post(FILTER_VALUES).param("column", column)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(getJson(analysisJsonPath))
         ).andDo(print())
                 .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
                 .andExpect(status().isOk())

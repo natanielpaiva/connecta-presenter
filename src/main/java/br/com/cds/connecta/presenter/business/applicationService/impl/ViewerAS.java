@@ -24,24 +24,24 @@ public class ViewerAS extends AbstractBaseAS<Viewer> implements IViewerAS {
 
     @Autowired
     private ViewerRepository viewerRepository;
-    
+
     @Autowired
     private ApplicationContext context;
-    
+
     @Override
     public Viewer get(Long id, String domain, boolean initialize) {
-    	
-    	Viewer viewer = viewerRepository.findOne(ViewerSpecification.byIdAndDomain(id, domain));
-    	
-        if(Util.isNull(viewer)){
-        	throw new ResourceNotFoundException(Viewer.class.getSimpleName());
+
+        Viewer viewer = viewerRepository.findOne(ViewerSpecification.byIdAndDomain(id, domain));
+
+        if (Util.isNull(viewer)) {
+            throw new ResourceNotFoundException(Viewer.class.getSimpleName());
         }
-        
-        if(initialize){
-        	ViewerEntityInitializer initializer = context.getBean(viewer.getType().getEntityInitializer());
-        	viewer = initializer.initializeViewerEntity(viewer);
+
+        if (initialize) {
+            ViewerEntityInitializer initializer = context.getBean(viewer.getType().getEntityInitializer());
+            viewer = initializer.initializeViewerEntity(viewer);
         }
-        
+
         return viewer;
     }
 
@@ -57,14 +57,14 @@ public class ViewerAS extends AbstractBaseAS<Viewer> implements IViewerAS {
 
     @Override
     public void delete(Long id, String domain) {
-    	Viewer v = get(id,domain,false);
-    	viewerRepository.delete(v);
+        Viewer v = get(id, domain, false);
+        viewerRepository.delete(v);
     }
 
     @Override
     public void deleteAll(List<Long> ids, String domain) {
-		List<Viewer> listViewers = viewerRepository.findAll(ViewerSpecification.byIdsAndDomain(ids, domain));
-		viewerRepository.delete(listViewers);
+        List<Viewer> listViewers = viewerRepository.findAll(ViewerSpecification.byIdsAndDomain(ids, domain));
+        viewerRepository.delete(listViewers);
     }
 
 }

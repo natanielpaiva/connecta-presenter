@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 
 /**
  *
@@ -19,10 +20,12 @@ import br.com.cds.connecta.presenter.entity.analysis.Analysis;
  */
 @Repository
 @Component
-public interface AnalysisRepository extends JpaRepository<Analysis, Serializable>,
-														JpaSpecificationExecutor<Analysis>{
+public interface AnalysisRepository extends JpaRepository<Analysis, Serializable>, JpaSpecificationExecutor<Analysis>{
     
     @Query("FROM Analysis a WHERE UPPER(a.name) LIKE :name")
     Page<Analysis> findByName(@Param("name") String name, Pageable pageable);
+    
+    @Query("SELECT c FROM Analysis a JOIN a.analysisColumns c WHERE c.id LIKE :filterId")
+    AnalysisColumn findColumnById(@Param("filterId") Long filterId);
     
 }

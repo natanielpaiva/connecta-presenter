@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("analysis")
@@ -142,6 +143,16 @@ public class AnalysisController {
     @RequestMapping(value = "result", method = RequestMethod.POST)
     public ResponseEntity<List<Map<String, Object>>> getResult(@RequestBody AnalysisExecuteRequest analysisExecuteRequest) {
         List<Map<String, Object>> result = extractor.executeAnalysis(analysisExecuteRequest);
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "filter-value", method = RequestMethod.POST)
+    public ResponseEntity<List<Object>> possibleValuesForFilter(
+            @RequestBody AnalysisExecuteRequest analysisExecuteRequest,
+            @RequestParam("column") Object column) {
+        
+        List<Object> result = extractor.possibleValuesFor(analysisExecuteRequest, column);
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

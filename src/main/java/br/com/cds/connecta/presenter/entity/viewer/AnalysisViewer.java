@@ -25,6 +25,8 @@ import org.hibernate.search.annotations.Indexed;
 @NamedQuery(
         name = "AnalysisViewer.get",
         query = "SELECT a FROM AnalysisViewer a "
+        + "LEFT JOIN FETCH a.analysis an "
+        + "LEFT JOIN FETCH an.datasource d "
         + "LEFT JOIN FETCH a.analysisViewerColumns av "
         + "LEFT JOIN FETCH av.analysisColumn WHERE a.id = :id"
 )

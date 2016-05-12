@@ -5,6 +5,7 @@ import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.io.IOException;
@@ -29,11 +30,10 @@ public class SolrConnectorStrategy implements ConnectorStrategy {
     @Autowired
     private ISolr solrService;
     
-    List<Map<String, Object>> dataProvider;
-
     // FIXME passar colunas para o Connector do Solr
     @Override
     public List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) {
+        List<Map<String, Object>> dataProvider = null;
 
         SolrDatasource solrDatasource = (SolrDatasource) datasourceRepository.findOne(
             analysisExecuteRequest.getAnalysis().getDatasource().getId()
@@ -49,6 +49,7 @@ public class SolrConnectorStrategy implements ConnectorStrategy {
         } catch (SolrServerException | IOException ex) {
             Logger.getLogger(SolrConnectorStrategy.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         return dataProvider;
     }
 
@@ -71,5 +72,10 @@ public class SolrConnectorStrategy implements ConnectorStrategy {
 //        }
 //        return dataProvider;
 //    }
+
+    @Override
+    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

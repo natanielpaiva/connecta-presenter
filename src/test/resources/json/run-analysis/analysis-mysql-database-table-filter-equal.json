@@ -8,12 +8,12 @@
         },
         "table": "tb_projeto"
     },
-    "filters":[
+    "filters": [
         {
-            "columnName":"cod_projeto_primavera",
-            "operator":"EQUAL",
-            "value":{
-                "value":"CDS.Comercial"
+            "columnName": "cod_projeto_primavera",
+            "operator": "EQUAL",
+            "value": {
+                "value": "CDS.Comercial"
             }
         }
     ]

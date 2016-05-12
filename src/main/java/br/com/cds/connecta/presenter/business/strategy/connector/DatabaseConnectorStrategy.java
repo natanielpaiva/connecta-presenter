@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.apache.metamodel.schema.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,47 +43,55 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
 
     @Override
     public List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) {
-        List<Map<String, Object>> dataProvider = null;
         FusionClient fusionClient = new FusionClient();
+        Request request = makeRequest(analysisExecuteRequest);
+        
+        return fusionClient.getAll(request);
+    }
+    
+    @Override
+    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) {
+        FusionClient fusionClient = new FusionClient();
+        Request request = makeRequest(analysisExecuteRequest);
+        
+        return fusionClient.possibleValuesFor(request, filter);
+    }
+
+    private Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) {
         DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
-
         DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
-
+        
         ConnectorDriver driver = service.makeConnectorDriver(datasource);
-
+        
+        DatabaseDataContextFactory dataContextFactory;
+        QueryBuilder query;
+        
         if (DatabaseRequestTypeEnum.TABLE.equals(databaseAnalysis.getRequestType())) {
-            DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(driver, databaseAnalysis.getTable(), datasource.getUser(), datasource.getPassword());
-            
-            QueryBuilder query = new QueryBuilder()
+            dataContextFactory = new DatabaseDataContextFactory(driver, databaseAnalysis.getTable(), datasource.getUser(), datasource.getPassword());
+            query = new QueryBuilder()
                     .setSchema(datasource.getSchema())
                     .setTable(databaseAnalysis.getTable())
                     .setColumns(
-                        toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
+                            toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
                     )
                     ;
+        } else {  // if (DatabaseRequestTypeEnum.SQL.equals(databaseAnalysis.getRequestType()))
+            dataContextFactory = new DatabaseDataContextFactory(databaseAnalysis.getSql(), driver, datasource.getUser(), datasource.getPassword());
             
-            addFiltersIfDefined(query, analysisExecuteRequest, dataContextFactory);
-
-            Request request = new Request(dataContextFactory, query);
-            dataProvider = fusionClient.getAll(request);
-        } else if (DatabaseRequestTypeEnum.SQL.equals(databaseAnalysis.getRequestType())) {
-            DatabaseDataContextFactory dataContextFactory = new DatabaseDataContextFactory(databaseAnalysis.getSql(), driver, datasource.getUser(), datasource.getPassword());
-            
-            QueryBuilder query = new QueryBuilder().setColumns(
-                toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
+            query = new QueryBuilder().setColumns(
+                    toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
             );
-            
-            addFiltersIfDefined(query, analysisExecuteRequest, dataContextFactory);
-
-            Request request = new Request(dataContextFactory, query);
-            dataProvider = fusionClient.getAll(request);
         }
-
-        return dataProvider;
+        
+        addFiltersIfDefined(query, analysisExecuteRequest, dataContextFactory);
+        Request request = new Request(dataContextFactory, query);
+        
+        return request;
     }
     
     public ConnectorDriver makeConnectorDriver(DatabaseDatasource datasource) {
         ConnectorDriver driver = null;
+        
         if (DatabaseDatasourceDriverEnum.ORACLE_SID.equals(datasource.getDriver())) {
             driver = new OracleDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSid());
         }
