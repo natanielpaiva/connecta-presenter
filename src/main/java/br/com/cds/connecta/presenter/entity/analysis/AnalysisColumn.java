@@ -43,7 +43,7 @@ public class AnalysisColumn extends AbstractBaseEntity {
     private String name;
 
     @Column(name = "ORDER_DRILL")
-    private int orderDrill;
+    private Integer orderDrill;
 
     @Column(name = "TP_COLUMN")
     private BigDecimal type;
@@ -97,7 +97,7 @@ public class AnalysisColumn extends AbstractBaseEntity {
         return orderDrill;
     }
 
-    public void setOrderDrill(int orderDrill) {
+    public void setOrderDrill(Integer orderDrill) {
         this.orderDrill = orderDrill;
     }
 
