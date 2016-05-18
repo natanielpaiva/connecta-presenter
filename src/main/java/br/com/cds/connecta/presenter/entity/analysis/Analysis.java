@@ -92,6 +92,9 @@ public class Analysis extends AbstractBaseEntity {
     @JoinColumn(name = "FK_ANALYSIS")
     private Set<AnalysisAttribute> analysisAttributes;
 
+    @Column(name = "FL_DRILL")
+    private Boolean hasDrill;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "TP_ANALYSIS")
     private DatasourceTypeEnum type;
@@ -163,4 +166,13 @@ public class Analysis extends AbstractBaseEntity {
     public void setDomain(String domain) {
         this.domain = domain;
     }
+
+    public Boolean getHasDrill() {
+        return hasDrill;
+    }
+
+    public void setHasDrill(Boolean hasDrill) {
+        this.hasDrill = hasDrill;
+    }
+
 }

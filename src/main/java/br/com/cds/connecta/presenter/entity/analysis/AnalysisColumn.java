@@ -17,7 +17,6 @@ import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
 
 import javax.persistence.OneToMany;
 
-
 /**
  * The persistent class for the TB_ANALYSIS_COLUMNS database table.
  *
@@ -43,9 +42,12 @@ public class AnalysisColumn extends AbstractBaseEntity {
     @Column(name = "NM_COLUMN")
     private String name;
 
+    @Column(name = "ORDER_DRILL")
+    private int orderDrill;
+
     @Column(name = "TP_COLUMN")
     private BigDecimal type;
-    
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
     private List<AnalysisViewerColumn> analysisViewerColumns;
@@ -89,6 +91,22 @@ public class AnalysisColumn extends AbstractBaseEntity {
 
     public void setType(BigDecimal type) {
         this.type = type;
+    }
+
+    public int getOrderDrill() {
+        return orderDrill;
+    }
+
+    public void setOrderDrill(int orderDrill) {
+        this.orderDrill = orderDrill;
+    }
+
+    public List<AnalysisViewerColumn> getAnalysisViewerColumns() {
+        return analysisViewerColumns;
+    }
+
+    public void setAnalysisViewerColumns(List<AnalysisViewerColumn> analysisViewerColumns) {
+        this.analysisViewerColumns = analysisViewerColumns;
     }
 
 }
