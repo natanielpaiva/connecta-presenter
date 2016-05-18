@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
 
@@ -50,6 +52,7 @@ public class AnalysisColumn extends AbstractBaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
+    @JsonIgnore
     private List<AnalysisViewerColumn> analysisViewerColumns;
 
     @Override
