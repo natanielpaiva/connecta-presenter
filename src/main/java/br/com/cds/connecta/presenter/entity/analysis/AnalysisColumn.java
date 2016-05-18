@@ -93,7 +93,7 @@ public class AnalysisColumn extends AbstractBaseEntity {
         this.type = type;
     }
 
-    public int getOrderDrill() {
+    public Integer getOrderDrill() {
         return orderDrill;
     }
 
