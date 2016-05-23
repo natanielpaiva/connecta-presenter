@@ -10,6 +10,7 @@ import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriv
 import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
 import br.com.cds.connecta.framework.connector2.domain.DatabaseRequestTypeEnum;
 import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
+import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
@@ -56,6 +57,7 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
             );
         }
         
+        addPaginationIfDefined(query, analysisExecuteRequest);
         addDrillIfDefined(query, analysisExecuteRequest, dataContextFactory);
         addFiltersIfDefined(query, analysisExecuteRequest, dataContextFactory);
         Request request = new Request(dataContextFactory, query);
@@ -74,6 +76,14 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
         }
 
         return driver;
+    }
+
+    private void addPaginationIfDefined(QueryBuilder query, AnalysisExecuteRequest analysisExecuteRequest) {
+        if (isNotNull(analysisExecuteRequest.getPagination()) 
+                && isNotNull(analysisExecuteRequest.getPagination().getCount()) && 
+                isNotNull(analysisExecuteRequest.getPagination().getPage())) {
+            query.setPagination(analysisExecuteRequest.getPagination().getCount(), analysisExecuteRequest.getPagination().getPage());
+        }
     }
 
 }
