@@ -85,7 +85,7 @@ public class Analysis extends AbstractBaseEntity {
     @JoinColumn(name = "FK_DATASOURCE")
     private Datasource datasource;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "FK_ANALYSIS", nullable = false)
     private List<AnalysisColumn> analysisColumns;
 

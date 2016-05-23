@@ -1,8 +1,9 @@
 package br.com.cds.connecta.presenter.bean.analysis;
 
+import java.util.List;
+
 import br.com.cds.connecta.framework.core.search.filter.PaginationFilter;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
-import java.util.List;
 
 /**
  * Wrapper de uma requisiçao de execuçao de analise
@@ -14,6 +15,7 @@ public class AnalysisExecuteRequest {
     private Analysis analysis;
     private List<AnalysisFilter> filters;
     private PaginationFilter pagination;
+    private AnalysisDrill drill;
 
     public Analysis getAnalysis() {
         return analysis;
@@ -38,5 +40,13 @@ public class AnalysisExecuteRequest {
     public void setPagination(PaginationFilter pagination) {
         this.pagination = pagination;
     }
-    
+
+    public AnalysisDrill getDrill() {
+        return drill;
+    }
+
+    public void setDrill(AnalysisDrill drill) {
+        this.drill = drill;
+    }
+
 }
