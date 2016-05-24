@@ -78,7 +78,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     @Override
     public Analysis saveOrUpdate(Analysis analysis) {
         refreshAttribute(analysis);
-        return analysisDAO.saveOrUpdate(analysis);
+        return analysisListRepository.save(analysis);
     }
 
     private void refreshAttribute(Analysis analysis) {

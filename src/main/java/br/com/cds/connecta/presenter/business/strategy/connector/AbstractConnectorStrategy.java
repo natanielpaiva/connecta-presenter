@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.apache.zookeeper.server.DatadirCleanupManager;
-import org.springframework.context.annotation.FilterType;
 
 import br.com.cds.connecta.framework.connector2.FusionClient;
 import br.com.cds.connecta.framework.connector2.Request;
@@ -21,7 +19,6 @@ import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisFilter;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
-import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewer;
 
 public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
     
