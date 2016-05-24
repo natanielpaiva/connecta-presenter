@@ -82,7 +82,7 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
         if (isNotNull(analysisExecuteRequest.getPagination()) 
                 && isNotNull(analysisExecuteRequest.getPagination().getCount()) && 
                 isNotNull(analysisExecuteRequest.getPagination().getPage())) {
-            query.setPagination(analysisExecuteRequest.getPagination().getCount(), analysisExecuteRequest.getPagination().getPage());
+            query.setPagination(analysisExecuteRequest.getPagination().getPage(), analysisExecuteRequest.getPagination().getCount());
         }
     }
 
