@@ -84,7 +84,9 @@ public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
     protected void addDrillIfDefined(QueryBuilder queryBuilder, 
             AnalysisExecuteRequest analysisExecuteRequest,
             ContextFactory dataContextFactory) {
-        if (analysisExecuteRequest.getAnalysis().getHasDrill() 
+        
+        if (analysisExecuteRequest.getAnalysis() != null 
+                && analysisExecuteRequest.getAnalysis().getHasDrill() 
                 && analysisExecuteRequest.getDrill() != null) {
             
             String columnToDrill = analysisExecuteRequest.getDrill().getColumnToDrill();
