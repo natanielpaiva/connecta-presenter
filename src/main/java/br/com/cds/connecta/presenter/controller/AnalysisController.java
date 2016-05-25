@@ -152,6 +152,9 @@ public class AnalysisController {
             @RequestBody AnalysisExecuteRequest analysisExecuteRequest,
             @RequestParam("column") Object column) {
         
+        //ignorar as configurações de drill na hora de filtrar os valores pros selects
+        analysisExecuteRequest.setDrill(null);
+        
         List<Object> result = extractor.possibleValuesFor(analysisExecuteRequest, column);
         
         return new ResponseEntity<>(result, HttpStatus.OK);

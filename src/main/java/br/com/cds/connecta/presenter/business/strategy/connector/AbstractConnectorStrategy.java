@@ -18,6 +18,7 @@ import br.com.cds.connecta.framework.connector2.query.QueryFilterValue;
 import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisFilter;
+import br.com.cds.connecta.presenter.bean.analysis.DrillColumnValue;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 
 public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
@@ -91,19 +92,19 @@ public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
             
             String columnToDrill = analysisExecuteRequest.getDrill().getColumnToDrill();
             List<String> columnsToSum = analysisExecuteRequest.getDrill().getColumnsToSum();
+            List<DrillColumnValue> listPreviousColumn = 
+                    analysisExecuteRequest.getDrill().getListPreviousColumns();
             
             if (Util.isNotNull(columnToDrill)) {
                 queryBuilder.addGroupBy(dataContextFactory.getColumn(columnToDrill));
-                String previousDrillColumn = 
-                        analysisExecuteRequest.getDrill().getPreviousDrillColumn();
-                String filterDrillValue = 
-                        analysisExecuteRequest.getDrill().getFilterDrillValue();
-                if(previousDrillColumn != null &&
-                        filterDrillValue != null){
-                    queryBuilder.addFilter
-                            (dataContextFactory.getColumn(previousDrillColumn), 
-                        QueryFilterOperator.EQUAL, 
-                        new QueryFilterValue(filterDrillValue));
+                
+                if(listPreviousColumn != null){
+                    for (DrillColumnValue previousColumn : listPreviousColumn) {
+                        queryBuilder.addFilter
+                        (dataContextFactory.getColumn(previousColumn.getDrillColumn()), 
+                                QueryFilterOperator.EQUAL, 
+                                new QueryFilterValue(previousColumn.getDrillFilterValue()));
+                    }
                 }
             }
             

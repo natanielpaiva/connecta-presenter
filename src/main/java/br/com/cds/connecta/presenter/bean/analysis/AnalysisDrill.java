@@ -6,15 +6,8 @@ public class AnalysisDrill {
     
     private String columnToDrill;
     private List<String> columnsToSum;
-    private String previousDrillColumn;
-    private String filterDrillValue;
-    
-    public String getFilterDrillValue() {
-        return filterDrillValue;
-    }
-    public void setFilterDrillValue(String filterDrillValue) {
-        this.filterDrillValue = filterDrillValue;
-    }
+    private List<DrillColumnValue> listPreviousColumns;
+
     public String getColumnToDrill() {
         return columnToDrill;
     }
@@ -27,11 +20,12 @@ public class AnalysisDrill {
     public void setColumnsToSum(List<String> columnsToSum) {
         this.columnsToSum = columnsToSum;
     }
-    public String getPreviousDrillColumn() {
-        return previousDrillColumn;
+    
+    public List<DrillColumnValue> getListPreviousColumns() {
+        return listPreviousColumns;
     }
-    public void setPreviousDrillColumn(String previousDrillColumn) {
-        this.previousDrillColumn = previousDrillColumn;
+    public void setListPreviousColumns(List<DrillColumnValue> listPreviousColumns) {
+        this.listPreviousColumns = listPreviousColumns;
     }
 
 }
