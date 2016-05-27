@@ -18,8 +18,6 @@
     <name>Connecta Presenter</name>
 
     <properties>
-        <java.version>1.7</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Rodar "mvn test -Dconnecta.analysis.integration=true"
         para testar a integração das Análises-->
         <connecta.analysis.integration>false</connecta.analysis.integration>
@@ -65,6 +63,15 @@
     </dependencies>
 
     <build>
+<!--        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+        </resources>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -102,9 +109,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>${java.version}</source>
+<!--                    <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <encoding>${project.build.sourceEncoding}</encoding>-->
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
@@ -113,9 +120,9 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <source>${java.version}</source>
+<!--                    <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <encoding>UTF-8</encoding>
+                    <encoding>UTF-8</encoding>-->
                     <webResources>
                         <resource>
                             <directory>src/main/webapp</directory>
