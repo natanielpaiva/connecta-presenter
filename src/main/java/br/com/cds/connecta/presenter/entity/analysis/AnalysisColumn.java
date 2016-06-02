@@ -50,11 +50,6 @@ public class AnalysisColumn extends AbstractBaseEntity {
     @Column(name = "TP_COLUMN")
     private BigDecimal type;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
-    @JsonIgnore
-    private List<AnalysisViewerColumn> analysisViewerColumns;
-
     @Override
     public Long getId() {
         return id;
@@ -102,14 +97,6 @@ public class AnalysisColumn extends AbstractBaseEntity {
 
     public void setOrderDrill(Integer orderDrill) {
         this.orderDrill = orderDrill;
-    }
-
-    public List<AnalysisViewerColumn> getAnalysisViewerColumns() {
-        return analysisViewerColumns;
-    }
-
-    public void setAnalysisViewerColumns(List<AnalysisViewerColumn> analysisViewerColumns) {
-        this.analysisViewerColumns = analysisViewerColumns;
     }
 
 }
