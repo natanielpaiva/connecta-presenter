@@ -78,12 +78,4 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
         return driver;
     }
 
-    private void addPaginationIfDefined(QueryBuilder query, AnalysisExecuteRequest analysisExecuteRequest) {
-        if (isNotNull(analysisExecuteRequest.getPagination()) 
-                && isNotNull(analysisExecuteRequest.getPagination().getCount()) && 
-                isNotNull(analysisExecuteRequest.getPagination().getPage())) {
-            query.setPagination(analysisExecuteRequest.getPagination().getPage(), analysisExecuteRequest.getPagination().getCount());
-        }
-    }
-
 }

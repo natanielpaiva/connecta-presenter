@@ -58,7 +58,7 @@ public class AnalysisViewer extends Viewer {
 
     public void setLabel(String label) {
         this.label = label;
-    }
+    } 
 
     public Long getUpdateInterval() {
         return updateInterval;

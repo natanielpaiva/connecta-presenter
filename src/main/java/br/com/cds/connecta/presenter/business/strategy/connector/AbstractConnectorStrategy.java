@@ -16,6 +16,7 @@ import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
 import br.com.cds.connecta.framework.connector2.query.QueryFilterOperator;
 import br.com.cds.connecta.framework.connector2.query.QueryFilterValue;
 import br.com.cds.connecta.framework.core.util.Util;
+import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisFilter;
 import br.com.cds.connecta.presenter.bean.analysis.DrillColumnValue;
@@ -111,6 +112,14 @@ public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
             for (String column : columnsToSum) {
                 queryBuilder.addSum(dataContextFactory.getColumn(column));
             }
+        }
+    }
+    
+    protected void addPaginationIfDefined(QueryBuilder query, AnalysisExecuteRequest analysisExecuteRequest) {
+        if (isNotNull(analysisExecuteRequest.getPagination())
+                && isNotNull(analysisExecuteRequest.getPagination().getCount())
+                && isNotNull(analysisExecuteRequest.getPagination().getPage())) {
+            query.setPagination(analysisExecuteRequest.getPagination().getPage(), analysisExecuteRequest.getPagination().getCount());
         }
     }
     
