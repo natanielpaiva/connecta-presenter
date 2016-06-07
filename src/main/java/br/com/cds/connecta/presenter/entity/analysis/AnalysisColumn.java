@@ -12,11 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
 
 import javax.persistence.OneToMany;
-
 
 /**
  * The persistent class for the TB_ANALYSIS_COLUMNS database table.
@@ -43,12 +44,11 @@ public class AnalysisColumn extends AbstractBaseEntity {
     @Column(name = "NM_COLUMN")
     private String name;
 
+    @Column(name = "ORDER_DRILL")
+    private Integer orderDrill;
+
     @Column(name = "TP_COLUMN")
     private BigDecimal type;
-    
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "FK_ANALYSIS_COLUMNS")
-    private List<AnalysisViewerColumn> analysisViewerColumns;
 
     @Override
     public Long getId() {
@@ -89,6 +89,14 @@ public class AnalysisColumn extends AbstractBaseEntity {
 
     public void setType(BigDecimal type) {
         this.type = type;
+    }
+
+    public Integer getOrderDrill() {
+        return orderDrill;
+    }
+
+    public void setOrderDrill(Integer orderDrill) {
+        this.orderDrill = orderDrill;
     }
 
 }

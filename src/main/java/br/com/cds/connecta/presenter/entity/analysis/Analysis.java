@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -84,13 +85,16 @@ public class Analysis extends AbstractBaseEntity {
     @JoinColumn(name = "FK_DATASOURCE")
     private Datasource datasource;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "FK_ANALYSIS", nullable = false)
     private List<AnalysisColumn> analysisColumns;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS")
     private Set<AnalysisAttribute> analysisAttributes;
+
+    @Column(name = "FL_DRILL")
+    private boolean hasDrill;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "TP_ANALYSIS")
@@ -163,4 +167,13 @@ public class Analysis extends AbstractBaseEntity {
     public void setDomain(String domain) {
         this.domain = domain;
     }
+
+    public boolean getHasDrill() {
+        return hasDrill;
+    }
+
+    public void setHasDrill(boolean hasDrill) {
+        this.hasDrill = hasDrill;
+    }
+
 }

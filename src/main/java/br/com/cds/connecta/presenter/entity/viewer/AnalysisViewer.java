@@ -48,7 +48,7 @@ public class AnalysisViewer extends Viewer {
     @JoinColumn(name = "FK_ANALYSIS")
     private Analysis analysis;
     
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "FK_ANALYSIS_VIEWER")
     private List<AnalysisViewerColumn> analysisViewerColumns;
 
@@ -58,7 +58,7 @@ public class AnalysisViewer extends Viewer {
 
     public void setLabel(String label) {
         this.label = label;
-    }
+    } 
 
     public Long getUpdateInterval() {
         return updateInterval;

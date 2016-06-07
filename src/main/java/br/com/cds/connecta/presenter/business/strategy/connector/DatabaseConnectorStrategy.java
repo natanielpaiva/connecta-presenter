@@ -1,37 +1,29 @@
 package br.com.cds.connecta.presenter.business.strategy.connector;
 
-import br.com.cds.connecta.framework.connector2.FusionClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.com.cds.connecta.framework.connector2.Request;
-import br.com.cds.connecta.framework.connector2.common.ConnectorColumn;
-import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
-import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver;
+import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
 import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
-import br.com.cds.connecta.framework.connector2.domain.DatabaseRequestTypeEnum;
-import static br.com.cds.connecta.framework.core.util.Util.isNotEmpty;
+import br.com.cds.connecta.presenter.domain.DatabaseRequestTypeEnum;
+import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
+import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
-import br.com.cds.connecta.presenter.bean.analysis.AnalysisFilter;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
-import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import org.apache.log4j.Logger;
-import org.apache.metamodel.schema.Column;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author diego
  */
 @Service
-public class DatabaseConnectorStrategy implements ConnectorStrategy {
+public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
 
     @Autowired
     private DatasourceRepository repository;
@@ -39,25 +31,7 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
     @Autowired
     private IDatabaseAS service;
 
-    private final Logger logger = Logger.getLogger(DatabaseConnectorStrategy.class);
-
-    @Override
-    public List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) {
-        FusionClient fusionClient = new FusionClient();
-        Request request = makeRequest(analysisExecuteRequest);
-        
-        return fusionClient.getAll(request);
-    }
-    
-    @Override
-    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) {
-        FusionClient fusionClient = new FusionClient();
-        Request request = makeRequest(analysisExecuteRequest);
-        
-        return fusionClient.possibleValuesFor(request, filter);
-    }
-
-    private Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) {
+    protected Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) {
         DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
         DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
         
@@ -83,6 +57,8 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
             );
         }
         
+        addPaginationIfDefined(query, analysisExecuteRequest);
+        addDrillIfDefined(query, analysisExecuteRequest, dataContextFactory);
         addFiltersIfDefined(query, analysisExecuteRequest, dataContextFactory);
         Request request = new Request(dataContextFactory, query);
         
@@ -100,41 +76,6 @@ public class DatabaseConnectorStrategy implements ConnectorStrategy {
         }
 
         return driver;
-    }
-
-    private List<ConnectorColumn> toConnectorColumns(List<AnalysisColumn> analysisColumns) {
-        List<ConnectorColumn> connectorColumns = null;
-        
-        if (analysisColumns != null && !analysisColumns.isEmpty()) {
-            connectorColumns = new ArrayList<>();
-            for (AnalysisColumn analysisColumn : analysisColumns) {
-                ConnectorColumn column = new ConnectorColumn();
-                column.setId(analysisColumn.getId());
-                column.setLabel(analysisColumn.getLabel());
-                column.setName(analysisColumn.getName());
-                column.setFormula(analysisColumn.getFormula());
-
-                logger.info("ADDING COLUMN TO ANALYSIS: " + analysisColumn.getName());
-
-                connectorColumns.add(column);
-            }
-        }
-        
-        return connectorColumns;
-    }
-
-    private void addFiltersIfDefined(QueryBuilder queryBuilder, AnalysisExecuteRequest analysisExecuteRequest, DatabaseDataContextFactory dataContextFactory) {
-        if (isNotEmpty(analysisExecuteRequest.getFilters())) {
-            for(AnalysisFilter analysisFilter :  analysisExecuteRequest.getFilters()) {
-                
-                queryBuilder.addFilter(
-                    dataContextFactory.getColumn(analysisFilter.getColumnName()),
-                    analysisFilter.getOperator(),
-                    analysisFilter.getValue()
-                );
-                
-            }
-        }
     }
 
 }

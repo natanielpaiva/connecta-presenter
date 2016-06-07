@@ -118,13 +118,21 @@ public class AnalysisController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    //lista colunas do sorl
-    @RequestMapping(value = "{id}/columns-sorl", method = RequestMethod.GET)
-    public ResponseEntity<List<AnalysisColumn>> getColumnsSorl(
+    //lista as condiçoes para realizar consultar no sorl
+     @RequestMapping(value = "{id}/conditions-sorl", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getConditionsSorl(
             @PathVariable Long id) {
-        List<AnalysisColumn> list = solrService.getColumns(id);
+        List<String> list = solrService.getConditionsSolr(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+    
+    
+//    @RequestMapping(value = "{id}/columns-sorl", method = RequestMethod.GET)
+//    public ResponseEntity<List<AnalysisColumn>> getColumnsSorl(
+//            @PathVariable Long id) {
+//        List<AnalysisColumn> list = solrService.getColumns(id);
+//        return new ResponseEntity<>(list, HttpStatus.OK);
+//    }
 
     //lista tabelas e colunas de banco de dados
     @RequestMapping(value = "{id}/columns-datasource", method = RequestMethod.GET)
@@ -151,6 +159,9 @@ public class AnalysisController {
     public ResponseEntity<List<Object>> possibleValuesForFilter(
             @RequestBody AnalysisExecuteRequest analysisExecuteRequest,
             @RequestParam("column") Object column) {
+        
+        //ignorar as configurações de drill na hora de filtrar os valores pros selects
+        analysisExecuteRequest.setDrill(null);
         
         List<Object> result = extractor.possibleValuesFor(analysisExecuteRequest, column);
         
@@ -305,7 +316,7 @@ public class AnalysisController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    //Extri parte de um json
+    //Extrair parte de um json
     @RequestMapping(value = "{id}/extract-json",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
