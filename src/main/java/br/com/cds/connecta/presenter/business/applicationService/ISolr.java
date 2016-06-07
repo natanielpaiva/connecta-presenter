@@ -11,7 +11,9 @@ import java.util.Map;
  */
 public interface ISolr {
     
-   List<AnalysisColumn> getColumns(Long id);
+   //List<AnalysisColumn> getColumns(Long id);
+   
+   List<String> getConditionsSolr(Long id);
    
    List<Map<String, Object>> getSolrResultApplyingQuery(long id, Query query, int facet);
 

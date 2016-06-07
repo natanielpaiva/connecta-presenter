@@ -17,6 +17,7 @@ import br.com.cds.connecta.presenter.entity.analysis.CsvAnalysis;
 @Service
 public class CsvConnectorStrategy extends AbstractConnectorStrategy {
 
+    @Override
     protected Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) {
         CsvAnalysis csvAnalysis = (CsvAnalysis) analysisExecuteRequest.getAnalysis();
 

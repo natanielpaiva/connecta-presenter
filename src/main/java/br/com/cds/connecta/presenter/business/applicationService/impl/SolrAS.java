@@ -2,6 +2,7 @@ package br.com.cds.connecta.presenter.business.applicationService.impl;
 
 import br.com.cds.connecta.framework.connector.solr.Solr;
 import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
+import br.com.cds.connecta.framework.connector2.context.solr.SolrDataContextFactoty;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.business.builder.IQueryBuilderSorl;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
@@ -42,26 +43,40 @@ public class SolrAS implements ISolr {
      * @param id
      * @return
      */
-    @Override
-    public List<AnalysisColumn> getColumns(Long id) {
-        ArrayList<AnalysisColumn> analysisColumnsList = new ArrayList<>();
+     @Override
+    public List<String> getConditionsSolr(Long id) {
 
         SolrDatasource solrDatasource = em.find(SolrDatasource.class, id);
 
-        List<ConnectorColumn> connectorColumns = solr.getColumns(solrDatasource.getAddress() + solrDatasource.getPath());
+        //List<ConnectorColumn> connectorColumns = solr.getColumns(solrDatasource.getAddress() + solrDatasource.getPath());
+        SolrDataContextFactoty solrDataContextFactoty = new SolrDataContextFactoty(solrDatasource.getAddress() + solrDatasource.getPath());
+        List<String> conditionsSolr = solrDataContextFactoty.getConditionsSolr();
+        
 
-        for (ConnectorColumn cc : connectorColumns) {
-            AnalysisColumn analysisColumn = new AnalysisColumn();
-            analysisColumn.setFormula(cc.getFormula());
-            analysisColumn.setName(cc.getName());
-            analysisColumn.setLabel(cc.getLabel());
-
-            analysisColumnsList.add(analysisColumn);
-        }
-
-        return analysisColumnsList;
+        return conditionsSolr;
 
     }
+    
+//    @Override
+//    public List<AnalysisColumn> getColumns(Long id) {
+//        ArrayList<AnalysisColumn> analysisColumnsList = new ArrayList<>();
+//
+//        SolrDatasource solrDatasource = em.find(SolrDatasource.class, id);
+//
+//        List<ConnectorColumn> connectorColumns = solr.getColumns(solrDatasource.getAddress() + solrDatasource.getPath());
+//
+//        for (ConnectorColumn cc : connectorColumns) {
+//            AnalysisColumn analysisColumn = new AnalysisColumn();
+//            analysisColumn.setFormula(cc.getFormula());
+//            analysisColumn.setName(cc.getName());
+//            analysisColumn.setLabel(cc.getLabel());
+//
+//            analysisColumnsList.add(analysisColumn);
+//        }
+//
+//        return analysisColumnsList;
+//
+//    }
 
     @Override
     public List<Map<String, Object>> getSolrResultApplyingQuery(long id, Query query, int facet) {

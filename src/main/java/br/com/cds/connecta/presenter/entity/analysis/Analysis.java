@@ -93,8 +93,7 @@ public class Analysis extends AbstractBaseEntity {
     @JoinColumn(name = "FK_ANALYSIS")
     private Set<AnalysisAttribute> analysisAttributes;
 
-    @NotNull
-    @Column(name = "FL_DRILL", nullable = false)
+    @Column(name = "FL_DRILL")
     private boolean hasDrill;
 
     @Enumerated(EnumType.STRING)

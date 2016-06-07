@@ -1,6 +1,6 @@
 package br.com.cds.connecta.presenter.entity.analysis;
 
-import br.com.cds.connecta.framework.connector2.domain.DatabaseRequestTypeEnum;
+import br.com.cds.connecta.presenter.domain.DatabaseRequestTypeEnum;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,15 +21,6 @@ public class DatabaseAnalysis extends Analysis {
 
     private static final long serialVersionUID = 1L;
 
-//    @Column(name = "TXT_FIELDS")
-//    private String fields;
-//
-//    @Column(name = "TXT_FROM")
-//    private String from;
-//
-//    @Column(name = "TXT_WHERE")
-//    private String where;
-
     @Column(name = "TXT_TABLE")
     private String table;
     
@@ -40,30 +31,6 @@ public class DatabaseAnalysis extends Analysis {
     @Column(name = "TP_DB_ANALYSIS")
     @Enumerated(EnumType.STRING)
     private DatabaseRequestTypeEnum requestType;
-
-//    public String getFields() {
-//        return fields;
-//    }
-//
-//    public void setFields(String fields) {
-//        this.fields = fields;
-//    }
-//
-//    public String getFrom() {
-//        return from;
-//    }
-//
-//    public void setFrom(String from) {
-//        this.from = from;
-//    }
-//
-//    public String getWhere() {
-//        return where;
-//    }
-//
-//    public void setWhere(String where) {
-//        this.where = where;
-//    }
 
     public String getTable() {
         return table;
