@@ -98,6 +98,7 @@ public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
             
             if (Util.isNotNull(columnToDrill)) {
                 queryBuilder.addGroupBy(dataContextFactory.getColumn(columnToDrill));
+                queryBuilder.addOrder(dataContextFactory.getColumn(columnToDrill));
                 
                 if(listPreviousColumn != null){
                     for (DrillColumnValue previousColumn : listPreviousColumn) {
