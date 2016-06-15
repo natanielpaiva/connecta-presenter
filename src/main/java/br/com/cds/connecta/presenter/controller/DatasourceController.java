@@ -21,6 +21,8 @@ import br.com.cds.connecta.presenter.entity.datasource.HDFSDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.util.MultiValueMap;
 
 @Controller
 @RequestMapping("datasource")
@@ -91,7 +93,7 @@ public class DatasourceController {
     public ResponseEntity bulkDelete(@RequestBody List<Long> ids,
     		@RequestHeader("Domain") String domain) {
         service.deleteAll(ids, domain);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(null, HttpStatus.NO_CONTENT);
     }
 
 }
