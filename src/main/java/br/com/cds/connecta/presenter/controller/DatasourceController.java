@@ -21,8 +21,6 @@ import br.com.cds.connecta.presenter.entity.datasource.HDFSDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
-import org.springframework.http.HttpHeaders;
-import org.springframework.util.MultiValueMap;
 
 @Controller
 @RequestMapping("datasource")
@@ -30,11 +28,11 @@ public class DatasourceController {
 
     @Autowired
     private IDatasourceAS service;
-    
+
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Datasource>> list(DatasourceFilter filter, 
-    		@RequestHeader("Domain") String domain) {
-    	filter.setDomain(domain);
+    public ResponseEntity<Iterable<Datasource>> list(DatasourceFilter filter,
+            @RequestHeader("Domain") String domain) {
+        filter.setDomain(domain);
         Iterable<Datasource> list = service.list(filter);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -77,21 +75,21 @@ public class DatasourceController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResponseEntity<Datasource> get(@PathVariable("id") Long id,
-    		@RequestHeader("Domain") String domain) {
+            @RequestHeader("Domain") String domain) {
         Datasource newDatasource = service.get(id, domain);
         return new ResponseEntity<>(newDatasource, HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("id") Long id,
-    		@RequestHeader("Domain") String domain) {
+            @RequestHeader("Domain") String domain) {
         service.delete(id, domain);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-    
+
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity bulkDelete(@RequestBody List<Long> ids,
-    		@RequestHeader("Domain") String domain) {
+            @RequestHeader("Domain") String domain) {
         service.deleteAll(ids, domain);
         return new ResponseEntity(null, HttpStatus.NO_CONTENT);
     }
