@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.controller;
 
+import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import br.com.cds.connecta.presenter.entity.datasource.HDFSDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
+import java.sql.SQLException;
 
 @Controller
 @RequestMapping("datasource")
@@ -28,6 +30,9 @@ public class DatasourceController {
 
     @Autowired
     private IDatasourceAS service;
+    
+    @Autowired
+    private IDatabaseAS databaseService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Datasource>> list(DatasourceFilter filter,
@@ -41,6 +46,12 @@ public class DatasourceController {
     public ResponseEntity<Datasource> save(@RequestBody DatabaseDatasource datasource) {
         Datasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "test-connection", method = RequestMethod.POST)
+    public ResponseEntity<DatabaseDatasource> testConnection(@RequestBody DatabaseDatasource datasource) throws SQLException {
+        databaseService.testConnection(datasource);
+        return new ResponseEntity<>(datasource, HttpStatus.OK);
     }
 
     @RequestMapping(value = "endeca", method = RequestMethod.POST)
