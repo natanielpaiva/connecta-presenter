@@ -1,7 +1,6 @@
 package br.com.cds.connecta.presenter.business.strategy.connector;
 
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
-import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import java.util.List;
 import java.util.Map;
 

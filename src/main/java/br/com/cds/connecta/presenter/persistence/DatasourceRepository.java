@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 
 @Repository
-public interface DatasourceRepository extends JpaRepository<Datasource, Long>, 
-													JpaSpecificationExecutor<Datasource> {
-    
+public interface DatasourceRepository extends JpaRepository<Datasource, Long>,
+        JpaSpecificationExecutor<Datasource> {
+
 }

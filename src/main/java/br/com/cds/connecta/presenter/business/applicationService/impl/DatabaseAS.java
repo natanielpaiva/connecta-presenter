@@ -12,6 +12,7 @@ import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -34,7 +35,7 @@ public class DatabaseAS implements IDatabaseAS {
     private final Logger logger = Logger.getLogger(DatabaseAS.class);
 
     @Override
-    public List getTables(Long id) {
+    public List getTables(Long id) throws SQLException{
 
         DatabaseDatasource datasource = (DatabaseDatasource) dataSourceDao.findOne(id);
 
@@ -57,6 +58,17 @@ public class DatabaseAS implements IDatabaseAS {
         }
         
         return databaseTables;
+    }
+    
+    @Override
+    public void testConnection(DatabaseDatasource datasource) throws SQLException{
+        DatabaseService database = new DatabaseService();
+        
+        database.getTables(getParamsConnection(datasource),
+                datasource.getSchema(),
+                datasource.getUser(),
+                datasource.getPassword());
+        
     }
 
     private String getParamsConnection(DatabaseDatasource databaseDatasource) {
