@@ -29,6 +29,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Map;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
+import java.sql.SQLException;
 import javax.xml.transform.dom.DOMSource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -137,7 +138,7 @@ public class AnalysisController {
     //lista tabelas e colunas de banco de dados
     @RequestMapping(value = "{id}/columns-datasource", method = RequestMethod.GET)
     public ResponseEntity<List> getColumnsDatasource(
-            @PathVariable Long id) {
+            @PathVariable Long id) throws SQLException {
         List list = databaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -195,7 +196,7 @@ public class AnalysisController {
     //lista colunas de um select
     @RequestMapping(value = "{id}/sql-view-columns", method = RequestMethod.GET)
     public ResponseEntity<List> getSqlViewColumns(
-            @PathVariable Long id) {
+            @PathVariable Long id) throws SQLException {
         List list = databaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
