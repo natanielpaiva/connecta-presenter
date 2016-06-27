@@ -20,7 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -55,8 +54,7 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
         property = "type",
-        visible = true
-)
+        visible = true)
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DATABASE", value = DatabaseAnalysis.class),
     @JsonSubTypes.Type(name = "ENDECA", value = EndecaAnalysis.class),
@@ -64,7 +62,8 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
     @JsonSubTypes.Type(name = "BI", value = BIAnalysis.class),
     @JsonSubTypes.Type(name = "SOLR", value = SolrAnalysis.class),
     @JsonSubTypes.Type(name = "WEBSERVICE", value = WebserviceAnalysis.class),
-    @JsonSubTypes.Type(name = "CSV", value = CsvAnalysis.class)
+    @JsonSubTypes.Type(name = "CSV", value = CsvAnalysis.class),
+    @JsonSubTypes.Type(name = "COMBINED", value = CombinedAnalysis.class)
 })
 public class Analysis extends AbstractBaseEntity {
 
@@ -85,17 +84,24 @@ public class Analysis extends AbstractBaseEntity {
     @JoinColumn(name = "FK_DATASOURCE")
     private Datasource datasource;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "FK_ANALYSIS", nullable = false)
     private List<AnalysisColumn> analysisColumns;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS")
     private Set<AnalysisAttribute> analysisAttributes;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+    @JoinColumn(name = "FK_LEFT_ANALYSIS")
+    private List<AnalysisRelation> analysisRelations;
 
     @Column(name = "FL_DRILL")
     private boolean hasDrill;
 
+    /**
+     * FIXME colocar o tipo certo, da Análise
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "TP_ANALYSIS")
     private DatasourceTypeEnum type;
@@ -150,6 +156,14 @@ public class Analysis extends AbstractBaseEntity {
 
     public void setAnalysisAttributes(Set<AnalysisAttribute> analysisAttributes) {
         this.analysisAttributes = analysisAttributes;
+    }
+
+    public List<AnalysisRelation> getAnalysisRelations() {
+        return analysisRelations;
+    }
+
+    public void setAnalysisRelations(List<AnalysisRelation> analysisRelations) {
+        this.analysisRelations = analysisRelations;
     }
 
     public DatasourceTypeEnum getType() {

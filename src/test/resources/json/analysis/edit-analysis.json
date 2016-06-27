@@ -2,8 +2,24 @@
     "id"            : 2,
     "name"          : "Edited Analysis",
     "description"   : "Analysis Description",
-    "type"          : "TESTING",
-    "datasource"    : {
-        "id": 1
-    }
+    "type"          : "CSV",
+    "analysisColumns":[
+        {
+            "id":2
+        }
+    ],
+    "analysisRelations": [
+        {
+            "leftAnalysisColumn": {
+                "id": 1
+            },
+            "rightAnalysis": {
+                "id": 1,
+                "type": "DATABASE"
+            },
+            "rightAnalysisColumn": {
+                "id": 2
+            }
+        }
+    ]
 }

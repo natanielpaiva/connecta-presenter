@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 /**
  *
  * @author Vinicius Pires <vinicius.pires@cds.com.br>
+ * @param <T>
  */
 @Repository
 public class BulkActionsRepository <T> {

@@ -8,53 +8,54 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
 @Entity
-@Table(name="VIEWER_RELATION")
-@NamedQuery(name="ViewerRelation.findAll", query="SELECT v FROM ViewerRelation v")
+@Table(name = "VIEWER_RELATION")
+@NamedQuery(name = "ViewerRelation.findAll", query = "SELECT v FROM ViewerRelation v")
 public class ViewerRelation extends AbstractBaseEntity {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="PK_VIEWER_RELATION")
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="ID_RELATION")
-	private BigDecimal idRelation;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "PK_VIEWER_RELATION")
+    private Long id;
 
-	@Column(name="ID_VIEWER")
-	private BigDecimal idViewer;
+    @Column(name = "ID_RELATION")
+    private BigDecimal idRelation;
 
-	public ViewerRelation() {
-	}
+    @Column(name = "ID_VIEWER")
+    private BigDecimal idViewer;
 
-	public Long getId() {
-		return this.id;
-	}
+    public ViewerRelation() {
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 
-	public BigDecimal getIdRelation() {
-		return this.idRelation;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setIdRelation(BigDecimal idRelation) {
-		this.idRelation = idRelation;
-	}
+    public BigDecimal getIdRelation() {
+        return this.idRelation;
+    }
 
-	public BigDecimal getIdViewer() {
-		return this.idViewer;
-	}
+    public void setIdRelation(BigDecimal idRelation) {
+        this.idRelation = idRelation;
+    }
 
-	public void setIdViewer(BigDecimal idViewer) {
-		this.idViewer = idViewer;
-	}
+    public BigDecimal getIdViewer() {
+        return this.idViewer;
+    }
+
+    public void setIdViewer(BigDecimal idViewer) {
+        this.idViewer = idViewer;
+    }
 
 }

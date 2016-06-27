@@ -66,10 +66,10 @@ public class AnalysisController {
 
     @Autowired
     private IRestAS restService;
-    
+
     @Autowired
     private ICsvAS csvService;
-    
+
     @Autowired
     private IDataExtractorAS extractor;
 
@@ -87,8 +87,8 @@ public class AnalysisController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    protected ResponseEntity<Analysis> 
-    				update(@PathVariable Long id, @RequestBody Analysis analysis) {
+    protected ResponseEntity<Analysis>
+            update(@PathVariable Long id, @RequestBody Analysis analysis) {
         analysis.setId(id);
         Analysis updatedAnalysis = analysisService.saveOrUpdate(analysis);
         return new ResponseEntity<>(updatedAnalysis, HttpStatus.OK);
@@ -98,43 +98,40 @@ public class AnalysisController {
             value = "{id}",
             method = RequestMethod.DELETE)
     protected ResponseEntity delete(@PathVariable("id") Long id,
-    		@RequestHeader("Domain") String domain) {
-        analysisService.delete(id,domain);
+            @RequestHeader("Domain") String domain) {
+        analysisService.delete(id, domain);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     protected ResponseEntity<Analysis> get(@PathVariable("id") Long id,
-    		@RequestHeader("Domain") String domain) {
+            @RequestHeader("Domain") String domain) {
         Analysis analysis = analysisService.get(id, domain);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
-    
 
     @RequestMapping(method = RequestMethod.GET)
     protected ResponseEntity<Iterable<Analysis>> list(AnalysisFilter filter,
-    		@RequestHeader("Domain") String domain) {
-    	filter.setDomain(domain);
+            @RequestHeader("Domain") String domain) {
+        filter.setDomain(domain);
         Iterable<Analysis> list = analysisService.list(filter);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     //lista as condiçoes para realizar consultar no sorl
-     @RequestMapping(value = "{id}/conditions-sorl", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}/conditions-sorl", method = RequestMethod.GET)
     public ResponseEntity<List<String>> getConditionsSorl(
             @PathVariable Long id) {
         List<String> list = solrService.getConditionsSolr(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    
-    
+
 //    @RequestMapping(value = "{id}/columns-sorl", method = RequestMethod.GET)
 //    public ResponseEntity<List<AnalysisColumn>> getColumnsSorl(
 //            @PathVariable Long id) {
 //        List<AnalysisColumn> list = solrService.getColumns(id);
 //        return new ResponseEntity<>(list, HttpStatus.OK);
 //    }
-
     //lista tabelas e colunas de banco de dados
     @RequestMapping(value = "{id}/columns-datasource", method = RequestMethod.GET)
     public ResponseEntity<List> getColumnsDatasource(
@@ -142,33 +139,33 @@ public class AnalysisController {
         List list = databaseService.getTables(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    
+
     /**
      * Executa Análises de acordo com o AnalysisExecuteRequest
-     * 
+     *
      * @param analysisExecuteRequest
-     * @return 
+     * @return
      */
     @RequestMapping(value = "result", method = RequestMethod.POST)
     public ResponseEntity<List<Map<String, Object>>> getResult(@RequestBody AnalysisExecuteRequest analysisExecuteRequest) {
         List<Map<String, Object>> result = extractor.executeAnalysis(analysisExecuteRequest);
-        
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "filter-value", method = RequestMethod.POST)
     public ResponseEntity<List<Object>> possibleValuesForFilter(
             @RequestBody AnalysisExecuteRequest analysisExecuteRequest,
             @RequestParam("column") Object column) {
-        
+
         //ignorar as configurações de drill na hora de filtrar os valores pros selects
         analysisExecuteRequest.setDrill(null);
-        
+
         List<Object> result = extractor.possibleValuesFor(analysisExecuteRequest, column);
-        
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
 //    /**
 //     * Executa uma análise de banco de dados
 //     * 
@@ -184,7 +181,6 @@ public class AnalysisController {
 //        List<Map<String, Object>> dataSql = databaseService.getDataSql(databaseAnalysis);
 //        return new ResponseEntity<>(dataSql, HttpStatus.OK);
 //    }
-    
     //retorna a análises e suas respectivas colunas
     @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)
     public ResponseEntity<Analysis> getAnalysisColumns(
@@ -245,8 +241,8 @@ public class AnalysisController {
     }
 
     //Retona a resposta do Soap no formato json
-    @RequestMapping(value = "{id}/soap/operation/{operation}", 
-    		method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "{id}/soap/operation/{operation}",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<XMLNode> getSoap(
             @PathVariable Long id,
             @PathVariable String operation,
@@ -278,9 +274,9 @@ public class AnalysisController {
     @RequestMapping(value = "autocomplete", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<Iterable<Analysis>> listAutoComplete(AnalysisFilter filter,
-    		@RequestHeader("Domain") String domain) {
-    	filter.setDomain(domain);
-    	
+            @RequestHeader("Domain") String domain) {
+        filter.setDomain(domain);
+
         Page<Analysis> list = analysisService.listAutoComplete(filter);
         Iterable<Analysis> content = list.getContent();
 
@@ -336,25 +332,24 @@ public class AnalysisController {
             @PathVariable Long id,
             @PathVariable int facet,
             @RequestBody Query query) {
-        List<Map<String, Object>> solrResultApplyingQuery = 
-        		solrService.getSolrResultApplyingQuery(id, query, facet);
+        List<Map<String, Object>> solrResultApplyingQuery
+                = solrService.getSolrResultApplyingQuery(id, query, facet);
         return new ResponseEntity<>(solrResultApplyingQuery, HttpStatus.OK);
     }
 
-    
     //excuta CSV
-    @RequestMapping(value = "/result-csv", method = RequestMethod.POST, 
-    		consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/result-csv", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getResultCSV(
             @RequestBody CsvAnalysis csvAnalysis) {
         List<Map<String, Object>> dataCsv = csvService.getDataCsv(csvAnalysis);
-        
+
         return new ResponseEntity<>(dataCsv, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity bulkDelete(@RequestBody List<Long> ids,
-    		@RequestHeader("Domain") String domain) {
+            @RequestHeader("Domain") String domain) {
         analysisService.deleteAll(ids, domain);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
