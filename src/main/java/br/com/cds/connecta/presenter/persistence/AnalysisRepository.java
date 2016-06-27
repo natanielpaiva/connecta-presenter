@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
+import java.util.List;
 
 /**
  *
@@ -27,5 +29,12 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Serializable
     
     @Query("SELECT c FROM Analysis a JOIN a.analysisColumns c WHERE c.id LIKE :filterId")
     AnalysisColumn findColumnById(@Param("filterId") Long filterId);
+
+    @Query("SELECT r FROM Analysis a JOIN a.analysisRelations r"
+            + " LEFT JOIN FETCH r.leftAnalysisColumn"
+            + " LEFT JOIN FETCH r.rightAnalysis"
+            + " LEFT JOIN FETCH r.rightAnalysisColumn"
+            + " WHERE a.id LIKE :id")
+    List<AnalysisRelation> findRelationsById(@Param("id") Long id);
     
 }

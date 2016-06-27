@@ -45,11 +45,11 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
 
     @Column(name = "TXT_USUARIO")
     private String user;
-    
+
     @Column(name = "NM_DOMAIN")
     private String domain;
 
-	@Override
+    @Override
     public Long getId() {
         return id;
     }
@@ -97,13 +97,13 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
     public void setUser(String user) {
         this.user = user;
     }
-    
-    public String getDomain() {
-		return domain;
-	}
 
-	public void setDomain(String domain) {
-		this.domain = domain;
-	}
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 
 }

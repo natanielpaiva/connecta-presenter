@@ -12,6 +12,7 @@ public enum AnalysisTypeEnum {
     OBIEE,
     SOLR,
     WEBSERVICE,
-    CSV;
+    CSV,
+    COMBINED;
     
 }

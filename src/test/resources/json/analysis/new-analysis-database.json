@@ -22,7 +22,19 @@
             "formula": "ASD.NOME_USUARIO"
         }
     ],
-    "domain" : "cds"
+    "analysisRelations": [
+        {
+            "leftAnalysisColumn": {
+                "id": 1
+            },
+            "rightAnalysis": {
+                "id": 1,
+                "type": "DATABASE"
+            },
+            "rightAnalysisColumn": {
+                "id": 2
+            }
+        }
+    ],
+    "domain": "cds"
 }
-
-

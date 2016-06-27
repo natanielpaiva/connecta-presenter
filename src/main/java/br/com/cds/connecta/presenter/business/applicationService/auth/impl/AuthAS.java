@@ -21,7 +21,7 @@ public class AuthAS implements IAuthAS, Observer {
     private ConnectaConfigurationService connectaConfigurationService;
     
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthAS.class);
-    private static final String ENDPOINT_URL = "user/validarToken";
+    private static final String ENDPOINT_URL = "/user/validarToken";
     
     private String connectaPortalUrl = "";
 

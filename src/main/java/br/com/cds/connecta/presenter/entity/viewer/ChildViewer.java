@@ -33,7 +33,7 @@ public class ChildViewer extends AbstractBaseEntity {
 	//bi-directional many-to-one association to TbCmbViewer
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="FK_CMB_VIEWER")
-	private CombinedAnalysisViewer tbCmbViewer;
+	private CombinedViewer tbCmbViewer;
 
 	//bi-directional many-to-one association to TbViewer
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -51,11 +51,11 @@ public class ChildViewer extends AbstractBaseEntity {
 		this.id = id;
 	}
 
-	public CombinedAnalysisViewer getTbCmbViewer() {
+	public CombinedViewer getTbCmbViewer() {
 		return this.tbCmbViewer;
 	}
 
-	public void setTbCmbViewer(CombinedAnalysisViewer tbCmbViewer) {
+	public void setTbCmbViewer(CombinedViewer tbCmbViewer) {
 		this.tbCmbViewer = tbCmbViewer;
 	}
 

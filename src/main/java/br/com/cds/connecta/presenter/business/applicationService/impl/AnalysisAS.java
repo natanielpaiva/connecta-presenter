@@ -20,6 +20,8 @@ import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.entity.Attribute;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisAttribute;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
@@ -32,19 +34,23 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     private IAnalysisDAO analysisDAO;
 
     @Autowired
-    private AnalysisRepository analysisListRepository;
+    private AnalysisRepository analysisRepository;
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public Analysis get(Long id, String domain) {
-        Analysis analysis = analysisListRepository
+        Analysis analysis = analysisRepository
                 .findOne(AnalysisSpecification.byIdAndDomainWithCompleteFetch(id, domain));
 
         if (isNull(analysis)) {
             throw new ResourceNotFoundException(Analysis.class.getSimpleName());
         }
+        
+        List<AnalysisRelation> analysisRelations = analysisRepository.findRelationsById(analysis.getId());
+        analysis.setAnalysisRelations(analysisRelations);
+        
         return analysis;
     }
 
@@ -52,10 +58,10 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     public Iterable<Analysis> list(AnalysisFilter filter) {
         Iterable<Analysis> analysisList;
         if (isNull(filter.getPage()) || isNull(filter.getCount())) {
-            analysisList = analysisListRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()));
+            analysisList = analysisRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()));
         } else {
             Pageable pageable = filter.makePageable();
-            analysisList = analysisListRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()), pageable);
+            analysisList = analysisRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()), pageable);
         }
 
         return analysisList;
@@ -68,17 +74,18 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
         if (isNull(name)) {
             name = "";
         }
-        Page<Analysis> analyses = analysisListRepository
+        Page<Analysis> analysisPage = analysisRepository
                 .findAll(AnalysisSpecification.byNameAndDomainWithSimpleFetch(name,
                         filter.getDomain()), pageable);
 
-        return analyses;
+        return analysisPage;
     }
 
     @Override
     public Analysis saveOrUpdate(Analysis analysis) {
         refreshAttribute(analysis);
-        return analysisListRepository.save(analysis);
+        refreshAnalysisRelations(analysis);
+        return analysisRepository.save(analysis);
     }
 
     private void refreshAttribute(Analysis analysis) {
@@ -90,13 +97,31 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
                 }
             }
         }
-
+    }
+    
+    private void refreshAnalysisRelations(Analysis analysis) {
+        if (isNotEmpty(analysis.getAnalysisRelations())) {
+            for (AnalysisRelation analysisRelation : analysis.getAnalysisRelations()) {
+                if (isNotNull(analysisRelation.getLeftAnalysisColumn()) &&
+                    isNotNull(analysisRelation.getRightAnalysis()) &&
+                    isNotNull(analysisRelation.getRightAnalysisColumn()) ) {
+                    
+                    Analysis rightAnalysis = em.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
+                    AnalysisColumn leftAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
+                    AnalysisColumn rightAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
+                    
+                    analysisRelation.setRightAnalysis(rightAnalysis);
+                    analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
+                    analysisRelation.setRightAnalysisColumn(rightAnalysisColumn);
+                }
+            }
+        }
     }
 
     @Override
     public void delete(Long id, String domain) {
         Analysis analysis = get(id, domain);
-        analysisListRepository.delete(analysis);
+        analysisRepository.delete(analysis);
     }
 
     @Override
@@ -106,8 +131,8 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
     @Override
     public void deleteAll(List<Long> ids, String domain) {
-        List<Analysis> listAnalysis = analysisListRepository.findAll(AnalysisSpecification.byIdsAndDomain(ids, domain));
-        analysisListRepository.delete(listAnalysis);
+        List<Analysis> listAnalysis = analysisRepository.findAll(AnalysisSpecification.byIdsAndDomain(ids, domain));
+        analysisRepository.delete(listAnalysis);
     }
 
 }

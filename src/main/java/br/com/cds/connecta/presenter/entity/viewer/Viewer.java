@@ -49,7 +49,7 @@ import org.hibernate.search.annotations.TokenizerDef;
 )
 @JsonSubTypes({
     @JsonSubTypes.Type(value = AnalysisViewer.class, name = "ANALYSIS"),
-    @JsonSubTypes.Type(value = CombinedAnalysisViewer.class, name = "COMBINED"),
+    @JsonSubTypes.Type(value = CombinedViewer.class, name = "COMBINED"),
     @JsonSubTypes.Type(value = SingleSourceViewer.class, name = "SINGLESOURCE"),
     @JsonSubTypes.Type(value = SingleSourceGroupViewer.class, name = "SINGLESOURCE_GROUP")
 })
