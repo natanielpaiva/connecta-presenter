@@ -9,7 +9,15 @@
 
     <context:component-scan base-package="br.com.cds.connecta.presenter" />
     
-    <bean name="authFilter" class="br.com.cds.connecta.presenter.filter.AuthFilter"/>
+    <bean name="authFilter" class="br.com.cds.connecta.presenter.filter.AuthFilter">
+        <property name="exceptions">
+            <list>
+                <value>/connecta-presenter/binary</value>
+                <value>/connecta-presenter/config</value>
+                <value>/connecta-presenter/</value>
+            </list>
+        </property>
+    </bean>
 
     <!--PERSISTENCE -->
     <bean id="entityManagerFactory"

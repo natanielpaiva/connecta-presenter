@@ -14,11 +14,14 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.auth.IAuthAS;
+import java.util.List;
 
 public class AuthFilter extends GenericFilterBean {
 
     @Autowired
     private IAuthAS authAS;
+    
+    private List<String> exceptions;
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -28,7 +31,7 @@ public class AuthFilter extends GenericFilterBean {
         HttpServletResponse response = (HttpServletResponse) res;
 
         if (!request.getMethod().equalsIgnoreCase("OPTIONS") 
-                && !binaryExceptions(request.getRequestURI())) {
+                && !isPublic(request.getRequestURI())) {
             String token = request.getHeader("Authorization");
 
             if (Util.isNull(token) || !authAS.validateToken(token)) {
@@ -40,10 +43,9 @@ public class AuthFilter extends GenericFilterBean {
         chain.doFilter(req, res);
     }
 
-    public boolean binaryExceptions(String uri) {
+    public boolean isPublic(String uri) {
         if (Util.isNotNull(uri)) {
             // adicionar uris de exceptions
-            String[] exceptions = { "/binary" };
             for (String ex : exceptions) {
                 if (uri.contains(ex)) {
                     return true;
@@ -53,4 +55,11 @@ public class AuthFilter extends GenericFilterBean {
         return false;
     }
 
+    public List<String> getExceptions() {
+        return exceptions;
+    }
+
+    public void setExceptions(List<String> exceptions) {
+        this.exceptions = exceptions;
+    }
 }
