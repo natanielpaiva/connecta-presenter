@@ -12,9 +12,9 @@
     <bean name="authFilter" class="br.com.cds.connecta.presenter.filter.AuthFilter">
         <property name="exceptions">
             <list>
-                <value>/connecta-presenter/binary</value>
-                <value>/connecta-presenter/config</value>
-                <value>/connecta-presenter/</value>
+                <value>/binary</value>
+                <value>/config</value>
+                <value>/</value>
             </list>
         </property>
     </bean>

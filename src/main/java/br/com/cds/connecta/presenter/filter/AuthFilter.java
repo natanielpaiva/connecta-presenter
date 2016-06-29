@@ -21,6 +21,9 @@ public class AuthFilter extends GenericFilterBean {
     @Autowired
     private IAuthAS authAS;
     
+    /**
+     * Preenchida no application-context.xml
+     */
     private List<String> exceptions;
 
     @Override
@@ -30,8 +33,9 @@ public class AuthFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        if (!request.getMethod().equalsIgnoreCase("OPTIONS") 
-                && !isPublic(request.getRequestURI())) {
+        if ( !request.getMethod().equalsIgnoreCase("OPTIONS") &&
+             !isPublic(request.getServletPath()) ) {
+            
             String token = request.getHeader("Authorization");
 
             if (Util.isNull(token) || !authAS.validateToken(token)) {
@@ -47,7 +51,7 @@ public class AuthFilter extends GenericFilterBean {
         if (Util.isNotNull(uri)) {
             // adicionar uris de exceptions
             for (String ex : exceptions) {
-                if (uri.contains(ex)) {
+                if (uri.equals(ex)) {
                     return true;
                 }
             }
