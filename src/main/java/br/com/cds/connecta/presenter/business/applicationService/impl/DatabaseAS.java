@@ -1,5 +1,14 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.com.cds.connecta.framework.connector.database.DatabaseService;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseColumn;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseTable;
@@ -7,18 +16,13 @@ import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
 import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
 import br.com.cds.connecta.framework.connector2.context.database.postgresql.PostgresqlDriver;
+import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnectorStrategy;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -62,14 +66,16 @@ public class DatabaseAS implements IDatabaseAS {
     }
 
     @Override
-    public void testConnection(DatabaseDatasource datasource) throws SQLException {
+    public void testConnection(DatabaseDatasource datasource) throws SQLException{
         DatabaseService database = new DatabaseService();
-
-        database.getTables(getParamsConnection(datasource),
-                datasource.getSchema(),
+        
+        Connection conn = database.testConnection(getParamsConnection(datasource),
                 datasource.getUser(),
                 datasource.getPassword());
-
+        
+        if(Util.isNotNull(conn)){
+        	conn.close();
+        }
     }
 
     private String getParamsConnection(DatabaseDatasource databaseDatasource) {
