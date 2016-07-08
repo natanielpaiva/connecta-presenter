@@ -26,6 +26,9 @@ import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import br.com.cds.connecta.presenter.persistence.specification.AnalysisSpecification;
+import java.util.HashMap;
+import java.util.Map;
+import org.hibernate.Hibernate;
 
 @Service
 public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS {
@@ -48,8 +51,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
             throw new ResourceNotFoundException(Analysis.class.getSimpleName());
         }
         
-        List<AnalysisRelation> analysisRelations = analysisRepository.findRelationsById(analysis.getId());
-        analysis.setAnalysisRelations(analysisRelations);
+        initializeRelations(analysis);
         
         return analysis;
     }
@@ -84,40 +86,20 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     @Override
     public Analysis saveOrUpdate(Analysis analysis) {
         refreshAttribute(analysis);
-        refreshAnalysisRelations(analysis);
+        
+        if (isNotEmpty(analysis.getAnalysisRelations())) {
+            
+            AnalysisRelation[] relations = analysis.getAnalysisRelations().toArray(new AnalysisRelation[]{});
+            
+            analysis.getAnalysisRelations().clear();
+            
+            analysis = analysisRepository.save(analysis);
+            refreshAnalysisRelations(analysis, relations);
+        }
+        
         return analysisRepository.save(analysis);
     }
-
-    private void refreshAttribute(Analysis analysis) {
-        if (isNotEmpty(analysis.getAnalysisAttributes())) {
-            for (AnalysisAttribute analysisAttribute : analysis.getAnalysisAttributes()) {
-                if (isNotNull(analysisAttribute.getAttribute()) && isNotNull(analysisAttribute.getAttribute().getId())) {
-                    Attribute merge = em.merge(analysisAttribute.getAttribute());
-                    analysisAttribute.setAttribute(merge);
-                }
-            }
-        }
-    }
     
-    private void refreshAnalysisRelations(Analysis analysis) {
-        if (isNotEmpty(analysis.getAnalysisRelations())) {
-            for (AnalysisRelation analysisRelation : analysis.getAnalysisRelations()) {
-                if (isNotNull(analysisRelation.getLeftAnalysisColumn()) &&
-                    isNotNull(analysisRelation.getRightAnalysis()) &&
-                    isNotNull(analysisRelation.getRightAnalysisColumn()) ) {
-                    
-                    Analysis rightAnalysis = em.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
-                    AnalysisColumn leftAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
-                    AnalysisColumn rightAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
-                    
-                    analysisRelation.setRightAnalysis(rightAnalysis);
-                    analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
-                    analysisRelation.setRightAnalysisColumn(rightAnalysisColumn);
-                }
-            }
-        }
-    }
-
     @Override
     public void delete(Long id, String domain) {
         Analysis analysis = get(id, domain);
@@ -133,6 +115,63 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     public void deleteAll(List<Long> ids, String domain) {
         List<Analysis> listAnalysis = analysisRepository.findAll(AnalysisSpecification.byIdsAndDomain(ids, domain));
         analysisRepository.delete(listAnalysis);
+    }
+    
+    private void initializeRelations(Analysis analysis) {
+        List<AnalysisRelation> analysisRelations = analysisRepository.findRelationsById(analysis.getId());
+        
+        for (AnalysisRelation analysisRelation : analysisRelations) {
+            Hibernate.initialize(analysisRelation.getLeftAnalysisColumn());
+            Hibernate.initialize(analysisRelation.getRightAnalysis());
+            Hibernate.initialize(analysisRelation.getRightAnalysisColumn());
+        }
+        
+        analysis.setAnalysisRelations(analysisRelations);
+    }
+
+    private void refreshAttribute(Analysis analysis) {
+        if (isNotEmpty(analysis.getAnalysisAttributes())) {
+            for (AnalysisAttribute analysisAttribute : analysis.getAnalysisAttributes()) {
+                if (isNotNull(analysisAttribute.getAttribute()) && isNotNull(analysisAttribute.getAttribute().getId())) {
+                    Attribute merge = em.merge(analysisAttribute.getAttribute());
+                    analysisAttribute.setAttribute(merge);
+                }
+            }
+        }
+    }
+    
+    private void refreshAnalysisRelations(Analysis analysis, AnalysisRelation[] relations) {
+        // A única referência que existe no frontend pra colunas novas é o nome da coluna
+        // que deve ser único, por isso é colocado em um mapa para fácil acesso
+        Map<String, AnalysisColumn> map = new HashMap<>(analysis.getAnalysisColumns().size());
+        for (AnalysisColumn analysisColumn : analysis.getAnalysisColumns()) {
+            map.put(analysisColumn.getName(), analysisColumn);
+        }
+        
+        for (AnalysisRelation analysisRelation : relations) {
+            if (isNotNull(analysisRelation.getLeftAnalysisColumn()) &&
+                isNotNull(analysisRelation.getRightAnalysis()) &&
+                isNotNull(analysisRelation.getRightAnalysisColumn()) ) {
+
+                Analysis rightAnalysis = em.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
+                AnalysisColumn rightAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
+
+                analysisRelation.setRightAnalysis(rightAnalysis);
+                analysisRelation.setRightAnalysisColumn(rightAnalysisColumn);
+                
+                if (isNull(analysisRelation.getLeftAnalysisColumn().getId())) {
+                    // Caso seja uma coluna nova
+                    AnalysisColumn leftAnalysisColumn = map.get(analysisRelation.getLeftAnalysisColumn().getName());
+                    analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
+                } else {
+                    // Caso seja uma coluna existente
+                    AnalysisColumn leftAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
+                    analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
+                }
+                
+                analysis.getAnalysisRelations().add(analysisRelation);
+            }
+        }
     }
 
 }

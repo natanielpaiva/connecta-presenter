@@ -48,8 +48,7 @@ public class AnalysisTest extends BaseTest {
                 
                 .andExpect(jsonPath("$.analysisRelations[0].leftAnalysisColumn.id", equalTo(1)))
                 .andExpect(jsonPath("$.analysisRelations[0].rightAnalysis.id", equalTo(1)))
-                .andExpect(jsonPath("$.analysisRelations[0].rightAnalysisColumn.id", equalTo(2)))
-                .andReturn();
+                .andExpect(jsonPath("$.analysisRelations[0].rightAnalysisColumn.id", equalTo(2)));
         
         mockMvc().perform(get(RESOURCE_ID, 101)
             .contentType(MediaType.APPLICATION_JSON)
@@ -60,11 +59,67 @@ public class AnalysisTest extends BaseTest {
             .andExpect(jsonPath("$.id", equalTo(101)))
             
             .andExpect(jsonPath("$.type", enumKeyFor(AnalysisTypeEnum.DATABASE)))
+            .andExpect(jsonPath("$.analysisRelations[*].leftAnalysisColumn", todosOsItens(notNullValue())))
+            .andExpect(jsonPath("$.analysisRelations[*].rightAnalysis", todosOsItens(notNullValue())))
+            .andExpect(jsonPath("$.analysisRelations[*].rightAnalysisColumn", todosOsItens(notNullValue())))
+                
             .andExpect(jsonPath("$.analysisRelations[0].leftAnalysisColumn.id", equalTo(1)))
             .andExpect(jsonPath("$.analysisRelations[0].rightAnalysis.id", equalTo(1)))
             .andExpect(jsonPath("$.analysisRelations[0].rightAnalysisColumn.id", equalTo(2)))
         ;
-    }    
+    }
+    
+    @Test
+    public void saveAnalysisNewColumns() throws Exception {
+        mockMvc().perform(post(RESOURCE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(getJson("analysis/new-analysis-database-new-columns"))
+                .header("Domain", "cds")
+        ).andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.name", equalTo("New Analysis")))
+                .andExpect(jsonPath("$.description", equalTo("Analysis Description")))
+                .andExpect(jsonPath("$.type", enumKeyFor(AnalysisTypeEnum.DATABASE)))
+                .andExpect(jsonPath("$.datasource", notNullValue()))
+                .andExpect(jsonPath("$.datasource.id", equalTo(1)))
+                
+                .andExpect(jsonPath("$.analysisColumns[0].name", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].label", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].formula", equalTo("ASD.ID_USUARIO")))
+                
+                .andExpect(jsonPath("$.analysisColumns[1].name", equalTo("ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].label", equalTo("ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].formula", equalTo("ASD.ID_EMPRESAS")))
+                
+                .andExpect(jsonPath("$.analysisColumns[2].name", equalTo("NOME_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[2].label", equalTo("NOME_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[2].formula", equalTo("ASD.NOME_USUARIO")))
+                
+                .andExpect(jsonPath("$.analysisRelations[0].leftAnalysisColumn.id", greaterThan(0)))
+                .andExpect(jsonPath("$.analysisRelations[0].leftAnalysisColumn.name", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisRelations[0].rightAnalysis.id", equalTo(1)))
+                .andExpect(jsonPath("$.analysisRelations[0].rightAnalysisColumn.id", equalTo(2)));
+        
+        mockMvc().perform(get(RESOURCE_ID, 102)
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Domain", "cds")
+        ).andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MEDIATYPE_JSON_UTF8))
+            .andExpect(jsonPath("$.id", equalTo(102)))
+            
+            .andExpect(jsonPath("$.type", enumKeyFor(AnalysisTypeEnum.DATABASE)))
+            .andExpect(jsonPath("$.analysisRelations[*].leftAnalysisColumn", todosOsItens(notNullValue())))
+            .andExpect(jsonPath("$.analysisRelations[*].rightAnalysis", todosOsItens(notNullValue())))
+            .andExpect(jsonPath("$.analysisRelations[*].rightAnalysisColumn", todosOsItens(notNullValue())))
+                
+            .andExpect(jsonPath("$.analysisRelations[0].leftAnalysisColumn.id", isA(Number.class)))
+            .andExpect(jsonPath("$.analysisRelations[0].rightAnalysis.id", equalTo(1)))
+            .andExpect(jsonPath("$.analysisRelations[0].rightAnalysisColumn.id", equalTo(2)))
+        ;
+    }
     
     /**
      * 

@@ -43,12 +43,10 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
     @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
             + "INNER JOIN FETCH t.analysisColumns a "
             + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
-
     @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a "
             + " LEFT JOIN FETCH a.analysisAttributes anAttr "
             + " LEFT JOIN FETCH anAttr.attribute attr "
             + " LEFT OUTER JOIN FETCH a.datasource d WHERE a.id = :id")
-
 })
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,

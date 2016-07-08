@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import javax.persistence.criteria.Fetch;
 
 public class AnalysisSpecification {
 
