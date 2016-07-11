@@ -8,6 +8,7 @@ import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver
 import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
 import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
+import br.com.cds.connecta.framework.connector2.context.database.postgresql.PostgresqlDriver;
 import br.com.cds.connecta.presenter.domain.DatabaseRequestTypeEnum;
 import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
 import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
@@ -73,6 +74,9 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
         }
         if (DatabaseDatasourceDriverEnum.MYSQL.equals(datasource.getDriver())) {
             driver = new MySQLDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
+        }
+        if (DatabaseDatasourceDriverEnum.POSTGRESQL.equals(datasource.getDriver())) {
+            driver = new PostgresqlDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
         }
 
         return driver;
