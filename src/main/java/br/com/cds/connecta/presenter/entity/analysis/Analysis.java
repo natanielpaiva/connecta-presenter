@@ -96,6 +96,9 @@ public class Analysis extends AbstractBaseEntity {
 
     @Column(name = "FL_DRILL")
     private boolean hasDrill;
+    
+    @Column(name = "FL_CACHED")
+    private boolean isCached;
 
     /**
      * FIXME colocar o tipo certo, da Análise
@@ -187,5 +190,13 @@ public class Analysis extends AbstractBaseEntity {
     public void setHasDrill(boolean hasDrill) {
         this.hasDrill = hasDrill;
     }
+
+	public boolean isCached() {
+		return isCached;
+	}
+
+	public void setCached(boolean isCached) {
+		this.isCached = isCached;
+	}
 
 }

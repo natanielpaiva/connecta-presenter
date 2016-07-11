@@ -20,5 +20,7 @@ public interface IAnalysisAS {
     Analysis getByIdColumns(Long id);
 
     void deleteAll(List<Long> ids, String domain);
+    
+    Iterable<Analysis> listCached();
 
 }

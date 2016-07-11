@@ -173,5 +173,10 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
             }
         }
     }
+    
+	@Override
+	public Iterable<Analysis> listCached() {
+		return analysisRepository.findAll(AnalysisSpecification.isAnalysisCached());
+	}
 
 }

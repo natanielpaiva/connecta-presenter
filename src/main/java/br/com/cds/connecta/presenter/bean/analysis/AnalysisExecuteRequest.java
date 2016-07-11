@@ -16,8 +16,9 @@ public class AnalysisExecuteRequest {
     private List<AnalysisFilter> filters;
     private PaginationFilter pagination;
     private AnalysisDrill drill;
+    private boolean updatingCache;
 
-    public Analysis getAnalysis() {
+	public Analysis getAnalysis() {
         return analysis;
     }
 
@@ -48,5 +49,13 @@ public class AnalysisExecuteRequest {
     public void setDrill(AnalysisDrill drill) {
         this.drill = drill;
     }
+    
+    public boolean isUpdatingCache() {
+		return updatingCache;
+	}
+
+	public void setUpdatingCache(boolean updatingCache) {
+		this.updatingCache = updatingCache;
+	}
 
 }

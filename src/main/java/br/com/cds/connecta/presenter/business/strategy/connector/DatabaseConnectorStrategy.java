@@ -9,12 +9,12 @@ import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataCon
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
 import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
 import br.com.cds.connecta.framework.connector2.context.database.postgresql.PostgresqlDriver;
-import br.com.cds.connecta.presenter.domain.DatabaseRequestTypeEnum;
 import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
-import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
+import br.com.cds.connecta.presenter.business.applicationService.IAnalysisAS;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
+import br.com.cds.connecta.presenter.domain.DatabaseRequestTypeEnum;
 import br.com.cds.connecta.presenter.entity.analysis.DatabaseAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
@@ -30,11 +30,16 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
     private DatasourceRepository repository;
     
     @Autowired
+    private IAnalysisAS analysisService;
+    
+    @Autowired
     private IDatabaseAS service;
-
+    
     protected Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) {
-        DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
-        DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
+        DatabaseAnalysis databaseAnalysis = 
+        		(DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
+        DatabaseDatasource datasource = 
+        		(DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
         
         ConnectorDriver driver = service.makeConnectorDriver(datasource);
         
@@ -42,16 +47,24 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
         QueryBuilder query;
         
         if (DatabaseRequestTypeEnum.TABLE.equals(databaseAnalysis.getRequestType())) {
-            dataContextFactory = new DatabaseDataContextFactory(driver, databaseAnalysis.getTable(), datasource.getUser(), datasource.getPassword());
+            dataContextFactory = 
+            		new DatabaseDataContextFactory(driver, databaseAnalysis.getTable(), 
+            				datasource.getUser(), datasource.getPassword());
+            
             query = new QueryBuilder()
                     .setSchema(datasource.getSchema())
                     .setTable(databaseAnalysis.getTable())
                     .setColumns(
                             toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
-                    )
-                    ;
+                    );
+            
         } else {  // if (DatabaseRequestTypeEnum.SQL.equals(databaseAnalysis.getRequestType()))
-            dataContextFactory = new DatabaseDataContextFactory(databaseAnalysis.getSql(), driver, datasource.getUser(), datasource.getPassword());
+            dataContextFactory = 
+            		new DatabaseDataContextFactory(databaseAnalysis.getSql(), 
+            				driver, datasource.getUser(), datasource.getPassword(), 
+            				analysisExecuteRequest.isUpdatingCache());
+            
+            verifyIfIsCached(databaseAnalysis, dataContextFactory);
             
             query = new QueryBuilder().setColumns(
                     toConnectorColumns( databaseAnalysis.getAnalysisColumns() )
@@ -66,7 +79,17 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
         return request;
     }
     
-    public ConnectorDriver makeConnectorDriver(DatabaseDatasource datasource) {
+    private void verifyIfIsCached(DatabaseAnalysis databaseAnalysis, 
+    		DatabaseDataContextFactory dataContextFactory) {
+    	if(!databaseAnalysis.isCached()){
+    		if(dataContextFactory.isCached()){
+    			databaseAnalysis.setCached(true);
+    			analysisService.saveOrUpdate(databaseAnalysis);
+    		}
+    	}
+	}
+
+	public ConnectorDriver makeConnectorDriver(DatabaseDatasource datasource) {
         ConnectorDriver driver = null;
         
         if (DatabaseDatasourceDriverEnum.ORACLE_SID.equals(datasource.getDriver())) {

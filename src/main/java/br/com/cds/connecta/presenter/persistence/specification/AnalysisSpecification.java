@@ -55,6 +55,17 @@ public class AnalysisSpecification {
             }
         };
     }
+    
+    public static Specification<Analysis> isCached() {
+        return new Specification<Analysis>() {
+            @Override
+            public Predicate toPredicate(Root<Analysis> root,
+                    CriteriaQuery<?> query, CriteriaBuilder builder) {
+            	query.distinct(true);
+                return builder.isTrue(root.<Boolean>get("isCached"));
+            }
+        };
+    }
 
     public static Specification<Analysis> fetchCompleteData() {
         return new Specification<Analysis>() {
@@ -103,5 +114,9 @@ public class AnalysisSpecification {
     public static Specification<Analysis> byNameAndDomainWithSimpleFetch(String name, String domain) {
         return Specifications.where(byName(name))
                 .and(byDomain(domain)).and(fetchSimpleData());
+    }
+    
+    public static Specification<Analysis> isAnalysisCached() {
+        return Specifications.where(isCached()).and(fetchCompleteData());
     }
 }
