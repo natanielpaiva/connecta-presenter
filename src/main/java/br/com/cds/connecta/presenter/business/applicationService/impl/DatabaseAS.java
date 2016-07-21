@@ -69,7 +69,8 @@ public class DatabaseAS implements IDatabaseAS {
     public void testConnection(DatabaseDatasource datasource) throws SQLException{
         DatabaseService database = new DatabaseService();
         
-        Connection conn = database.testConnection(getParamsConnection(datasource),
+        Connection conn = database.testConnection(
+                getParamsConnection(datasource),
                 datasource.getUser(),
                 datasource.getPassword());
         
