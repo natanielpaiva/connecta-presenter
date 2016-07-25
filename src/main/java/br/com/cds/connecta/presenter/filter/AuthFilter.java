@@ -53,15 +53,23 @@ public class AuthFilter extends GenericFilterBean {
     }
     
 	private String getTokenFromCookie(HttpServletRequest request) {
-		for (Cookie cookie : request.getCookies()) {
-			if (authCookie.equals(cookie.getName())) {
-				String cookieValue = cookie.getValue();
-				if (cookieValue != null && 
-						cookieValue.startsWith("%22") && cookieValue.endsWith("%22")) {
-					return "Bearer " + cookieValue.substring(3, cookieValue.length() - 3);
+		
+		Cookie[] cookies = request.getCookies();
+		
+		if(Util.isNotEmpty(cookies)){
+			for (Cookie cookie : request.getCookies()) {
+				if (authCookie.equals(cookie.getName())) {
+					String cookieValue = cookie.getValue();
+					if (cookieValue != null && 
+							cookieValue.startsWith("%22") && 
+							cookieValue.endsWith("%22")) {
+						return "Bearer " 
+							+ cookieValue.substring(3, cookieValue.length() - 3);
+					}
 				}
 			}
 		}
+
 		return null;
 	}
 
