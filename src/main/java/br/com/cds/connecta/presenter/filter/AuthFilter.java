@@ -56,7 +56,8 @@ public class AuthFilter extends GenericFilterBean {
 		for (Cookie cookie : request.getCookies()) {
 			if (authCookie.equals(cookie.getName())) {
 				String cookieValue = cookie.getValue();
-				if (cookieValue.startsWith("%22") && cookieValue.endsWith("%22")) {
+				if (cookieValue != null && 
+						cookieValue.startsWith("%22") && cookieValue.endsWith("%22")) {
 					return "Bearer " + cookieValue.substring(3, cookieValue.length() - 3);
 				}
 			}
