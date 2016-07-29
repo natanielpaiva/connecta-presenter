@@ -32,7 +32,8 @@ public class CsvConnectorStrategy extends AbstractConnectorStrategy {
         addPaginationIfDefined(queryContext, analysisExecuteRequest);
         addDrillIfDefined(queryContext, analysisExecuteRequest, contextFactory);
         addFiltersIfDefined(queryContext, analysisExecuteRequest, contextFactory);
-        Request request = new Request(contextFactory, queryContext);
+        Request request = new Request(contextFactory, 
+                                queryContext.setColumns(toConnectorColumns(csvAnalysis.getAnalysisColumns())));
 
         return request;
     }
