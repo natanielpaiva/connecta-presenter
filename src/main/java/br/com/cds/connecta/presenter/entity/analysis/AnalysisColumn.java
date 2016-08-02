@@ -1,23 +1,15 @@
 package br.com.cds.connecta.presenter.entity.analysis;
 
 import java.math.BigDecimal;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import br.com.cds.connecta.presenter.entity.viewer.AnalysisViewerColumn;
-
-import javax.persistence.OneToMany;
 
 /**
  * The persistent class for the TB_ANALYSIS_COLUMNS database table.

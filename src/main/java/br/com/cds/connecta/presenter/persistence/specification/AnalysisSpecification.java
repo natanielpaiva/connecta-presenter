@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import javax.persistence.criteria.Fetch;
 
 public class AnalysisSpecification {
 
@@ -51,6 +52,17 @@ public class AnalysisSpecification {
             public Predicate toPredicate(Root<Analysis> root,
                     CriteriaQuery<?> query, CriteriaBuilder builder) {
                 return root.<Long>get("id").in(ids);
+            }
+        };
+    }
+    
+    public static Specification<Analysis> isCached() {
+        return new Specification<Analysis>() {
+            @Override
+            public Predicate toPredicate(Root<Analysis> root,
+                    CriteriaQuery<?> query, CriteriaBuilder builder) {
+            	query.distinct(true);
+                return builder.isTrue(root.<Boolean>get("isCached"));
             }
         };
     }
@@ -102,5 +114,9 @@ public class AnalysisSpecification {
     public static Specification<Analysis> byNameAndDomainWithSimpleFetch(String name, String domain) {
         return Specifications.where(byName(name))
                 .and(byDomain(domain)).and(fetchSimpleData());
+    }
+    
+    public static Specification<Analysis> isAnalysisCached() {
+        return Specifications.where(isCached()).and(fetchCompleteData());
     }
 }

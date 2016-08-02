@@ -28,7 +28,7 @@ public class SingleSourceAttribute extends AbstractBaseEntity {
     @Column(name = "PK_ATTR_SNGL_SRC")
     private Long id;
 
-    @Column(name = "TXT_VALUE")
+    @Column(name = "TXT_VALUE", length = 2000)
     private String value;
 
     @JoinColumn(name = "FK_ATTRIBUTE")

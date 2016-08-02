@@ -1,14 +1,14 @@
 package br.com.cds.connecta.presenter.entity.analysis;
 
+import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import java.io.Serializable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,8 +19,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 @Table(name = "TB_ANALYSIS_RELATION")
-@NamedQuery(name = "AnalysisRelation.findAll", query = "SELECT t FROM AnalysisRelation t")
-public class AnalysisRelation implements Serializable {
+public class AnalysisRelation extends AbstractBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,12 +32,14 @@ public class AnalysisRelation implements Serializable {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_RIGHT_ANALYSIS")
+    @JsonIgnoreProperties("analysisRelations")
     private Analysis rightAnalysis;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_RIGHT_ANALYSIS_COLUMN")
     private AnalysisColumn rightAnalysisColumn;
 
+    @Override
     public Long getId() {
         return id;
     }

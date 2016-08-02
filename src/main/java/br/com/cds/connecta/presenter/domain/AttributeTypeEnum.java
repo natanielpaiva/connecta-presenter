@@ -7,5 +7,6 @@ package br.com.cds.connecta.presenter.domain;
 public enum AttributeTypeEnum {
     MAP,
     DATE,
-    TEXT;
+    TEXT,
+    CONNECTA_MAPS;
 }

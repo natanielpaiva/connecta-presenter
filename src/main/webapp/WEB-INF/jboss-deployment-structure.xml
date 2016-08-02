@@ -4,6 +4,8 @@
         <exclusions>
             <module name="javaee.api"/>
             <module name="org.hibernate"/>
+            <module name="javax.persistence.api"/>
+            <module name="org.jboss.as.jpa" />
             <module name="org.hibernate.envers" />
             <module name="javax.validation.api"/>
         </exclusions>
