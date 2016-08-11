@@ -61,7 +61,7 @@
     },
     "analysisViewerColumns": [
         {
-            "columnType":"FILTER",
+            "columnType":"VALUEFIELD",
             "analysisColumn": {
                 "id": 2
             }

@@ -82,7 +82,7 @@
             }
         },
         {
-            "columnType": "FILTER",
+            "columnType": "VALUEFIELD",
             "analysisColumn": {
                 "id": 1
             }
