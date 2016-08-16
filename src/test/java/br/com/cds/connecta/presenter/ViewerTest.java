@@ -72,7 +72,7 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.analysisViewerColumns[1].analysisColumn.id", equalTo(2)))
                 
                 .andExpect(jsonPath("$.analysisViewerColumns[2].analysisColumn.id", equalTo(1)))
-                .andExpect(jsonPath("$.analysisViewerColumns[2].columnType", enumKeyFor(AnalysisViewerColumnType.FILTER)))
+                .andExpect(jsonPath("$.analysisViewerColumns[2].columnType", enumKeyFor(AnalysisViewerColumnType.VALUEFIELD)))
                 ;
     }
     
@@ -145,7 +145,7 @@ public class ViewerTest extends BaseTest {
                 .andExpect(jsonPath("$.configuration.titles[0].text", equalTo("Chart Title")))
                 
                 .andExpect(jsonPath("$.analysisViewerColumns[0].analysisColumn.id", equalTo(2)))
-                .andExpect(jsonPath("$.analysisViewerColumns[0].columnType", enumKeyFor(AnalysisViewerColumnType.FILTER)))
+                .andExpect(jsonPath("$.analysisViewerColumns[0].columnType", enumKeyFor(AnalysisViewerColumnType.VALUEFIELD)))
                 ;
     }
     

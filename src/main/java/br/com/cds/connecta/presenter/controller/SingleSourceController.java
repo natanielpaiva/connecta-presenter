@@ -3,15 +3,11 @@ package br.com.cds.connecta.presenter.controller;
 import br.com.cds.connecta.framework.core.context.HibernateAwareObjectMapper;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import br.com.cds.connecta.framework.core.controller.AbstractBaseController;
 import br.com.cds.connecta.presenter.business.applicationService.ISingleSourceAS;
 import br.com.cds.connecta.presenter.entity.FileSingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSource;
