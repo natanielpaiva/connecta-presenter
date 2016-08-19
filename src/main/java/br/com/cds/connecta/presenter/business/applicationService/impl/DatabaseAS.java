@@ -10,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.connector.database.DatabaseService;
+import br.com.cds.connecta.framework.connector2.common.ConnectorTableColumn;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseColumn;
 import br.com.cds.connecta.framework.connector.database.service.IDatabaseTable;
 import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver;
+import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
 import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
 import br.com.cds.connecta.framework.connector2.context.database.postgresql.PostgresqlDriver;
+import br.com.cds.connecta.framework.connector2.context.database.sqlserver.SqlServerDriver;
 import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnectorStrategy;
@@ -44,38 +47,26 @@ public class DatabaseAS implements IDatabaseAS {
 
         DatabaseDatasource datasource = (DatabaseDatasource) dataSourceDao.findOne(id);
 
-        DatabaseService database = new DatabaseService();
-        ArrayList<AnalysisColumn> columns = new ArrayList<>();
+        ConnectorDriver makeConnectorDriver = dataBaseConnectorStrategy.makeConnectorDriver(datasource);
 
-        List<IDatabaseTable> databaseTables = database.getTables(getParamsConnection(datasource),
-                datasource.getSchema(),
-                datasource.getUser(),
-                datasource.getPassword());
+        DatabaseDataContextFactory contextFactory = new DatabaseDataContextFactory(
+                makeConnectorDriver, datasource.getUser(), datasource.getPassword());
 
-        for (IDatabaseTable table : databaseTables) {
-            List<IDatabaseColumn> tableColumns = table.getColumns();
-            for (IDatabaseColumn tableColumn : tableColumns) {
-                AnalysisColumn column = new AnalysisColumn();
-                column.setName(tableColumn.getName());
-                column.setFormula(table.getTableName() + "." + tableColumn.getName());
-                columns.add(column);
-            }
-        }
+        return contextFactory.getTablesColumns();
 
-        return databaseTables;
     }
 
     @Override
-    public void testConnection(DatabaseDatasource datasource) throws SQLException{
+    public void testConnection(DatabaseDatasource datasource) throws SQLException {
         DatabaseService database = new DatabaseService();
-        
+
         Connection conn = database.testConnection(
                 getParamsConnection(datasource),
                 datasource.getUser(),
                 datasource.getPassword());
-        
-        if(Util.isNotNull(conn)){
-        	conn.close();
+
+        if (Util.isNotNull(conn)) {
+            conn.close();
         }
     }
 
@@ -94,6 +85,8 @@ public class DatabaseAS implements IDatabaseAS {
             driver = new MySQLDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
         } else if (DatabaseDatasourceDriverEnum.POSTGRESQL.equals(datasource.getDriver())) {
             driver = new PostgresqlDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
+        } else if (DatabaseDatasourceDriverEnum.SQLSERVER.equals(datasource.getDriver())) {
+            driver = new SqlServerDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
         }
 
         return driver;
