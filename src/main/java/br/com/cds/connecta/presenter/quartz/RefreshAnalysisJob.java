@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.quartz;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -37,18 +38,22 @@ public class RefreshAnalysisJob extends QuartzJobBean {
 		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 		
 		List<Analysis> cachedAnalysis = (List<Analysis>) getAnalysisService().listCached();
+		List<Long> analysisUpdated = new ArrayList<>();
 		
 		for(Analysis analysis : cachedAnalysis){
-			try{
-				AnalysisExecuteRequest analysisExecuteRequest = new AnalysisExecuteRequest();
-				analysisExecuteRequest.setAnalysis(analysis);
-				analysisExecuteRequest.setUpdatingCache(true);
-				
-				logger.info("refreshing analysis " + analysis.getId());
-				extractor.executeAnalysis(analysisExecuteRequest);
-				logger.info("analysis " + analysis.getId() + " updated");
-			}catch(Exception e){
-				logger.error("Erro ao tentar atualizar a analise " + analysis.getId(), e);
+			if(!analysisUpdated.contains(analysis.getId())){
+				try{
+					AnalysisExecuteRequest analysisExecuteRequest = new AnalysisExecuteRequest();
+					analysisExecuteRequest.setAnalysis(analysis);
+					analysisExecuteRequest.setUpdatingCache(true);
+					
+					logger.info("refreshing analysis " + analysis.getId());
+					extractor.executeAnalysis(analysisExecuteRequest);
+					logger.info("analysis " + analysis.getId() + " updated");
+					analysisUpdated.add(analysis.getId());
+				}catch(Exception e){
+					logger.error("Erro ao tentar atualizar a analise " + analysis.getId(), e);
+				}	
 			}
 		}
 		

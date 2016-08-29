@@ -61,7 +61,6 @@ public class AnalysisSpecification {
             @Override
             public Predicate toPredicate(Root<Analysis> root,
                     CriteriaQuery<?> query, CriteriaBuilder builder) {
-            	query.distinct(true);
                 return builder.isTrue(root.<Boolean>get("isCached"));
             }
         };

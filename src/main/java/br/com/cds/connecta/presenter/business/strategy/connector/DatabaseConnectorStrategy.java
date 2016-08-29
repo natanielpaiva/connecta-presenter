@@ -82,10 +82,10 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
 
     private void verifyIfIsCached(DatabaseAnalysis databaseAnalysis,
             DatabaseDataContextFactory dataContextFactory) {
-        if (!databaseAnalysis.isCached()) {
+        if (!databaseAnalysis.isCached() && databaseAnalysis.getId() != null) {
             if (dataContextFactory.isCached()) {
                 databaseAnalysis.setCached(true);
-                analysisService.saveOrUpdate(databaseAnalysis);
+            	analysisService.saveOrUpdate(databaseAnalysis);
             }
         }
     }
