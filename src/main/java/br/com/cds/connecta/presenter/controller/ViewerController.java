@@ -49,6 +49,15 @@ public class ViewerController {
         return new ResponseEntity<>(viewer, HttpStatus.OK);
     }
     
+    @RequestMapping(value = "public/{id}", 
+    		method = RequestMethod.GET, 
+    		produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Viewer> getPublic(@PathVariable Long id){
+        Viewer viewer = viewerService.getPublic(id,true);
+        return new ResponseEntity<>(viewer, HttpStatus.OK);
+    }
+    
     @RequestMapping(method = RequestMethod.GET, 
     		produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
