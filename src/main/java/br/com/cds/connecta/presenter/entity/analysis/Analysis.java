@@ -84,7 +84,7 @@ public class Analysis extends AbstractBaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "FK_ANALYSIS", nullable = false)
-    private Set<AnalysisColumn> analysisColumns;
+    private List<AnalysisColumn> analysisColumns;
 
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS")
@@ -143,11 +143,11 @@ public class Analysis extends AbstractBaseEntity {
         this.datasource = datasource;
     }
 
-    public Set<AnalysisColumn> getAnalysisColumns() {
+    public List<AnalysisColumn> getAnalysisColumns() {
         return analysisColumns;
     }
 
-    public void setAnalysisColumns(Set<AnalysisColumn> analysisColumns) {
+    public void setAnalysisColumns(List<AnalysisColumn> analysisColumns) {
         this.analysisColumns = analysisColumns;
     }
 
