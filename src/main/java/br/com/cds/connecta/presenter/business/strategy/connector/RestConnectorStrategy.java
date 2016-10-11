@@ -1,5 +1,18 @@
 package br.com.cds.connecta.presenter.business.strategy.connector;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.com.cds.connecta.framework.connector.rest.Rest;
 import br.com.cds.connecta.framework.connector.soap.SoapService;
 import br.com.cds.connecta.framework.connector.soap.service.Parameters;
@@ -11,15 +24,6 @@ import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysisParameter;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -73,7 +77,7 @@ public class RestConnectorStrategy implements ConnectorStrategy {
         return dataProvider;
     }
 
-    private List<ConnectorColumn> toConnectorColumns(List<AnalysisColumn> analysisColumns) {
+    private List<ConnectorColumn> toConnectorColumns(Set<AnalysisColumn> analysisColumns) {
         List<ConnectorColumn> connectorColumns = new ArrayList<>();
         for (AnalysisColumn analysisColumn : analysisColumns) {
             ConnectorColumn column = new ConnectorColumn();
