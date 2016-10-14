@@ -44,6 +44,23 @@ public class ViewerAS extends AbstractBaseAS<Viewer> implements IViewerAS {
 
         return viewer;
     }
+    
+    @Override
+    public Viewer getPublic(Long id, boolean initialize) {
+
+        Viewer viewer = viewerRepository.findOne(ViewerSpecification.byId(id));
+
+        if (Util.isNull(viewer)) {
+            throw new ResourceNotFoundException(Viewer.class.getSimpleName());
+        }
+
+        if (initialize) {
+            ViewerEntityInitializer initializer = context.getBean(viewer.getType().getEntityInitializer());
+            viewer = initializer.initializeViewerEntity(viewer);
+        }
+
+        return viewer;
+    }
 
     @Override
     public List<Viewer> list(String domain) {

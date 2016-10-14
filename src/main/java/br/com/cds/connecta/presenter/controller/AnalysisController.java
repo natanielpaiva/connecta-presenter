@@ -189,13 +189,13 @@ public class AnalysisController {
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
 
-    //lista colunas de um select
-    @RequestMapping(value = "{id}/sql-view-columns", method = RequestMethod.GET)
-    public ResponseEntity<List> getSqlViewColumns(
-            @PathVariable Long id) throws SQLException {
-        List list = databaseService.getTables(id);
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
+//    //lista colunas de um select-------------------------------------------------------------------------
+//    @RequestMapping(value = "{id}/sql-view-columns", method = RequestMethod.GET)
+//    public ResponseEntity<List> getSqlViewColumns(
+//            @PathVariable Long id) throws SQLException {
+//        List list = databaseService.getTables(id);
+//        return new ResponseEntity<>(list, HttpStatus.OK);
+//    }
 
     //lista catalog do obiee
     @RequestMapping(value = "{id}/catalog-obiee", method = RequestMethod.POST)

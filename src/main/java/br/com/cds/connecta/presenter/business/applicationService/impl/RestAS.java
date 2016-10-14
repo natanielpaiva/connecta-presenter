@@ -1,18 +1,22 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+
 import br.com.cds.connecta.framework.connector.rest.Rest;
 import br.com.cds.connecta.framework.connector.util.ConnectorColumn;
 import br.com.cds.connecta.presenter.business.applicationService.IRestAS;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -49,18 +53,16 @@ public class RestAS implements IRestAS {
 
         ArrayList<ConnectorColumn> columns = new ArrayList<>();
         
-        for (int i = 0; i < analysisColumns.size(); i++) {
-            ConnectorColumn connectorColumn = new ConnectorColumn();
+        for(AnalysisColumn column : analysisColumns){
+        	ConnectorColumn connectorColumn = new ConnectorColumn();
+        	connectorColumn.setId(column.getId());
+            connectorColumn.setFormula(column.getFormula());
+            connectorColumn.setLabel(column.getLabel());
+            connectorColumn.setName(column.getName());
             
-            connectorColumn.setId(analysisColumns.get(i).getId());
-            connectorColumn.setFormula(analysisColumns.get(i).getFormula());
-            connectorColumn.setLabel(analysisColumns.get(i).getLabel());
-            connectorColumn.setName(analysisColumns.get(i).getName());
-            //JsonPathColumns[i] = analysisColumns.get(i).getFormula();
-            
-           columns.add(connectorColumn);
+            columns.add(connectorColumn);
         }
-
+        
         Rest rest = new Rest();
         List<Map<String, Object>> factoryResultMetaModel;
         

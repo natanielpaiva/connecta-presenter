@@ -10,6 +10,8 @@ import java.util.List;
 public interface IViewerAS {
     
     Viewer get(Long id, String domain, boolean initialize);
+    
+    Viewer getPublic(Long id, boolean initialize);
 
     List<Viewer> list(String domain);
 
