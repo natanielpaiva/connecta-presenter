@@ -77,7 +77,7 @@ public class RestConnectorStrategy implements ConnectorStrategy {
         return dataProvider;
     }
 
-    private List<ConnectorColumn> toConnectorColumns(List<AnalysisColumn> analysisColumns) {
+    private List<ConnectorColumn> toConnectorColumns(Set<AnalysisColumn> analysisColumns) {
         List<ConnectorColumn> connectorColumns = new ArrayList<>();
         for (AnalysisColumn analysisColumn : analysisColumns) {
             ConnectorColumn column = new ConnectorColumn();
