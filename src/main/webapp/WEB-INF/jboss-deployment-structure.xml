@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.0">
     <deployment>
-        <exclusions>
-            <module name="javaee.api"/>
-            <module name="org.hibernate"/>
-            <module name="javax.persistence.api"/>
-            <module name="org.jboss.as.jpa" />
-            <module name="org.hibernate.envers" />
-            <module name="javax.validation.api"/>
-        </exclusions>
         <dependencies>
             <module name="javax.xml.soap.api" export="true"/>
         </dependencies>
