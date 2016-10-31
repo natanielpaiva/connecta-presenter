@@ -4,11 +4,14 @@ import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import static br.com.cds.connecta.framework.core.util.Util.isNull;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,18 +27,12 @@ import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
-import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import br.com.cds.connecta.presenter.persistence.specification.AnalysisSpecification;
-import java.util.HashMap;
-import java.util.Map;
-import org.hibernate.Hibernate;
 
 @Service
 public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS {
 
-    @Autowired
-    private IAnalysisDAO analysisDAO;
-
+    
     @Autowired
     private AnalysisRepository analysisRepository;
 
@@ -108,7 +105,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
     @Override
     public Analysis getByIdColumns(Long id) {
-        return analysisDAO.getByIdColumns(id);
+        return analysisRepository.getByIdColumns(id);
     }
 
     @Override

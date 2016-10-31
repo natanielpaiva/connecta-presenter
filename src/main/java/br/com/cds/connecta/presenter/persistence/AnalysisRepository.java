@@ -22,19 +22,21 @@ import java.util.List;
  */
 @Repository
 @Component
-public interface AnalysisRepository extends JpaRepository<Analysis, Serializable>, JpaSpecificationExecutor<Analysis>{
-    
-    @Query("FROM Analysis a WHERE UPPER(a.name) LIKE :name")
-    Page<Analysis> findByName(@Param("name") String name, Pageable pageable);
-    
-    @Query("SELECT c FROM Analysis a JOIN a.analysisColumns c WHERE c.id LIKE :filterId")
-    AnalysisColumn findColumnById(@Param("filterId") Long filterId);
+public interface AnalysisRepository extends JpaRepository<Analysis, Serializable>, JpaSpecificationExecutor<Analysis> {
 
-    @Query("SELECT r FROM Analysis a JOIN a.analysisRelations r"
-            + " LEFT JOIN FETCH r.leftAnalysisColumn"
-            + " LEFT JOIN FETCH r.rightAnalysis"
-            + " LEFT JOIN FETCH r.rightAnalysisColumn"
-            + " WHERE a.id LIKE :id")
-    List<AnalysisRelation> findRelationsById(@Param("id") Long id);
-    
+	@Query("FROM Analysis a WHERE UPPER(a.name) LIKE :name")
+	Page<Analysis> findByName(@Param("name") String name, Pageable pageable);
+
+	@Query("SELECT c FROM Analysis a JOIN a.analysisColumns c WHERE c.id LIKE :filterId")
+	AnalysisColumn findColumnById(@Param("filterId") Long filterId);
+
+	@Query("SELECT r FROM Analysis a JOIN a.analysisRelations r" + " LEFT JOIN FETCH r.leftAnalysisColumn"
+			+ " LEFT JOIN FETCH r.rightAnalysis" + " LEFT JOIN FETCH r.rightAnalysisColumn" + " WHERE a.id LIKE :id")
+	List<AnalysisRelation> findRelationsById(@Param("id") Long id);
+
+	@Query("SELECT t FROM Analysis t " 
+			+ "INNER JOIN FETCH t.analysisColumns a " 
+			+ "LEFT JOIN FETCH t.datasource d WHERE a.id = :id ")
+	Analysis getByIdColumns(Long id);
+
 }
