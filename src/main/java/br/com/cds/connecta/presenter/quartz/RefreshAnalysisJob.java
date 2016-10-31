@@ -2,11 +2,13 @@ package br.com.cds.connecta.presenter.quartz;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -22,6 +24,9 @@ public class RefreshAnalysisJob extends QuartzJobBean {
 
 	@Autowired
 	private IDataExtractorAS extractor;
+	
+	@Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
 	private final Logger logger = Logger.getLogger(RefreshAnalysisJob.class);
 
@@ -48,15 +53,19 @@ public class RefreshAnalysisJob extends QuartzJobBean {
 					analysisExecuteRequest.setUpdatingCache(true);
 					
 					logger.info("refreshing analysis " + analysis.getId());
-					extractor.executeAnalysis(analysisExecuteRequest);
+					List<Map<String, Object>> analysisResult = extractor.executeAnalysis(analysisExecuteRequest);
+					sendResultToConnectedClients(analysisResult, analysis.getId());
 					logger.info("analysis " + analysis.getId() + " updated");
 					analysisUpdated.add(analysis.getId());
 				}catch(Exception e){
 					logger.error("Erro ao tentar atualizar a analise " + analysis.getId(), e);
 				}	
 			}
-		}
-		
+		}		
+	}
+	
+	private void sendResultToConnectedClients(List<Map<String, Object>> analysisResult, Long analysisId){
+	    messagingTemplate.convertAndSend("/topic/analysis/" + analysisId, analysisResult);
 	}
 
 }

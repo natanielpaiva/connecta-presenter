@@ -6,6 +6,7 @@ import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -47,7 +48,7 @@ public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
      */
     protected abstract Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest);
     
-    protected List<ConnectorColumn> toConnectorColumns(List<AnalysisColumn> analysisColumns) {
+    protected List<ConnectorColumn> toConnectorColumns(Set<AnalysisColumn> analysisColumns) {
     	List<ConnectorColumn> connectorColumns = null;
         
         if (analysisColumns != null && !analysisColumns.isEmpty()) {
