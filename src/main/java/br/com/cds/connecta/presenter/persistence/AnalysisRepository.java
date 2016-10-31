@@ -37,6 +37,6 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Serializable
 	@Query("SELECT t FROM Analysis t " 
 			+ "INNER JOIN FETCH t.analysisColumns a " 
 			+ "LEFT JOIN FETCH t.datasource d WHERE a.id = :id ")
-	Analysis getByIdColumns(Long id);
+	Analysis getByIdColumns(@Param("id") Long id);
 
 }

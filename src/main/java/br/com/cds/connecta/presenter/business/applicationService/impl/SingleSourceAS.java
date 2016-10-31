@@ -28,7 +28,7 @@ import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSourceAttribute;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
 import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
-import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
+import br.com.cds.connecta.presenter.persistence.FileSingleSourceRepository;
 import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.SingleSourceRepository;
 import br.com.cds.connecta.presenter.persistence.specification.SingleSourceSpecification;
@@ -45,8 +45,11 @@ public class SingleSourceAS implements ISingleSourceAS {
     @PersistenceContext
     private EntityManager em;
 
+//    @Autowired
+//    private IFileSingleSourceDAO fileSingleSourceRepository;
+    
     @Autowired
-    private IFileSingleSourceDAO fileSingleSourceDAO;
+    private FileSingleSourceRepository fileSingleSourceRepository;
 
     @Override
     public List<SingleSource> list(String domain) {
@@ -118,7 +121,7 @@ public class SingleSourceAS implements ISingleSourceAS {
 
         //Verifica se é edição, caso si\m ele faz outras verificações
         if (fileSingleSource.getId() != null) {
-            FileSingleSource fileSingleSourceBD = fileSingleSourceDAO
+            FileSingleSource fileSingleSourceBD = fileSingleSourceRepository
                     .getWithBinary(fileSingleSource.getId());
             //Verifica se o usuário colocou algum arquivo na edição
             if (file != null) {
@@ -151,7 +154,7 @@ public class SingleSourceAS implements ISingleSourceAS {
 
     @Override
     public FileSingleSource getFileWithBinary(Long id) {
-        return fileSingleSourceDAO.getWithBinary(id);
+        return fileSingleSourceRepository.getWithBinary(id);
     }
 
     @Override
