@@ -37,7 +37,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     private AnalysisRepository analysisRepository;
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Override
     public Analysis get(Long id, String domain) {
@@ -130,7 +130,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
         if (isNotEmpty(analysis.getAnalysisAttributes())) {
             for (AnalysisAttribute analysisAttribute : analysis.getAnalysisAttributes()) {
                 if (isNotNull(analysisAttribute.getAttribute()) && isNotNull(analysisAttribute.getAttribute().getId())) {
-                    Attribute merge = em.merge(analysisAttribute.getAttribute());
+                    Attribute merge = entityManager.merge(analysisAttribute.getAttribute());
                     analysisAttribute.setAttribute(merge);
                 }
             }
@@ -150,8 +150,8 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
                 isNotNull(analysisRelation.getRightAnalysis()) &&
                 isNotNull(analysisRelation.getRightAnalysisColumn()) ) {
 
-                Analysis rightAnalysis = em.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
-                AnalysisColumn rightAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
+                Analysis rightAnalysis = entityManager.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
+                AnalysisColumn rightAnalysisColumn = entityManager.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
 
                 analysisRelation.setRightAnalysis(rightAnalysis);
                 analysisRelation.setRightAnalysisColumn(rightAnalysisColumn);
@@ -162,7 +162,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
                     analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
                 } else {
                     // Caso seja uma coluna existente
-                    AnalysisColumn leftAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
+                    AnalysisColumn leftAnalysisColumn = entityManager.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
                     analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
                 }
                 
