@@ -37,4 +37,9 @@ public interface SingleSourceRepository extends JpaRepository<SingleSource, Long
     @Query("SELECT s FROM SingleSource s WHERE id in(:ids)")
     List<FileSingleSource> getByIds(@Param("ids") List<Long> ids);
     
+    @Query("SELECT sg FROM SingleSource sg "
+            + "LEFT JOIN FETCH sg.singleSourceAttributes sa "
+            + "LEFT JOIN FETCH sa.attribute l WHERE sg.id = :id")
+    FileSingleSource getById(@Param("id") List<Long> ids);
+    
 }
