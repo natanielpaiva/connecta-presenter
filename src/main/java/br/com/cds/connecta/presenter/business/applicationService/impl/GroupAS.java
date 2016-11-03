@@ -1,6 +1,12 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import static br.com.cds.connecta.framework.core.util.Util.isNotEmpty;
+import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
+
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,8 +14,6 @@ import org.springframework.stereotype.Service;
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
 import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
 import br.com.cds.connecta.framework.core.util.Util;
-import static br.com.cds.connecta.framework.core.util.Util.isNotEmpty;
-import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import br.com.cds.connecta.presenter.business.applicationService.IGroupAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISingleSourceAS;
 import br.com.cds.connecta.presenter.entity.Attribute;
@@ -18,10 +22,7 @@ import br.com.cds.connecta.presenter.entity.GroupAttribute;
 import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSourceGroup;
 import br.com.cds.connecta.presenter.persistence.GroupRepository;
-import br.com.cds.connecta.presenter.persistence.IGroupDAO;
 import br.com.cds.connecta.presenter.persistence.specification.GroupSpecification;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -39,9 +40,7 @@ public class GroupAS extends AbstractBaseAS<Group> implements IGroupAS{
     @PersistenceContext
     private EntityManager entityManager;
     
-    @Autowired
-    private IGroupDAO groupDao;
-    
+     
     @Override
     public Group get(Long id,String domain) {
         Group group = groupRepository.findOne

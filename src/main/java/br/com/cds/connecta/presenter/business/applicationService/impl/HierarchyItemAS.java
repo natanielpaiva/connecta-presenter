@@ -1,15 +1,17 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
-import br.com.cds.connecta.presenter.business.applicationService.IHierarchyItemAS;
-import br.com.cds.connecta.presenter.entity.hierarchy.HierarchyItem;
-import br.com.cds.connecta.presenter.persistence.HierarchyItemRepository;
-import br.com.cds.connecta.presenter.persistence.IHierarchyItemDAO;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.com.cds.connecta.presenter.business.applicationService.IHierarchyItemAS;
+import br.com.cds.connecta.presenter.entity.hierarchy.HierarchyItem;
+import br.com.cds.connecta.presenter.persistence.HierarchyItemRepository;
 
 /**
  *
