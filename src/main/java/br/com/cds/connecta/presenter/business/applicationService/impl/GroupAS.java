@@ -52,6 +52,18 @@ public class GroupAS extends AbstractBaseAS<Group> implements IGroupAS{
         
         return group;
     }
+    
+    @Override
+    public Group get(Long id) {
+        Group groupWithSingleSource = groupRepository.getByWithSingleSourceId(id);
+        Group groupWithAttribute = groupRepository.getByWithAttributeId(id);
+        Group groupWithQuery = groupRepository.getByWithQueryId(id);
+        
+        groupWithAttribute.setSingleSourceGroup(groupWithSingleSource.getSingleSourceGroup());
+        groupWithAttribute.setQuery(groupWithQuery.getQuery());
+        
+        return  groupWithAttribute;
+    }
 
     @Override
     public List<Group> list(String domain) {
