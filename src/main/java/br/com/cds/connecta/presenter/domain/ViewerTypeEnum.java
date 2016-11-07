@@ -11,7 +11,6 @@ import br.com.cds.connecta.presenter.business.strategy.viewer.ViewerEntityInitia
  * @author Vinicius Pires <vinicius.pires@cds.com.br>
  */
 public enum ViewerTypeEnum {
-	ANALYSIS_D3(AnalysisViewerEntityInitializer.class),
     ANALYSIS(AnalysisViewerEntityInitializer.class),
     SINGLESOURCE(SingleSourceViewerEntityInitializer.class),
     SINGLESOURCE_GROUP(SingleSourceGroupViewerEntityInitializer.class),
