@@ -6,8 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 
+/**
+ * 
+ * @author heloisa
+ */
 @Repository
 public interface ViewerRepository extends JpaRepository<Viewer, Long>,
-        JpaSpecificationExecutor<Viewer> {
+                                          JpaSpecificationExecutor<Viewer> {
 
 }

@@ -25,4 +25,7 @@ public interface IGroupAS {
 
     void deleteAll(List<Long> ids, String domain);
     
+    void refreshSingleSource(Group group);
+    
+    void refreshAttribute(Group group);
 }

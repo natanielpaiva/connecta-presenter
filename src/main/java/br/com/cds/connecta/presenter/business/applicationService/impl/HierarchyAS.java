@@ -1,24 +1,26 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
-import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
-import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
 import static br.com.cds.connecta.framework.core.util.Util.isNull;
-import br.com.cds.connecta.presenter.business.applicationService.IHierarchyAS;
-import br.com.cds.connecta.presenter.entity.hierarchy.Hierarchy;
-import br.com.cds.connecta.presenter.persistence.IHierarchyDAO;
-import br.com.cds.connecta.presenter.persistence.impl.BulkActionsRepository;
+
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
+import br.com.cds.connecta.framework.core.exception.ResourceNotFoundException;
+import br.com.cds.connecta.presenter.business.applicationService.IHierarchyAS;
+import br.com.cds.connecta.presenter.entity.hierarchy.Hierarchy;
+import br.com.cds.connecta.presenter.persistence.HierarchyRepository;
 
 @Service
 public class HierarchyAS extends AbstractBaseAS<Hierarchy> implements IHierarchyAS {
 
-    @Autowired
-    private BulkActionsRepository bulk;
+//    @Autowired
+//    private BulkActionsRepository bulk;
 
     @Autowired
-    private IHierarchyDAO dao;
+    private HierarchyRepository hierarchyRepository;
 
     /**
      *
@@ -27,7 +29,7 @@ public class HierarchyAS extends AbstractBaseAS<Hierarchy> implements IHierarchy
      */
     @Override
     public Hierarchy saveOrUpdate(Hierarchy hierarchy) {
-        return dao.saveOrUpdate(hierarchy);
+        return hierarchyRepository.save(hierarchy);
     }
 
     /**
@@ -39,7 +41,7 @@ public class HierarchyAS extends AbstractBaseAS<Hierarchy> implements IHierarchy
     public Hierarchy get(Long id) {
         Hierarchy h;
 
-        h = dao.get(id);
+        h = hierarchyRepository.getOne(id);
 
         if (isNull(h)) {
             throw new ResourceNotFoundException(Hierarchy.class.getCanonicalName());
@@ -54,8 +56,7 @@ public class HierarchyAS extends AbstractBaseAS<Hierarchy> implements IHierarchy
      */
     @Override
     public List<Hierarchy> list() {
-        List<Hierarchy> list = dao.list();
-        return list;
+        return hierarchyRepository.findAll();
     }
 
     /**
@@ -65,17 +66,17 @@ public class HierarchyAS extends AbstractBaseAS<Hierarchy> implements IHierarchy
      */
     @Override
     public void delete(Long id) {
-        dao.delete(id);
+        hierarchyRepository.delete(id);
     }
 
     @Override
     public void delete(Hierarchy entity) {
-        dao.delete(entity);
+        hierarchyRepository.delete(entity);
     }
 
     @Override
     public void deleteAll(List<Long> ids) {
-        bulk.delete(Hierarchy.class, ids);
+        hierarchyRepository.bulkDeleteRecords(ids);
     }
 
 }

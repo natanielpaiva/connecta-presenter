@@ -1,10 +1,12 @@
 package br.com.cds.connecta.presenter.persistence.impl;
 
+import java.io.Serializable;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
 import br.com.cds.connecta.presenter.entity.viewer.CombinedViewer;
 @Repository
-public class CmbViewerDAO extends AbstractBaseJpaDAO<CombinedViewer> {
+public interface CmbViewerRepository extends JpaRepository<CombinedViewer, Serializable> {
 
 }
