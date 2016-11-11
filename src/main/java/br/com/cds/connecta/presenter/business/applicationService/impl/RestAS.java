@@ -49,7 +49,7 @@ public class RestAS implements IRestAS {
 
         WebserviceDatasource webservice = em.find(WebserviceDatasource.class, id);
 
-        List<AnalysisColumn> analysisColumns = ws.getAnalysisColumns();
+        Set<AnalysisColumn> analysisColumns = ws.getAnalysisColumns();
 
         ArrayList<ConnectorColumn> columns = new ArrayList<>();
         
