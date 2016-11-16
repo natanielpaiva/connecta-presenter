@@ -31,7 +31,6 @@ public class ChartProvider {
     private static final String CHART_TEMPLATES = "/chart-templates";
     private static final String INVALID_TEMPLATE_ID = "Invalid template ID";
     private static final String JSON_EXT = ".json";
-    private static final String CHARTJS_FOLDER = "chartjs";
 
     /**
      * Lista todos os tipos de templates de Gráfico disponíveis populados com os
@@ -56,10 +55,9 @@ public class ChartProvider {
 
         Set<ChartTemplateType> types = new HashSet<>(folders.length);
         for (File folder : folders) {
-        	if(!CHARTJS_FOLDER.equals(folder.getName())){
-	            Collection<ChartTemplate> templates = listTemplatesFor(folder.getName());
-	            types.add(new ChartTemplateType(folder.getName(), templates));
-        	}
+            Collection<ChartTemplate> templates = listTemplatesFor(folder.getName());
+
+            types.add(new ChartTemplateType(folder.getName(), templates));
         }
 
         return types;

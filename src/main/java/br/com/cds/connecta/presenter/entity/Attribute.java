@@ -5,12 +5,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.domain.AttributeTypeEnum;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.NamedQueries;
 
 /**
  * The persistent class for the TB_ATTRIBUTE database table.
@@ -18,6 +21,10 @@ import javax.persistence.Enumerated;
  */
 @Entity
 @Table(name = "TB_ATTRIBUTE")
+@NamedQueries({
+    @NamedQuery(name = "Attribute.findAll", query = "SELECT t FROM Attribute t"),
+    @NamedQuery(name = "Attribute.findByName", query = "FROM Attribute t WHERE t.name LIKE :name")
+})
 public class Attribute extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -69,45 +76,5 @@ public class Attribute extends AbstractBaseEntity {
     public void setType(AttributeTypeEnum type) {
         this.type = type;
     }
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Attribute other = (Attribute) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (type != other.type)
-			return false;
-		return true;
-	}
     
 }

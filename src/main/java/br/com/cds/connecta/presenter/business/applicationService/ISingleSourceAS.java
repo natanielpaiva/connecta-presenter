@@ -30,8 +30,6 @@ public interface ISingleSourceAS {
 
     FileSingleSource getFileWithBinary(Long id);
     
-    SingleSource getWithAttributes(Long id);
-    
     List<SingleSource> getByAttributeId(Long id);
     
     Page<SingleSource> listAutoComplete(SingleSourceFilter filter);

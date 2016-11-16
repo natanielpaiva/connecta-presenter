@@ -28,8 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(name = "gauge", value = AmAngularGauge.class),
     @JsonSubTypes.Type(name = "singlesource", value = SingleSourceViewerConfiguration.class),
     @JsonSubTypes.Type(name = "singlesourcegroup", value = SingleSourceGroupViewerConfiguration.class),
-    @JsonSubTypes.Type(name = "table", value = TableViewerConfiguration.class),
-    @JsonSubTypes.Type(name = "chartjs", value = ChartJsViewerConfiguration.class)
+    @JsonSubTypes.Type(name = "table", value = TableViewerConfiguration.class)
 })
 public interface PresenterViewerConfiguration extends ViewerConfiguration {
     

@@ -1,17 +1,14 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import br.com.cds.connecta.presenter.business.applicationService.IHierarchyItemAS;
+import br.com.cds.connecta.presenter.entity.hierarchy.HierarchyItem;
+import br.com.cds.connecta.presenter.persistence.IHierarchyItemDAO;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import br.com.cds.connecta.presenter.business.applicationService.IHierarchyItemAS;
-import br.com.cds.connecta.presenter.entity.hierarchy.HierarchyItem;
-import br.com.cds.connecta.presenter.persistence.HierarchyItemRepository;
 
 /**
  *
@@ -21,7 +18,7 @@ import br.com.cds.connecta.presenter.persistence.HierarchyItemRepository;
 public class HierarchyItemAS implements IHierarchyItemAS {
 
     @Autowired
-    private HierarchyItemRepository hierarchyItemRepository;
+    private IHierarchyItemDAO daoItem;
 
     @PersistenceContext
     EntityManager em;
@@ -49,11 +46,11 @@ public class HierarchyItemAS implements IHierarchyItemAS {
     @Override
     public HierarchyItem saveItem(HierarchyItem item, long idItemParent) {
         if (item.getId() == null) {
-            HierarchyItem itemPai = hierarchyItemRepository.getOne(idItemParent);
+            HierarchyItem itemPai = daoItem.get(idItemParent);
             List<HierarchyItem> hierarchyItem = itemPai.getHierarchyItem();
             hierarchyItem.add(item);
         } else {
-        	hierarchyItemRepository.save(item);
+            daoItem.saveOrUpdate(item);
         }
         return item;
     }
@@ -79,7 +76,7 @@ public class HierarchyItemAS implements IHierarchyItemAS {
      */
     @Override
     public void delete(Long id) {
-    	hierarchyItemRepository.delete(id);
+        daoItem.delete(id);
     }
 
 }

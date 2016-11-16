@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -19,6 +21,10 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "TB_FILE_SINGLE_SOURCE")
 @DynamicUpdate
+@NamedQueries({
+    @NamedQuery(name = "FileSingleSource.findAll", query = "SELECT t FROM FileSingleSource t"),
+    @NamedQuery(name = "FileSingleSource.getWithBinary", query = "SELECT t FROM FileSingleSource t join fetch t.binaryFile WHERE t.id = :id")
+})
 public class FileSingleSource extends SingleSource {
 
     private static final long serialVersionUID = 1L;

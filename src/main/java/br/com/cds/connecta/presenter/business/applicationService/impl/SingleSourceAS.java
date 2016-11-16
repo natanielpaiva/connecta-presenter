@@ -28,7 +28,8 @@ import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSourceAttribute;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
 import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
-import br.com.cds.connecta.presenter.persistence.FileSingleSourceRepository;
+import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
+import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
 import br.com.cds.connecta.presenter.persistence.SingleSourceRepository;
 import br.com.cds.connecta.presenter.persistence.specification.SingleSourceSpecification;
 
@@ -36,24 +37,20 @@ import br.com.cds.connecta.presenter.persistence.specification.SingleSourceSpeci
 public class SingleSourceAS implements ISingleSourceAS {
 
     @Autowired
-    private SingleSourceRepository singleSourceRepository;
+    private SingleSourceRepository singleSourceListRepository;
 
     @Autowired
-    private FileSingleSourceRepository fileSingleSourceRepository;
-    
-    @PersistenceContext
-    private EntityManager entityManager;
-    
-//    @Autowired
-//    private ISingleSourceDAO singleSourceDAO;
+    private ISingleSourceDAO singleSourceDAO;
 
-//    @Autowired
-//    private IFileSingleSourceDAO fileSingleSourceRepository;
-    
+    @PersistenceContext
+    private EntityManager em;
+
+    @Autowired
+    private IFileSingleSourceDAO fileSingleSourceDAO;
 
     @Override
     public List<SingleSource> list(String domain) {
-        return singleSourceRepository.findAll(SingleSourceSpecification.byDomain(domain));
+        return singleSourceListRepository.findAll(SingleSourceSpecification.byDomain(domain));
     }
 
     @Override
@@ -63,7 +60,7 @@ public class SingleSourceAS implements ISingleSourceAS {
             name = "";
         }
 
-        return singleSourceRepository.findAll
+        return singleSourceListRepository.findAll
         		(SingleSourceSpecification.byNameAndDomain(name, filter.getDomain()), 
         				filter.makePageable());
     }
@@ -71,14 +68,14 @@ public class SingleSourceAS implements ISingleSourceAS {
     @Override
     public SingleSource saveOrUpdate(SingleSource singleSource){
         refreshAttribute(singleSource);
-        return singleSourceRepository.save(singleSource);
+        return singleSourceListRepository.save(singleSource);
     }
 
     private void refreshAttribute(SingleSource singleSource) {
         if (isNotEmpty(singleSource.getSingleSourceAttributes())) {
             for (SingleSourceAttribute singleSourceAttribute : singleSource.getSingleSourceAttributes()) {
                 if (isNotNull(singleSourceAttribute.getAttribute()) && isNotNull(singleSourceAttribute.getAttribute().getId())) {
-                    Attribute merge = entityManager.merge(singleSourceAttribute.getAttribute());
+                    Attribute merge = em.merge(singleSourceAttribute.getAttribute());
                     singleSourceAttribute.setAttribute(merge);
                 }
             }
@@ -88,7 +85,7 @@ public class SingleSourceAS implements ISingleSourceAS {
     @Override
     public void delete(Long id, String domain){
     	SingleSource s = get(id, domain);
-        singleSourceRepository.delete(s);
+        singleSourceListRepository.delete(s);
     }
 
     @Override
@@ -98,7 +95,7 @@ public class SingleSourceAS implements ISingleSourceAS {
 
     @Override
     public SingleSource get(Long id, String domain) {
-    	SingleSource singlesource = singleSourceRepository
+    	SingleSource singlesource = singleSourceListRepository
     			.findOne(SingleSourceSpecification.byIdAndDomainWithAttributeFetch(id, domain));
         
     	if(Util.isNull(singlesource)){
@@ -121,7 +118,7 @@ public class SingleSourceAS implements ISingleSourceAS {
 
         //Verifica se é edição, caso si\m ele faz outras verificações
         if (fileSingleSource.getId() != null) {
-            FileSingleSource fileSingleSourceBD = fileSingleSourceRepository
+            FileSingleSource fileSingleSourceBD = fileSingleSourceDAO
                     .getWithBinary(fileSingleSource.getId());
             //Verifica se o usuário colocou algum arquivo na edição
             if (file != null) {
@@ -154,24 +151,19 @@ public class SingleSourceAS implements ISingleSourceAS {
 
     @Override
     public FileSingleSource getFileWithBinary(Long id) {
-        return fileSingleSourceRepository.getWithBinary(id);
-    }
-    
-    @Override
-    public SingleSource getWithAttributes(Long id) {
-        return singleSourceRepository.getWithAttributes(id);
+        return fileSingleSourceDAO.getWithBinary(id);
     }
 
     @Override
     public List<SingleSource> getByAttributeId(Long id) {
-        return singleSourceRepository.getByAttributeId(id);
+        return singleSourceDAO.getByAttributeId(id);
     }
 
     @Override
     public void deleteAll(List<Long> ids, String domain) {
-    	List<SingleSource> listSingleSource = singleSourceRepository
+    	List<SingleSource> listSingleSource = singleSourceListRepository
     			.findAll(SingleSourceSpecification.byIdsAndDomain(ids, domain));
-    	singleSourceRepository.delete(listSingleSource);
+    	singleSourceListRepository.delete(listSingleSource);
     }
 
 }

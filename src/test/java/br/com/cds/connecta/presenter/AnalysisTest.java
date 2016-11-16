@@ -34,13 +34,13 @@ public class AnalysisTest extends BaseTest {
                 .andExpect(jsonPath("$.datasource", notNullValue()))
                 .andExpect(jsonPath("$.datasource.id", equalTo(1)))
                 
-                .andExpect(jsonPath("$.analysisColumns[1].name", equalTo("ID_USUARIO")))
-                .andExpect(jsonPath("$.analysisColumns[1].label", equalTo("ID_USUARIO")))
-                .andExpect(jsonPath("$.analysisColumns[1].formula", equalTo("ASD.ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].name", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].label", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].formula", equalTo("ASD.ID_USUARIO")))
                 
-                .andExpect(jsonPath("$.analysisColumns[0].name", equalTo("ID_EMPRESAS")))
-                .andExpect(jsonPath("$.analysisColumns[0].label", equalTo("ID_EMPRESAS")))
-                .andExpect(jsonPath("$.analysisColumns[0].formula", equalTo("ASD.ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].name", equalTo("ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].label", equalTo("ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].formula", equalTo("ASD.ID_EMPRESAS")))
                 
                 .andExpect(jsonPath("$.analysisColumns[2].name", equalTo("NOME_USUARIO")))
                 .andExpect(jsonPath("$.analysisColumns[2].label", equalTo("NOME_USUARIO")))
@@ -85,13 +85,13 @@ public class AnalysisTest extends BaseTest {
                 .andExpect(jsonPath("$.datasource", notNullValue()))
                 .andExpect(jsonPath("$.datasource.id", equalTo(1)))
                 
-                .andExpect(jsonPath("$.analysisColumns[1].name", equalTo("ID_USUARIO")))
-                .andExpect(jsonPath("$.analysisColumns[1].label", equalTo("ID_USUARIO")))
-                .andExpect(jsonPath("$.analysisColumns[1].formula", equalTo("ASD.ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].name", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].label", equalTo("ID_USUARIO")))
+                .andExpect(jsonPath("$.analysisColumns[0].formula", equalTo("ASD.ID_USUARIO")))
                 
-                .andExpect(jsonPath("$.analysisColumns[0].name", equalTo("ID_EMPRESAS")))
-                .andExpect(jsonPath("$.analysisColumns[0].label", equalTo("ID_EMPRESAS")))
-                .andExpect(jsonPath("$.analysisColumns[0].formula", equalTo("ASD.ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].name", equalTo("ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].label", equalTo("ID_EMPRESAS")))
+                .andExpect(jsonPath("$.analysisColumns[1].formula", equalTo("ASD.ID_EMPRESAS")))
                 
                 .andExpect(jsonPath("$.analysisColumns[2].name", equalTo("NOME_USUARIO")))
                 .andExpect(jsonPath("$.analysisColumns[2].label", equalTo("NOME_USUARIO")))

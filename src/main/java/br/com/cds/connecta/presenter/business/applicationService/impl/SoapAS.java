@@ -68,7 +68,7 @@ public class SoapAS implements ISoapAS {
         List<Map<String, Object>> factoryResult = null;
         WebserviceDatasource webservice = em.find(WebserviceDatasource.class, id);
 
-        Set<AnalysisColumn> analysisColumns = ws.getAnalysisColumns();
+        List<AnalysisColumn> analysisColumns = ws.getAnalysisColumns();
 
         List<ConnectorColumn> connectorColumn = new ArrayList<>();
 
