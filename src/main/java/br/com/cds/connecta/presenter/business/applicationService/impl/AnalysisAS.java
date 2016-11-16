@@ -4,14 +4,11 @@ import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import static br.com.cds.connecta.framework.core.util.Util.isNull;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,17 +24,23 @@ import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
+import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
 import br.com.cds.connecta.presenter.persistence.specification.AnalysisSpecification;
+import java.util.HashMap;
+import java.util.Map;
+import org.hibernate.Hibernate;
 
 @Service
 public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS {
 
-    
+    @Autowired
+    private IAnalysisDAO analysisDAO;
+
     @Autowired
     private AnalysisRepository analysisRepository;
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @Override
     public Analysis get(Long id, String domain) {
@@ -105,7 +108,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
     @Override
     public Analysis getByIdColumns(Long id) {
-        return analysisRepository.getByIdColumns(id);
+        return analysisDAO.getByIdColumns(id);
     }
 
     @Override
@@ -130,7 +133,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
         if (isNotEmpty(analysis.getAnalysisAttributes())) {
             for (AnalysisAttribute analysisAttribute : analysis.getAnalysisAttributes()) {
                 if (isNotNull(analysisAttribute.getAttribute()) && isNotNull(analysisAttribute.getAttribute().getId())) {
-                    Attribute merge = entityManager.merge(analysisAttribute.getAttribute());
+                    Attribute merge = em.merge(analysisAttribute.getAttribute());
                     analysisAttribute.setAttribute(merge);
                 }
             }
@@ -150,8 +153,8 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
                 isNotNull(analysisRelation.getRightAnalysis()) &&
                 isNotNull(analysisRelation.getRightAnalysisColumn()) ) {
 
-                Analysis rightAnalysis = entityManager.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
-                AnalysisColumn rightAnalysisColumn = entityManager.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
+                Analysis rightAnalysis = em.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
+                AnalysisColumn rightAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
 
                 analysisRelation.setRightAnalysis(rightAnalysis);
                 analysisRelation.setRightAnalysisColumn(rightAnalysisColumn);
@@ -162,7 +165,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
                     analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
                 } else {
                     // Caso seja uma coluna existente
-                    AnalysisColumn leftAnalysisColumn = entityManager.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
+                    AnalysisColumn leftAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
                     analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
                 }
                 

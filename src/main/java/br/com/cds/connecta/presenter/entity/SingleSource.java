@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
@@ -17,6 +19,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -28,6 +31,17 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "TB_SINGLE_SOURCE")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
+@NamedQueries({
+    @NamedQuery(name = "SingleSource.findAll", query = "SELECT s FROM SingleSource s"),
+    @NamedQuery(name = "SingleSource.getById", query = "SELECT sg FROM SingleSource sg "
+            + "LEFT JOIN FETCH sg.singleSourceAttributes sa "
+            + "LEFT JOIN FETCH sa.attribute l WHERE sg.id = :id"),
+    @NamedQuery(name = "SingleSource.getByAttributeId", query = "SELECT sg FROM SingleSource sg "
+            + "LEFT JOIN FETCH sg.singleSourceAttributes sa "
+            + "LEFT JOIN FETCH sa.attribute l WHERE sa.attribute.id = :id"),
+    @NamedQuery(name = "SingleSource.getByIds", query = "SELECT s FROM SingleSource s WHERE id in(:ids)")
+
+})
 public class SingleSource extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;

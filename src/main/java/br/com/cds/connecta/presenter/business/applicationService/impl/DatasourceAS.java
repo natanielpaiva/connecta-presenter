@@ -15,7 +15,7 @@ import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasourceParameter;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
-import br.com.cds.connecta.presenter.persistence.impl.WebserviceDatasourceParameterRepository;
+import br.com.cds.connecta.presenter.persistence.impl.WebserviceDatasourceParameterDAO;
 import br.com.cds.connecta.presenter.persistence.specification.DataSourceSpecification;
 
 /**
@@ -29,7 +29,7 @@ public class DatasourceAS implements IDatasourceAS {
     private DatasourceRepository dsRepository;
     
     @Autowired
-    private WebserviceDatasourceParameterRepository parameterRepository;
+    private WebserviceDatasourceParameterDAO parameterDAO;
 
     @Override
     public Datasource save(Datasource datasource) {
@@ -52,7 +52,7 @@ public class DatasourceAS implements IDatasourceAS {
 
         if (ds instanceof WebserviceDatasource) {
             WebserviceDatasource wds = (WebserviceDatasource) ds;
-            List<WebserviceDatasourceParameter> parameters = parameterRepository.findAllByWebserviceDatasource(wds);
+            List<WebserviceDatasourceParameter> parameters = parameterDAO.findAllByWebserviceDatasource(wds);
             wds.setParameters(parameters);
             return wds;
         } else {
@@ -79,8 +79,8 @@ public class DatasourceAS implements IDatasourceAS {
     }
 
     private void _delete(WebserviceDatasource ds) {
-        List<WebserviceDatasourceParameter> parameters = parameterRepository.findAllByWebserviceDatasource(ds);
-        parameterRepository.delete(parameters);
+        List<WebserviceDatasourceParameter> parameters = parameterDAO.findAllByWebserviceDatasource(ds);
+        parameterDAO.deleteAll(parameters);
         dsRepository.delete(ds);
     }
 

@@ -92,6 +92,44 @@ public class ViewerController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
     
+//    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+//            method = RequestMethod.POST,
+//            value = "preview")
+//    @ResponseBody
+//    public ResponseEntity<AnalysisViewerResult> preview(@RequestBody AnalysisViewer analysisViewer) {
+//        AnalysisViewerResult analysisViewerResult = dataExtratorService.getAnalysisViewerResult(analysisViewer);
+//
+//        return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
+//    }
+    
+//    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+//            method = RequestMethod.GET,
+//            value = "{id}/result")
+//    @ResponseBody
+//    public ResponseEntity<AnalysisViewerResult> result(@PathVariable("id") Long id,
+//    		@RequestHeader("Domain") String domain){
+//        
+//        AnalysisViewer analysisViewer = (AnalysisViewer) viewerService.get(id,domain,true);
+//        AnalysisViewerResult analysisViewerResult = dataExtratorService.getAnalysisViewerResult(analysisViewer);
+//
+//        return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
+//    }
+//    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+//            method = RequestMethod.POST,
+//            value = "{id}/result")
+//    @ResponseBody
+//    public ResponseEntity<AnalysisViewerResult> result(@PathVariable("id") Long id,
+//    		@RequestHeader("Domain") String domain,
+//                @RequestBody AnalysisExecuteRequest analysisExecuteRequest){
+//        
+//        AnalysisViewer analysisViewer = (AnalysisViewer) viewerService.get(id,domain,true);
+//        
+////        AnalysisViewerResult analysisViewerResult = dataExtratorService.getAnalysisViewerResult(analysisViewer);
+//        dataExtratorService.executeAnalysis(analysisExecuteRequest);
+//
+//        return new ResponseEntity<>(analysisViewerResult, HttpStatus.OK);
+//    }
+    
     @RequestMapping(value = "chart-template", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ChartTemplateType>> getChartTypes() {

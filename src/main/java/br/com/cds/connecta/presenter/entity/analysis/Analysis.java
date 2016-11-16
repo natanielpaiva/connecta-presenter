@@ -16,6 +16,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,6 +38,16 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 @Table(name = "TB_ANALYSIS")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
+@NamedQueries({
+    @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
+    @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
+            + "INNER JOIN FETCH t.analysisColumns a "
+            + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
+    @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a "
+            + " LEFT JOIN FETCH a.analysisAttributes anAttr "
+            + " LEFT JOIN FETCH anAttr.attribute attr "
+            + " LEFT OUTER JOIN FETCH a.datasource d WHERE a.id = :id")
+})
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
@@ -72,7 +84,7 @@ public class Analysis extends AbstractBaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
     @JoinColumn(name = "FK_ANALYSIS", nullable = false)
-    private Set<AnalysisColumn> analysisColumns;
+    private List<AnalysisColumn> analysisColumns;
 
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "FK_ANALYSIS")
@@ -131,15 +143,15 @@ public class Analysis extends AbstractBaseEntity {
         this.datasource = datasource;
     }
 
-    public Set<AnalysisColumn> getAnalysisColumns() {
-		return analysisColumns;
-	}
+    public List<AnalysisColumn> getAnalysisColumns() {
+        return analysisColumns;
+    }
 
-	public void setAnalysisColumns(Set<AnalysisColumn> analysisColumns) {
-		this.analysisColumns = analysisColumns;
-	}
+    public void setAnalysisColumns(List<AnalysisColumn> analysisColumns) {
+        this.analysisColumns = analysisColumns;
+    }
 
-	public Set<AnalysisAttribute> getAnalysisAttributes() {
+    public Set<AnalysisAttribute> getAnalysisAttributes() {
         return analysisAttributes;
     }
 

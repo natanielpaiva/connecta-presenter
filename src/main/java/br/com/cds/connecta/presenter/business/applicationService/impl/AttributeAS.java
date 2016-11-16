@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.presenter.entity.Attribute;
 import br.com.cds.connecta.presenter.filter.AttributeFilter;
-import br.com.cds.connecta.presenter.persistence.AttributeRepository;
+import br.com.cds.connecta.presenter.persistence.IAttributeDAO;
 import static br.com.cds.connecta.presenter.util.AssertUtil.isNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,21 +13,19 @@ import org.springframework.data.domain.Page;
 @Service
 public class AttributeAS implements IAttributeAS {
 
-//    @Autowired
-//    private IAttributeDAO dao;
     @Autowired
-    private AttributeRepository attributeRepository;
+    private IAttributeDAO dao;
 
     @Override
     public Page<Attribute> list(AttributeFilter filter) {
-
+        
         String name = filter.getName();
-
-        if (isNull(name)) {
+        
+        if ( isNull(name) ) {
             name = "";
         }
-
-        return attributeRepository.findByName("%" + name.toUpperCase() + "%", filter.makePageable());
+        
+        return dao.findByName("%"+name.toUpperCase()+"%", filter.makePageable());
     }
 
 }
