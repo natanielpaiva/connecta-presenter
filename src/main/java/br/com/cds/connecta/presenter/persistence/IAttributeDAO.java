@@ -9,13 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- * 
- * @author Heloisa
- */
 @Repository
-public interface AttributeRepository extends JpaRepository<Attribute, Serializable> {
+public interface IAttributeDAO extends JpaRepository<Attribute, Serializable> {
 
+//    @Query(name = "Attribute.findByName")
     @Query("FROM Attribute t WHERE UPPER(t.name) LIKE :name")
     public Page<Attribute> findByName(@Param("name") String name, Pageable pageable);
 

@@ -6,12 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 
-/**
- * 
- * @author heloisa
- */
 @Repository
 public interface DatasourceRepository extends JpaRepository<Datasource, Long>,
-                                              JpaSpecificationExecutor<Datasource> {
+        JpaSpecificationExecutor<Datasource> {
 
 }

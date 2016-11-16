@@ -1,13 +1,11 @@
 package br.com.cds.connecta.presenter.persistence.impl;
 
-import java.io.Serializable;
-
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.com.cds.connecta.framework.core.persistence.jpa.common.AbstractBaseJpaDAO;
 import br.com.cds.connecta.presenter.entity.analysis.SolrAnalysis;
 @Repository
-public interface SolrAnalysisRepository extends JpaRepository<SolrAnalysis, Serializable> {
+public class SolrAnalysiDAO extends AbstractBaseJpaDAO<SolrAnalysis> {
     
     
 //    public SolrAnalysis gett(Long id) {
