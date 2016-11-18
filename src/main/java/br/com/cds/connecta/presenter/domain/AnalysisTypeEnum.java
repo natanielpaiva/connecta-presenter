@@ -13,6 +13,7 @@ public enum AnalysisTypeEnum {
     SOLR,
     WEBSERVICE,
     CSV,
+    REST,
     COMBINED;
     
 }

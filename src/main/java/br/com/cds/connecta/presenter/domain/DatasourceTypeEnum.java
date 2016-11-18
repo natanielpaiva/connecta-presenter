@@ -4,6 +4,7 @@ import br.com.cds.connecta.presenter.business.strategy.connector.ConnectorStrate
 import br.com.cds.connecta.presenter.business.strategy.connector.CsvConnectorStrategy;
 import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnectorStrategy;
 import br.com.cds.connecta.presenter.business.strategy.connector.RestConnectorStrategy;
+import br.com.cds.connecta.presenter.business.strategy.connector.RestConnectorStrategyTemp;
 import br.com.cds.connecta.presenter.business.strategy.connector.SolrConnectorStrategy;
 
 /**
@@ -17,8 +18,9 @@ public enum DatasourceTypeEnum {
     HDFS(AnalysisTypeEnum.HDFS, null),
     OBIEE(AnalysisTypeEnum.OBIEE, null),
     SOLR(AnalysisTypeEnum.SOLR, SolrConnectorStrategy.class),
-    WEBSERVICE(AnalysisTypeEnum.WEBSERVICE, RestConnectorStrategy.class),
-    CSV(AnalysisTypeEnum.CSV, CsvConnectorStrategy.class);
+    WEBSERVICE(AnalysisTypeEnum.WEBSERVICE, RestConnectorStrategyTemp.class),
+    CSV(AnalysisTypeEnum.CSV, CsvConnectorStrategy.class),
+    REST(AnalysisTypeEnum.REST,RestConnectorStrategy.class);
     
     private final AnalysisTypeEnum relatedAnalysisType;
     

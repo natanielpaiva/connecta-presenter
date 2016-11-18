@@ -37,10 +37,8 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
     private IDatabaseAS service;
 
     protected Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) {
-        DatabaseAnalysis databaseAnalysis
-                = (DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
-        DatabaseDatasource datasource
-                = (DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
+        DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
+        DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
 
         ConnectorDriver driver = service.makeConnectorDriver(datasource);
 

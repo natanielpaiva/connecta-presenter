@@ -1,5 +1,6 @@
 package br.com.cds.connecta.presenter.controller;
 
+import br.com.cds.connecta.presenter.bean.datasource.RestDatasourceResponse;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import java.util.List;
 
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.cds.connecta.presenter.business.applicationService.IDatasourceAS;
+import br.com.cds.connecta.presenter.business.applicationService.IRestAS;
 import br.com.cds.connecta.presenter.entity.datasource.BIDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 import br.com.cds.connecta.presenter.entity.datasource.EndecaDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.HDFSDatasource;
+import br.com.cds.connecta.presenter.entity.datasource.RestDatasourceRequest;
+import br.com.cds.connecta.presenter.entity.datasource.RestDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
@@ -33,6 +37,9 @@ public class DatasourceController {
     
     @Autowired
     private IDatabaseAS databaseService;
+    
+    @Autowired
+    private IRestAS restService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Datasource>> list(DatasourceFilter filter,
@@ -77,7 +84,7 @@ public class DatasourceController {
         Datasource newDatasource = service.save(datasource);
         return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
-
+    
     @RequestMapping(value = "hdfs", method = RequestMethod.POST)
     public ResponseEntity<Datasource> save(@RequestBody HDFSDatasource datasource) {
         Datasource newDatasource = service.save(datasource);
@@ -103,6 +110,28 @@ public class DatasourceController {
             @RequestHeader("Domain") String domain) {
         service.deleteAll(ids, domain);
         return new ResponseEntity(null, HttpStatus.NO_CONTENT);
+    }
+    
+    
+    @RequestMapping(value = "rest", method = RequestMethod.POST)
+    public ResponseEntity<Datasource> save(@RequestBody RestDatasource datasource) {
+        Datasource newDatasource = service.save(datasource);
+        return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "send-request", method = RequestMethod.POST)
+    public ResponseEntity<RestDatasourceResponse>  executeRestRequestehj(@RequestBody RestDatasourceRequest request, @RequestHeader("Domain") String domain) {
+        
+        RestDatasourceResponse response = restService.executeRestRequest(request);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "{id}/rest", method = RequestMethod.GET)
+    public ResponseEntity<RestDatasource> getRestRequest(@PathVariable("id") Long id,
+            @RequestHeader("Domain") String domain) {
+        
+        RestDatasource restDatasource = restService.getRestDatasource(id, domain);
+        return new ResponseEntity<>(restDatasource, HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,9 @@
 package br.com.cds.connecta.presenter.business.applicationService;
 
-import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
+import br.com.cds.connecta.presenter.bean.datasource.RestDatasourceResponse;
+import br.com.cds.connecta.presenter.entity.analysis.RestAnalysis;
+import br.com.cds.connecta.presenter.entity.datasource.RestDatasource;
+import br.com.cds.connecta.presenter.entity.datasource.RestDatasourceRequest;
 
 /**
  *
@@ -8,10 +11,12 @@ import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
  */
 public interface IRestAS {
 
-    public Object getJsonRest(Long id);
-
-    public Object getResultApplyingJsonPath(Long id, WebserviceAnalysis ws);
-
-    public Object getJsonPartJsonPath(Long id, WebserviceAnalysis ws);
-
+    RestAnalysis getRestAnalysis(Long id);
+    
+    RestDatasource getRestDatasource(Long id, String domain);
+    
+    RestDatasourceResponse executeRestRequest(RestDatasourceRequest datasourceRequest);
+    
+    RestDatasourceResponse executeRestAnalysis(RestAnalysis restAnalysis);
+    
 }

@@ -25,8 +25,11 @@ public class JSONValueParser {
     
      public JSONValue parse(String jsonString) {
          JsonReader jsonReader = Json.createReader(new StringReader(jsonString));
-    
-        return parseTree(jsonReader.read(), null);
+         try {
+            return parseTree(jsonReader.read(), null);
+         } catch (Exception e) {
+             return new JSONValue() {};
+         }
     }
 
     private JSONValue parseTree(JsonValue tree, String key) {

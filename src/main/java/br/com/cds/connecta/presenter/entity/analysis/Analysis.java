@@ -61,7 +61,8 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
     @JsonSubTypes.Type(name = "SOLR", value = SolrAnalysis.class),
     @JsonSubTypes.Type(name = "WEBSERVICE", value = WebserviceAnalysis.class),
     @JsonSubTypes.Type(name = "CSV", value = CsvAnalysis.class),
-    @JsonSubTypes.Type(name = "COMBINED", value = CombinedAnalysis.class)
+    @JsonSubTypes.Type(name = "COMBINED", value = CombinedAnalysis.class),
+    @JsonSubTypes.Type(name = "REST", value = RestAnalysis.class)
 })
 public class Analysis extends AbstractBaseEntity {
 

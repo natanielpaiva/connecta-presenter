@@ -22,6 +22,9 @@ import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisAttribute;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
+import br.com.cds.connecta.presenter.entity.analysis.RestAnalysis;
+import br.com.cds.connecta.presenter.entity.analysis.RestRequestVariableAnalysis;
+import br.com.cds.connecta.presenter.entity.datasource.RestRequestVariable;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
 import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
@@ -50,9 +53,9 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
         if (isNull(analysis)) {
             throw new ResourceNotFoundException(Analysis.class.getSimpleName());
         }
-        
+
         initializeRelations(analysis);
-        
+
         return analysis;
     }
 
@@ -78,7 +81,7 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
         }
         Page<Analysis> analysisPage = analysisRepository
                 .findAll(AnalysisSpecification.byNameAndDomainWithSimpleFetch(name,
-                        filter.getDomain()), pageable);
+                                filter.getDomain()), pageable);
 
         return analysisPage;
     }
@@ -86,20 +89,21 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
     @Override
     public Analysis saveOrUpdate(Analysis analysis) {
         refreshAttribute(analysis);
-        
+        refreshRestRequestVariable(analysis);
+
         if (isNotEmpty(analysis.getAnalysisRelations())) {
-            
+
             AnalysisRelation[] relations = analysis.getAnalysisRelations().toArray(new AnalysisRelation[]{});
-            
+
             analysis.getAnalysisRelations().clear();
-            
+
             analysis = analysisRepository.save(analysis);
             refreshAnalysisRelations(analysis, relations);
         }
-        
+
         return analysisRepository.save(analysis);
     }
-    
+
     @Override
     public void delete(Long id, String domain) {
         Analysis analysis = get(id, domain);
@@ -116,16 +120,16 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
         List<Analysis> listAnalysis = analysisRepository.findAll(AnalysisSpecification.byIdsAndDomain(ids, domain));
         analysisRepository.delete(listAnalysis);
     }
-    
+
     private void initializeRelations(Analysis analysis) {
         List<AnalysisRelation> analysisRelations = analysisRepository.findRelationsById(analysis.getId());
-        
+
         for (AnalysisRelation analysisRelation : analysisRelations) {
             Hibernate.initialize(analysisRelation.getLeftAnalysisColumn());
             Hibernate.initialize(analysisRelation.getRightAnalysis());
             Hibernate.initialize(analysisRelation.getRightAnalysisColumn());
         }
-        
+
         analysis.setAnalysisRelations(analysisRelations);
     }
 
@@ -139,7 +143,22 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
             }
         }
     }
-    
+
+    private void refreshRestRequestVariable(Analysis analysis) {
+        if (analysis.getClass() == RestAnalysis.class) {
+            RestAnalysis restAnalysis = (RestAnalysis) analysis;
+            if (isNotEmpty(restAnalysis.getRequestVariables())) {
+                for (RestRequestVariableAnalysis variableAnalysis : restAnalysis.getRequestVariables()) {
+                    if (isNotNull(variableAnalysis.getVariable()) && isNotNull(variableAnalysis.getVariable().getId())) {
+                        RestRequestVariable merge = em.merge(variableAnalysis.getVariable());
+                        variableAnalysis.setVariable(merge);
+
+                    }
+                }
+            }
+        }
+    }
+
     private void refreshAnalysisRelations(Analysis analysis, AnalysisRelation[] relations) {
         // A única referência que existe no frontend pra colunas novas é o nome da coluna
         // que deve ser único, por isso é colocado em um mapa para fácil acesso
@@ -147,18 +166,18 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
         for (AnalysisColumn analysisColumn : analysis.getAnalysisColumns()) {
             map.put(analysisColumn.getName(), analysisColumn);
         }
-        
+
         for (AnalysisRelation analysisRelation : relations) {
-            if (isNotNull(analysisRelation.getLeftAnalysisColumn()) &&
-                isNotNull(analysisRelation.getRightAnalysis()) &&
-                isNotNull(analysisRelation.getRightAnalysisColumn()) ) {
+            if (isNotNull(analysisRelation.getLeftAnalysisColumn())
+                    && isNotNull(analysisRelation.getRightAnalysis())
+                    && isNotNull(analysisRelation.getRightAnalysisColumn())) {
 
                 Analysis rightAnalysis = em.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
                 AnalysisColumn rightAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
 
                 analysisRelation.setRightAnalysis(rightAnalysis);
                 analysisRelation.setRightAnalysisColumn(rightAnalysisColumn);
-                
+
                 if (isNull(analysisRelation.getLeftAnalysisColumn().getId())) {
                     // Caso seja uma coluna nova
                     AnalysisColumn leftAnalysisColumn = map.get(analysisRelation.getLeftAnalysisColumn().getName());
@@ -168,15 +187,15 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
                     AnalysisColumn leftAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
                     analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
                 }
-                
+
                 analysis.getAnalysisRelations().add(analysisRelation);
             }
         }
     }
-    
-	@Override
-	public Iterable<Analysis> listCached() {
-		return analysisRepository.findAll(AnalysisSpecification.isAnalysisCached());
-	}
+
+    @Override
+    public Iterable<Analysis> listCached() {
+        return analysisRepository.findAll(AnalysisSpecification.isAnalysisCached());
+    }
 
 }

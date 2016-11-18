@@ -7,6 +7,7 @@ import br.com.cds.connecta.presenter.bean.analysis.json.JSONValue;
 import br.com.cds.connecta.presenter.bean.analysis.json.JSONValueParser;
 import br.com.cds.connecta.presenter.bean.analysis.xml.XMLNodeParser;
 import br.com.cds.connecta.presenter.bean.analysis.xml.XMLNode;
+import br.com.cds.connecta.presenter.bean.datasource.RestDatasourceResponse;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,16 @@ import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.business.applicationService.IEndecaAS;
 import br.com.cds.connecta.presenter.business.applicationService.IObieeAS;
 import br.com.cds.connecta.presenter.business.applicationService.IRestAS;
+import br.com.cds.connecta.presenter.business.applicationService.IRestAStemp;
 import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.CsvAnalysis;
+import br.com.cds.connecta.presenter.entity.analysis.RestAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
+import br.com.cds.connecta.presenter.entity.datasource.RestDatasourceRequest;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -64,6 +68,9 @@ public class AnalysisController {
     @Autowired
     private ISoapAS soapService;
 
+    @Autowired
+    private IRestAStemp restServiceTemp;
+    
     @Autowired
     private IRestAS restService;
 
@@ -196,7 +203,6 @@ public class AnalysisController {
 //        List list = databaseService.getTables(id);
 //        return new ResponseEntity<>(list, HttpStatus.OK);
 //    }
-
     //lista catalog do obiee
     @RequestMapping(value = "{id}/catalog-obiee", method = RequestMethod.POST)
     public ResponseEntity<List> getFolderObiee(
@@ -287,7 +293,7 @@ public class AnalysisController {
     @RequestMapping(value = "{id}/get-rest", method = RequestMethod.GET)
     public ResponseEntity getJsonRest(
             @PathVariable Long id) {
-        Object rest = restService.getJsonRest(id);
+        Object rest = restServiceTemp.getJsonRest(id);
         return new ResponseEntity<>(rest, HttpStatus.OK);
     }
 
@@ -295,7 +301,7 @@ public class AnalysisController {
     @RequestMapping(value = "{id}/get-rest-specifications",
             method = RequestMethod.GET)
     public ResponseEntity getRestSpecifications(@PathVariable Long id) {
-        Object rest = restService.getJsonRest(id);
+        Object rest = restServiceTemp.getJsonRest(id);
         InputStream is = new ByteArrayInputStream(rest.toString().getBytes());
         JSONValue parse = parser.parse(is);
         return new ResponseEntity<>(parse, HttpStatus.OK);
@@ -309,7 +315,7 @@ public class AnalysisController {
             @PathVariable Long id,
             @RequestBody WebserviceAnalysis ws) {
 
-        Object result = restService.getResultApplyingJsonPath(id, ws);
+        Object result = restServiceTemp.getResultApplyingJsonPath(id, ws);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -321,7 +327,7 @@ public class AnalysisController {
             @PathVariable Long id,
             @RequestBody WebserviceAnalysis ws) {
         //mudar o nome dessa funcao
-        Object result = restService.getJsonPartJsonPath(id, ws);
+        Object result = restServiceTemp.getJsonPartJsonPath(id, ws);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -352,5 +358,28 @@ public class AnalysisController {
             @RequestHeader("Domain") String domain) {
         analysisService.deleteAll(ids, domain);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/execute-rest", method = RequestMethod.POST)
+    public ResponseEntity<RestDatasourceResponse> executeRestAnalysis(
+            @RequestBody RestAnalysis restAnalysis) {
+
+        RestDatasourceResponse response = restService.executeRestAnalysis(restAnalysis);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/rest-tabular-format", method = RequestMethod.POST)
+    public ResponseEntity<RestDatasourceResponse> executeRestTabularFormat(
+            @RequestBody RestAnalysis restAnalysis) {
+
+        RestDatasourceResponse response = restService.executeRestAnalysis(restAnalysis);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "{id}/rest", method = RequestMethod.GET)
+    protected ResponseEntity<Analysis> getRest(@PathVariable("id") Long id,
+            @RequestHeader("Domain") String domain) {
+        Analysis analysis = restService.getRestAnalysis(id);
+        return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
 }

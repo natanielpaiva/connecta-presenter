@@ -2,7 +2,6 @@ package br.com.cds.connecta.presenter.business.applicationService.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.connector.database.DatabaseService;
-import br.com.cds.connecta.framework.connector2.common.ConnectorTableColumn;
-import br.com.cds.connecta.framework.connector.database.service.IDatabaseColumn;
-import br.com.cds.connecta.framework.connector.database.service.IDatabaseTable;
 import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver;
 import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
@@ -23,7 +19,6 @@ import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.IDatabaseAS;
 import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnectorStrategy;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
-import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.datasource.DatabaseDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 
