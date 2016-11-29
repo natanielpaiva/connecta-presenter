@@ -120,7 +120,7 @@ public class DatasourceController {
     }
     
     @RequestMapping(value = "send-request", method = RequestMethod.POST)
-    public ResponseEntity<RestDatasourceResponse>  executeRestRequestehj(@RequestBody RestDatasourceRequest request, @RequestHeader("Domain") String domain) {
+    public ResponseEntity<RestDatasourceResponse>  executeRestRequeste(@RequestBody RestDatasourceRequest request, @RequestHeader("Domain") String domain) {
         
         RestDatasourceResponse response = restService.executeRestRequest(request);
         return new ResponseEntity(response, HttpStatus.OK);
