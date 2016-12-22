@@ -1,6 +1,8 @@
 package br.com.cds.connecta.presenter.business.applicationService.dataExtractor;
 
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public interface IDataExtractorAS {
      * @param analysisExecuteRequest Especificação da requisição de análise
      * @return Resultado "tabular" da análise informada
      */
-    List<Map<String, Object>> executeAnalysis(AnalysisExecuteRequest analysisExecuteRequest);
+    List<Map<String, Object>> executeAnalysis(AnalysisExecuteRequest analysisExecuteRequest) throws SQLException ;
 
     /**
      * Lista os possíveis valores aplicáveis para o filtro com o ID informado
@@ -33,6 +35,6 @@ public interface IDataExtractorAS {
      * @param column ID do Filtro ou nome da coluna
      * @return Lista de possíveis valores a serem aplicados
      */
-    List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, Object column);
+    List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, Object column) throws SQLException ;
 
 }

@@ -154,7 +154,7 @@ public class AnalysisController {
      * @return
      */
     @RequestMapping(value = "result", method = RequestMethod.POST)
-    public ResponseEntity<List<Map<String, Object>>> getResult(@RequestBody AnalysisExecuteRequest analysisExecuteRequest) {
+    public ResponseEntity<List<Map<String, Object>>> getResult(@RequestBody AnalysisExecuteRequest analysisExecuteRequest) throws SQLException {
         List<Map<String, Object>> result = extractor.executeAnalysis(analysisExecuteRequest);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -163,7 +163,7 @@ public class AnalysisController {
     @RequestMapping(value = "filter-value", method = RequestMethod.POST)
     public ResponseEntity<List<Object>> possibleValuesForFilter(
             @RequestBody AnalysisExecuteRequest analysisExecuteRequest,
-            @RequestParam("column") Object column) {
+            @RequestParam("column") Object column) throws SQLException {
 
         //ignorar as configurações de drill na hora de filtrar os valores pros selects
         analysisExecuteRequest.setDrill(null);

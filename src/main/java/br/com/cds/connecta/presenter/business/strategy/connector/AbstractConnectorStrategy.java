@@ -3,6 +3,7 @@ package br.com.cds.connecta.presenter.business.strategy.connector;
 import static br.com.cds.connecta.framework.core.util.Util.isNotEmpty;
 import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
     private final Logger logger = Logger.getLogger(AbstractConnectorStrategy.class);
     
     @Override
-    public List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) {
+    public List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) throws SQLException {
         FusionClient fusionClient = new FusionClient();
         Request request = makeRequest(analysisExecuteRequest);
         
@@ -36,7 +37,7 @@ public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
     }
     
     @Override
-    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) {
+    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) throws SQLException {
         FusionClient fusionClient = new FusionClient();
         Request request = makeRequest(analysisExecuteRequest);
         
@@ -46,7 +47,7 @@ public abstract class AbstractConnectorStrategy implements ConnectorStrategy {
     /*
      * Abstract Method implemented by subClasses
      */
-    protected abstract Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest);
+    protected abstract Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) throws SQLException ;
     
     protected List<ConnectorColumn> toConnectorColumns(Set<AnalysisColumn> analysisColumns) {
     	List<ConnectorColumn> connectorColumns = null;

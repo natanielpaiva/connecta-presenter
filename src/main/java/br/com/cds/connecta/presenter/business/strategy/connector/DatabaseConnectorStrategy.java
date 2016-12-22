@@ -1,5 +1,7 @@
 package br.com.cds.connecta.presenter.business.strategy.connector;
 
+import java.sql.SQLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +38,7 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
     @Autowired
     private IDatabaseAS service;
 
-    protected Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) {
+    protected Request makeRequest(AnalysisExecuteRequest analysisExecuteRequest) throws SQLException {
         DatabaseAnalysis databaseAnalysis = (DatabaseAnalysis) analysisExecuteRequest.getAnalysis();
         DatabaseDatasource datasource = (DatabaseDatasource) repository.findOne(databaseAnalysis.getDatasource().getId());
 
