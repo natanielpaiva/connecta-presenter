@@ -5,6 +5,8 @@ import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.I
 import br.com.cds.connecta.presenter.business.strategy.connector.ConnectorStrategy;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,7 @@ public class DataExtractorAS implements IDataExtractorAS {
 //    }
 
     @Override
-    public List<Map<String, Object>> executeAnalysis(AnalysisExecuteRequest analysisExecuteRequest) {
+    public List<Map<String, Object>> executeAnalysis(AnalysisExecuteRequest analysisExecuteRequest) throws SQLException {
         ConnectorStrategy strategy = context.getBean(
             analysisExecuteRequest.getAnalysis().getType().getConnectorStrategy()
         );
@@ -62,7 +64,7 @@ public class DataExtractorAS implements IDataExtractorAS {
     }
     
     @Override
-    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, Object column) {
+    public List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, Object column) throws SQLException {
         ConnectorStrategy strategy = context.getBean(
             analysisExecuteRequest.getAnalysis().getType().getConnectorStrategy()
         );

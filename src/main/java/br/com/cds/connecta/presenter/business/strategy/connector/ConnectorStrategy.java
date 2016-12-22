@@ -1,6 +1,8 @@
 package br.com.cds.connecta.presenter.business.strategy.connector;
 
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
+
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ public interface ConnectorStrategy {
      * @param analysisExecuteRequest A requisição de execução da Análise
      * @return 
      */
-    List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest);
+    List<Map<String, Object>> getDataProvider(AnalysisExecuteRequest analysisExecuteRequest) throws SQLException ;
 
     /**
      * Lista os possíveis valores para um filtro específico definido para uma análise
@@ -25,6 +27,6 @@ public interface ConnectorStrategy {
      * @param filter A coluna que irá realizar o filtro
      * @return 
      */
-    List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter);
+    List<Object> possibleValuesFor(AnalysisExecuteRequest analysisExecuteRequest, String filter) throws SQLException ;
     
 }
