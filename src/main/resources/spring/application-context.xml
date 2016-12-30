@@ -64,33 +64,4 @@
 	<import
 		resource="classpath:META-INF/br.com.cds.connecta.framework.transaction.xml" />
 
-	<!-- QUARTZ -->
-	<bean name="complexJobDetail"
-		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-		<property name="jobClass"
-			value="br.com.cds.connecta.presenter.quartz.RefreshAnalysisJob" />
-		<property name="durability" value="true" />
-	</bean>
-
-	<!-- 10 minutes, every day -->
-	<bean id="cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail" ref="complexJobDetail" />
-        <property name="cronExpression" value="0 0/10 * 1/1 * ? *"/> <!-- 0/5 * * ? * * -->
-	</bean>
-
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="jobDetails">
-			<list>
-				<ref bean="complexJobDetail" />
-			</list>
-		</property>
-
-		<property name="triggers">
-			<list>
-				<ref bean="cronTrigger" />
-			</list>
-		</property>
-	</bean>
-
 </beans>
