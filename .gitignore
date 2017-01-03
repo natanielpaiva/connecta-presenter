@@ -2,3 +2,6 @@
 /.classpath
 /.settings/
 /br.com.cds.connecta.presenter.entity.viewer.Viewer/
+.tern-project
+.project
+nb-configuration.xml
