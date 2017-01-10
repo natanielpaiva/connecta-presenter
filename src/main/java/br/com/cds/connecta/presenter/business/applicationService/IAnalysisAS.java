@@ -1,9 +1,11 @@
 package br.com.cds.connecta.presenter.business.applicationService;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
-import java.util.List;
-import org.springframework.data.domain.Page;
 
 public interface IAnalysisAS {
 
