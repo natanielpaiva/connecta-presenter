@@ -104,7 +104,7 @@ public class AnalysisController {
     @RequestMapping(
             value = "{id}",
             method = RequestMethod.DELETE)
-    protected ResponseEntity delete(@PathVariable("id") Long id,
+    protected ResponseEntity<Analysis> delete(@PathVariable("id") Long id,
             @RequestHeader("Domain") String domain) {
         analysisService.delete(id, domain);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -190,9 +190,9 @@ public class AnalysisController {
 //    }
     //retorna a análises e suas respectivas colunas
     @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)
-    public ResponseEntity<Analysis> getAnalysisColumns(
+    public ResponseEntity<AnalysisColumn> getAnalysisColumns(
             @PathVariable Long id) {
-        Analysis analysis = analysisService.getByIdColumns(id);
+        AnalysisColumn analysis = analysisService.getByIdColumns(id);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
 
