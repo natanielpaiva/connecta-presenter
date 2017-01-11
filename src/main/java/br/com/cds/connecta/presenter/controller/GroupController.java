@@ -34,7 +34,7 @@ public class GroupController {
     private IGroupAS groupService;
     
     @Autowired
-    private IQueryBuilder builder;
+    private IQueryBuilder<SingleSource> builder;
     
     @Autowired
     private IQueryAS queryService;
@@ -63,8 +63,8 @@ public class GroupController {
     @ResponseBody
     public ResponseEntity<Group> save(@RequestBody Group group) {
         Group newGroup;
-        newGroup = groupService.saveOrUpdate(group);
-        return new ResponseEntity<>(newGroup, HttpStatus.CREATED);
+        newGroup = groupService.save(group);
+        return new ResponseEntity<Group>(newGroup, HttpStatus.CREATED);
     }
     
     @RequestMapping(value = "/{id}", 
@@ -74,25 +74,25 @@ public class GroupController {
     @ResponseBody
     public ResponseEntity<Group> update(@PathVariable Long id,
     		@RequestBody Group group) {
-        Group updateGroup = groupService.saveOrUpdate(group);
-        return new ResponseEntity<>(updateGroup, HttpStatus.OK);
+        Group updateGroup = groupService.update(group);
+        return new ResponseEntity<Group>(updateGroup, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/{id}", 
     		method = RequestMethod.DELETE, 
     		produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity delete(@PathVariable Long id,
+    public ResponseEntity<Group> delete(@PathVariable Long id,
     		@RequestHeader("Domain") String domain) {
         groupService.delete(id,domain);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity bulkDelete(@RequestBody List<Long> ids,
+    public ResponseEntity<Group> bulkDelete(@RequestBody List<Long> ids,
     		@RequestHeader("Domain") String domain) {
         groupService.deleteAll(ids,domain);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
     @RequestMapping(value = "query", method = RequestMethod.POST, 
@@ -116,7 +116,7 @@ public class GroupController {
     @RequestMapping(value = "query/result", method = RequestMethod.POST, 
     		consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List> getResultsForQuery(@RequestBody Query query) {
-        List results = queryService.getSingleSourceByIds(query, null);
+        List<?> results = queryService.getSingleSourceByIds(query, null);
         
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
