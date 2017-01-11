@@ -1,6 +1,7 @@
 package br.com.cds.connecta.presenter.persistence;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
-import java.util.List;
 
 /**
  *
@@ -24,6 +24,7 @@ import java.util.List;
 @Component
 public interface AnalysisRepository extends JpaRepository<Analysis, Serializable>, JpaSpecificationExecutor<Analysis>{
     
+	
     @Query("FROM Analysis a WHERE UPPER(a.name) LIKE :name")
     Page<Analysis> findByName(@Param("name") String name, Pageable pageable);
     
@@ -36,5 +37,8 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Serializable
             + " LEFT JOIN FETCH r.rightAnalysisColumn"
             + " WHERE a.id LIKE :id")
     List<AnalysisRelation> findRelationsById(@Param("id") Long id);
+    
+    @Query("FROM Analysis WHERE  isActive = 1 and Datasource = :datasource")
+    List<Analysis> findByDatasource(@Param("datasource") int datasource);
     
 }

@@ -1,20 +1,23 @@
 package br.com.cds.connecta.presenter.entity.datasource;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 import br.com.cds.connecta.presenter.domain.DatasourceTypeEnum;
-import java.io.Serializable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 /**
  * The persistent class for the TB_DATASOURCE database table.
@@ -23,6 +26,8 @@ import javax.persistence.InheritanceType;
 @Entity
 @Table(name = "TB_DATASOURCE")
 @Inheritance(strategy = InheritanceType.JOINED)
+@SQLDelete( sql= "update TB_DATASOURCE set IS_ACTIVE = 0 where PK_DATASOURCE = ?")
+@Where(clause = "IS_ACTIVE = 1")
 public class Datasource extends AbstractBaseEntity implements Serializable {
 
     @Id
@@ -40,7 +45,8 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private DatasourceTypeEnum type;
 
-    @Column(name = "TXT_SENHA")
+
+	@Column(name = "TXT_SENHA")
     private String password;
 
     @Column(name = "TXT_USUARIO")
@@ -48,6 +54,9 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
 
     @Column(name = "NM_DOMAIN")
     private String domain;
+    
+    @Column(columnDefinition= "tinyint(1) default 1", name = "IS_ACTIVE" )
+    private Boolean isActive = true;
 
     @Override
     public Long getId() {
@@ -105,5 +114,13 @@ public class Datasource extends AbstractBaseEntity implements Serializable {
     public void setDomain(String domain) {
         this.domain = domain;
     }
+    
+    public Boolean getIsActive() {
+		return isActive;
+	}
 
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+    
 }

@@ -1,9 +1,12 @@
 package br.com.cds.connecta.presenter.business.applicationService;
 
-import br.com.cds.connecta.presenter.entity.analysis.Analysis;
-import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import java.util.List;
+
 import org.springframework.data.domain.Page;
+
+import br.com.cds.connecta.presenter.entity.analysis.Analysis;
+import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
+import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 
 public interface IAnalysisAS {
 
@@ -17,7 +20,7 @@ public interface IAnalysisAS {
     
     void delete(Long id, String domain);
 
-    Analysis getByIdColumns(Long id);
+    AnalysisColumn getByIdColumns(Long id);
 
     void deleteAll(List<Long> ids, String domain);
     
