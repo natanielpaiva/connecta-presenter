@@ -33,8 +33,8 @@ public class GroupController {
     @Autowired
     private IGroupAS groupService;
     
-    @Autowired
-    private IQueryBuilder<SingleSource> builder;
+//    @Autowired
+//    private IQueryBuilder<SingleSource> builder;
     
     @Autowired
     private IQueryAS queryService;
@@ -126,7 +126,7 @@ public class GroupController {
     public ResponseEntity<String> getPreviewForQuery(
             @RequestBody Query query,
             @RequestParam(value="split", required = false) Boolean split) {
-        return new ResponseEntity<>(builder.sqlFor(query, split, SingleSource.class), HttpStatus.OK);
+        return new ResponseEntity<>("", HttpStatus.OK);
     }
 
     @RequestMapping("single-source/{id}")
