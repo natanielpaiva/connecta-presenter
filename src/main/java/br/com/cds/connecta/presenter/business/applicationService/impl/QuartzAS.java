@@ -21,10 +21,17 @@ public class QuartzAS implements IQuartzAS {
     @Autowired
     private QuartzJobRepository quartzRepository;
     
-	@Autowired
 	private SchedulerFactoryBean schedulerFactory;
 	
+	public SchedulerFactoryBean getSchedulerFactory() {
+		return schedulerFactory;
+	}
 	
+	@Autowired
+	public void setSchedulerFactory(SchedulerFactoryBean schedulerFactory) {
+		this.schedulerFactory = schedulerFactory;
+	}
+
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void rescheduleJob(QuartzJob job) throws SchedulerException {
