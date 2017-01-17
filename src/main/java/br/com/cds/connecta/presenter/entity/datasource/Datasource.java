@@ -23,6 +23,7 @@ import br.com.cds.connecta.presenter.domain.DatasourceTypeEnum;
  * The persistent class for the TB_DATASOURCE database table.
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "TB_DATASOURCE")
 @Inheritance(strategy = InheritanceType.JOINED)

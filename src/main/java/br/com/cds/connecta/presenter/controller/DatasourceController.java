@@ -99,14 +99,14 @@ public class DatasourceController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@PathVariable("id") Long id,
+    public ResponseEntity<Datasource> delete(@PathVariable("id") Long id,
             @RequestHeader("Domain") String domain) {
         service.delete(id, domain);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Datasource>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity bulkDelete(@RequestBody List<Long> ids,
+    public ResponseEntity<Datasource> bulkDelete(@RequestBody List<Long> ids,
             @RequestHeader("Domain") String domain) {
         service.deleteAll(ids, domain);
         return new ResponseEntity(null, HttpStatus.NO_CONTENT);

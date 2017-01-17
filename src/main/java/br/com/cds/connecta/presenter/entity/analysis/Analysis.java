@@ -22,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -38,113 +40,109 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 @Table(name = "TB_ANALYSIS")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
-@NamedQueries({
-    @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
-    @NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
-            + "INNER JOIN FETCH t.analysisColumns a "
-            + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
-    @NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a "
-            + " LEFT JOIN FETCH a.analysisAttributes anAttr "
-            + " LEFT JOIN FETCH anAttr.attribute attr "
-            + " LEFT OUTER JOIN FETCH a.datasource d WHERE a.id = :id")
-})
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "type",
-        visible = true)
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DATABASE", value = DatabaseAnalysis.class),
-    @JsonSubTypes.Type(name = "ENDECA", value = EndecaAnalysis.class),
-    @JsonSubTypes.Type(name = "HDFS", value = HdfsAnalysis.class),
-    @JsonSubTypes.Type(name = "BI", value = BIAnalysis.class),
-    @JsonSubTypes.Type(name = "SOLR", value = SolrAnalysis.class),
-    @JsonSubTypes.Type(name = "WEBSERVICE", value = WebserviceAnalysis.class),
-    @JsonSubTypes.Type(name = "CSV", value = CsvAnalysis.class),
-    @JsonSubTypes.Type(name = "COMBINED", value = CombinedAnalysis.class),
-    @JsonSubTypes.Type(name = "REST", value = RestAnalysis.class)
-})
+@NamedQueries({ @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
+		@NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
+				+ "INNER JOIN FETCH t.analysisColumns a " + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
+		@NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a "
+				+ " LEFT JOIN FETCH a.analysisAttributes anAttr " + " LEFT JOIN FETCH anAttr.attribute attr "
+				+ " LEFT OUTER JOIN FETCH a.datasource d WHERE a.id = :id") })
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
+@JsonSubTypes({ @JsonSubTypes.Type(name = "DATABASE", value = DatabaseAnalysis.class),
+		@JsonSubTypes.Type(name = "ENDECA", value = EndecaAnalysis.class),
+		@JsonSubTypes.Type(name = "HDFS", value = HdfsAnalysis.class),
+		@JsonSubTypes.Type(name = "BI", value = BIAnalysis.class),
+		@JsonSubTypes.Type(name = "SOLR", value = SolrAnalysis.class),
+		@JsonSubTypes.Type(name = "WEBSERVICE", value = WebserviceAnalysis.class),
+		@JsonSubTypes.Type(name = "CSV", value = CsvAnalysis.class),
+		@JsonSubTypes.Type(name = "COMBINED", value = CombinedAnalysis.class),
+		@JsonSubTypes.Type(name = "REST", value = RestAnalysis.class) })
+
+@SQLDelete(sql = "update TB_ANALYSIS set IS_ACTIVE = 0 where PK_ANALYSIS = ?")
+@Where(clause = "IS_ACTIVE = 1")
 public class Analysis extends AbstractBaseEntity {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "PK_ANALYSIS")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "PK_ANALYSIS")
+	private Long id;
 
-    @Column(name = "DS_ANALYSIS")
-    private String description;
+	@Column(name = "DS_ANALYSIS")
+	private String description;
 
-    @Column(name = "NM_ANALYSIS")
-    private String name;
+	@Column(name = "NM_ANALYSIS")
+	private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FK_DATASOURCE")
-    private Datasource datasource;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FK_DATASOURCE")
+	private Datasource datasource;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
-    @JoinColumn(name = "FK_ANALYSIS", nullable = false)
-    private Set<AnalysisColumn> analysisColumns;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "FK_ANALYSIS", nullable = false)
+	private Set<AnalysisColumn> analysisColumns;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name = "FK_ANALYSIS")
-    private Set<AnalysisAttribute> analysisAttributes;
-    
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
-    @JoinColumn(name = "FK_LEFT_ANALYSIS")
-    private List<AnalysisRelation> analysisRelations;
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "FK_ANALYSIS")
+	private Set<AnalysisAttribute> analysisAttributes;
 
-    @Column(name = "FL_DRILL")
-    private boolean hasDrill;
-    
-    @Column(name = "FL_CACHED")
-    private boolean isCached;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "FK_LEFT_ANALYSIS")
+	private List<AnalysisRelation> analysisRelations;
 
-    /**
-     * FIXME colocar o tipo certo, da Análise
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name = "TP_ANALYSIS")
-    private DatasourceTypeEnum type;
+	@Column(name = "FL_DRILL")
+	private boolean hasDrill;
 
-    @Column(name = "NM_DOMAIN")
-    private String domain;
+	@Column(name = "FL_CACHED")
+	private boolean isCached;
 
-    @Override
-    public Long getId() {
-        return this.id;
-    }
+	/**
+	 * FIXME colocar o tipo certo, da Análise
+	 */
+	@Enumerated(EnumType.STRING)
+	@Column(name = "TP_ANALYSIS")
+	private DatasourceTypeEnum type;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Column(name = "NM_DOMAIN")
+	private String domain;
 
-    public String getDescription() {
-        return description;
-    }
+	@Column(columnDefinition = "tinyint(1) default 1", name = "IS_ACTIVE")
+	private Boolean isActive = true;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	@Override
+	public Long getId() {
+		return this.id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public Datasource getDatasource() {
-        return datasource;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setDatasource(Datasource datasource) {
-        this.datasource = datasource;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Set<AnalysisColumn> getAnalysisColumns() {
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Datasource getDatasource() {
+		return datasource;
+	}
+
+	public void setDatasource(Datasource datasource) {
+		this.datasource = datasource;
+	}
+
+	public Set<AnalysisColumn> getAnalysisColumns() {
 		return analysisColumns;
 	}
 
@@ -153,44 +151,44 @@ public class Analysis extends AbstractBaseEntity {
 	}
 
 	public Set<AnalysisAttribute> getAnalysisAttributes() {
-        return analysisAttributes;
-    }
+		return analysisAttributes;
+	}
 
-    public void setAnalysisAttributes(Set<AnalysisAttribute> analysisAttributes) {
-        this.analysisAttributes = analysisAttributes;
-    }
+	public void setAnalysisAttributes(Set<AnalysisAttribute> analysisAttributes) {
+		this.analysisAttributes = analysisAttributes;
+	}
 
-    public List<AnalysisRelation> getAnalysisRelations() {
-        return analysisRelations;
-    }
+	public List<AnalysisRelation> getAnalysisRelations() {
+		return analysisRelations;
+	}
 
-    public void setAnalysisRelations(List<AnalysisRelation> analysisRelations) {
-        this.analysisRelations = analysisRelations;
-    }
+	public void setAnalysisRelations(List<AnalysisRelation> analysisRelations) {
+		this.analysisRelations = analysisRelations;
+	}
 
-    public DatasourceTypeEnum getType() {
-        return type;
-    }
+	public DatasourceTypeEnum getType() {
+		return type;
+	}
 
-    public void setType(DatasourceTypeEnum type) {
-        this.type = type;
-    }
+	public void setType(DatasourceTypeEnum type) {
+		this.type = type;
+	}
 
-    public String getDomain() {
-        return domain;
-    }
+	public String getDomain() {
+		return domain;
+	}
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 
-    public boolean getHasDrill() {
-        return hasDrill;
-    }
+	public boolean getHasDrill() {
+		return hasDrill;
+	}
 
-    public void setHasDrill(boolean hasDrill) {
-        this.hasDrill = hasDrill;
-    }
+	public void setHasDrill(boolean hasDrill) {
+		this.hasDrill = hasDrill;
+	}
 
 	public boolean isCached() {
 		return isCached;
@@ -198,6 +196,14 @@ public class Analysis extends AbstractBaseEntity {
 
 	public void setCached(boolean isCached) {
 		this.isCached = isCached;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

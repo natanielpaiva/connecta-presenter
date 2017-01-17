@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
+import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 
 /**
  *
@@ -38,7 +39,7 @@ public interface AnalysisRepository extends JpaRepository<Analysis, Serializable
             + " WHERE a.id LIKE :id")
     List<AnalysisRelation> findRelationsById(@Param("id") Long id);
     
-    @Query("FROM Analysis WHERE  isActive = 1 and Datasource = :datasource")
-    List<Analysis> findByDatasource(@Param("datasource") int datasource);
+    @Query("FROM Analysis WHERE  isActive = 1 and datasource = :datasource")
+    List<Analysis> findByDatasource(@Param("datasource") Datasource datasource);
     
 }

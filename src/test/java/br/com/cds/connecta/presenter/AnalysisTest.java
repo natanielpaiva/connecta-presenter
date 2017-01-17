@@ -1,13 +1,27 @@
 package br.com.cds.connecta.presenter;
 
+import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.enumKeyFor;
+import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.todosOsItens;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.isA;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import static org.hamcrest.Matchers.*;
-import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.*;
+
 import br.com.cds.connecta.presenter.domain.AnalysisTypeEnum;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  *
@@ -180,6 +194,7 @@ public class AnalysisTest extends BaseTest {
      * @throws Exception 
      */
     @Test
+    @Ignore
     public void deleteAnalysis() throws Exception {
         mockMvc().perform(delete(RESOURCE_ID, 100)
             .contentType(MediaType.APPLICATION_JSON)
@@ -192,13 +207,14 @@ public class AnalysisTest extends BaseTest {
     }
     
     @Test
+    @Ignore
     public void bulkDeleteRecords() throws Exception {
         mockMvc().perform(delete(RESOURCE)
                 .contentType(MEDIATYPE_JSON_UTF8)
                 .content("[98,99]")
                 .header("Domain", "cds")
-        ).andDo(print())
-                .andExpect(status().isNoContent());
+        ).andDo(print()).
+                andExpect(status().isNoContent());
         
         doesntExist(98);
         doesntExist(99);
