@@ -8,6 +8,7 @@ import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +22,17 @@ public class QuartzAS implements IQuartzAS {
     @Autowired
     private QuartzJobRepository quartzRepository;
     
+    @Autowired
+    private ApplicationContext appContext;
+    
 	private SchedulerFactoryBean schedulerFactory;
 	
-	public SchedulerFactoryBean getSchedulerFactory() {
-		return schedulerFactory;
-	}
-	
-	@Autowired
-	public void setSchedulerFactory(SchedulerFactoryBean schedulerFactory) {
-		this.schedulerFactory = schedulerFactory;
-	}
-
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void rescheduleJob(QuartzJob job) throws SchedulerException {
+		
+		schedulerFactory = appContext.getBean(SchedulerFactoryBean.class);
+		
 		List<? extends Trigger> triggerList = schedulerFactory.getScheduler()
 				.getTriggersOfJob(new JobKey(job.getName(), job.getGroup()));
 
@@ -51,17 +49,6 @@ public class QuartzAS implements IQuartzAS {
 		quartzRepository.save(job);
 	}
 	
-//	protected ResponseEntity<Iterable<JobKey>> listJobs() throws SchedulerException {
-//		Set<JobKey> jobList = new HashSet<>();
-//
-//		Scheduler scheduler = schedulerFactory.getScheduler();
-//		for (String groupName : scheduler.getJobGroupNames()) {
-//			jobList.addAll(scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName)));
-//		}
-//		
-//		return new ResponseEntity<>(jobList, HttpStatus.OK);
-//	}
-
 	@Override
 	public QuartzJob get(Long id) {
 		return quartzRepository.findOne(id);
