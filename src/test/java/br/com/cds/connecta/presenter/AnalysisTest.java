@@ -17,6 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.Charset;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -31,6 +33,7 @@ public class AnalysisTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("analysis");
     static final String RESOURCE_ID = RESOURCE.concat("/{id}");
+
 
     @Test
     public void saveAnalysis() throws Exception {

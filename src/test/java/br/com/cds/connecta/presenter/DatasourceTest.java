@@ -227,6 +227,7 @@ public class DatasourceTest extends BaseTest {
      * TODO 
      * 	MODIFY SPECTED STATUS IN TESTE
      */
+    
     public void bulkDeleteRecords() throws Exception {
         mockMvc().perform(delete(RESOURCE)
                 .contentType(MEDIATYPE_JSON_UTF8)

@@ -29,7 +29,7 @@ public class HierarchyTest extends BaseTest {
 
     }
     
-    @Test
+//    @Test
     public void bulkDeleteRecords() throws Exception {
         mockMvc().perform(delete(RESOURCE)
                 .contentType(MEDIATYPE_JSON_UTF8)

@@ -1,5 +1,16 @@
 package br.com.cds.connecta.presenter.business.applicationService.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.com.cds.connecta.presenter.business.applicationService.IQueryAS;
 import br.com.cds.connecta.presenter.business.builder.IQueryBuilder;
 import br.com.cds.connecta.presenter.entity.FileSingleSource;
@@ -7,15 +18,7 @@ import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryCondition;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryGroup;
 import br.com.cds.connecta.presenter.entity.querybuilder.QueryStatement;
-import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import br.com.cds.connecta.presenter.persistence.SingleSourceRepository;
 
 /**
  *
@@ -31,7 +34,7 @@ public class QueryAS implements IQueryAS {
     private IQueryBuilder builder;
 
     @Autowired
-    private ISingleSourceDAO singleSourceDAO;
+    private SingleSourceRepository singleSourceRepository;
 
     @Override
     public Query save(Query query) {
@@ -75,7 +78,7 @@ public class QueryAS implements IQueryAS {
 
         List<FileSingleSource> result = new ArrayList<>();
         if (!list.isEmpty()) {
-            result = singleSourceDAO.getByIds(list);
+            result = singleSourceRepository.getByIds(list);
         }
         return result;
     }

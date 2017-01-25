@@ -13,6 +13,7 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,10 @@ import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
 import br.com.cds.connecta.presenter.entity.analysis.RestAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.RestRequestVariableAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.RestRequestVariable;
+import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
+import br.com.cds.connecta.presenter.persistence.ViewerRepository;
 import br.com.cds.connecta.presenter.persistence.specification.AnalysisSpecification;
 
 @Service
@@ -37,6 +40,9 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
 	@Autowired
 	private AnalysisRepository analysisRepository;
+
+	@Autowired
+	private ViewerRepository viewerRepository;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -102,6 +108,11 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 	@Override
 	public void delete(Long id, String domain) {
 		Analysis analysis = get(id, domain);
+		List<Viewer> findByAnalysis = viewerRepository.findByAnalysis(analysis);
+
+		if (!findByAnalysis.isEmpty()) {
+			throw new DataIntegrityViolationException("");
+		}
 		analysisRepository.delete(analysis);
 	}
 
@@ -113,6 +124,13 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 	@Override
 	public void deleteAll(List<Long> ids, String domain) {
 		List<Analysis> listAnalysis = analysisRepository.findAll(AnalysisSpecification.byIdsAndDomain(ids, domain));
+		for (Analysis analysis : listAnalysis) {
+			List<Viewer> findByAnalysis = viewerRepository.findByAnalysis(analysis);
+
+			if (!findByAnalysis.isEmpty()) {
+				throw new DataIntegrityViolationException("");
+			}
+		}
 		analysisRepository.delete(listAnalysis);
 	}
 
