@@ -3,6 +3,7 @@ package br.com.cds.connecta.presenter.business.strategy.connector;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.connector2.Request;
@@ -28,6 +29,7 @@ import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
  * @author diego
  */
 @Service
+@Scope("prototype")
 public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
 
     @Autowired
