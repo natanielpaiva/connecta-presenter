@@ -71,7 +71,7 @@ public class Analysis extends AbstractBaseEntity {
 	@JoinColumn(name = "FK_DATASOURCE")
 	private Datasource datasource;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FK_ANALYSIS", nullable = false)
 	private Set<AnalysisColumn> analysisColumns;
 
@@ -79,7 +79,7 @@ public class Analysis extends AbstractBaseEntity {
 	@JoinColumn(name = "FK_ANALYSIS")
 	private Set<AnalysisAttribute> analysisAttributes;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FK_LEFT_ANALYSIS")
 	private List<AnalysisRelation> analysisRelations;
 
