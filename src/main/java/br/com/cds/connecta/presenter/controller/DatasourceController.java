@@ -25,6 +25,7 @@ import br.com.cds.connecta.presenter.entity.datasource.RestDatasourceRequest;
 import br.com.cds.connecta.presenter.entity.datasource.RestDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.entity.datasource.WebserviceDatasource;
+import br.com.cds.connecta.presenter.entity.datasource.Wso2Datasource;
 import br.com.cds.connecta.presenter.filter.DatasourceFilter;
 import java.sql.SQLException;
 
@@ -132,6 +133,12 @@ public class DatasourceController {
         
         RestDatasource restDatasource = restService.getRestDatasource(id, domain);
         return new ResponseEntity<>(restDatasource, HttpStatus.OK);
+    }
+    
+     @RequestMapping(value = "wso2", method = RequestMethod.POST)
+    public ResponseEntity<Datasource> save(@RequestBody Wso2Datasource datasource) {
+        Datasource newDatasource = service.save(datasource);
+        return new ResponseEntity<>(newDatasource, HttpStatus.CREATED);
     }
 
 }

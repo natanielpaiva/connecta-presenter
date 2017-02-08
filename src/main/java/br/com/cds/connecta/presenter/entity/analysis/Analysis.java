@@ -55,7 +55,8 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 		@JsonSubTypes.Type(name = "WEBSERVICE", value = WebserviceAnalysis.class),
 		@JsonSubTypes.Type(name = "CSV", value = CsvAnalysis.class),
 		@JsonSubTypes.Type(name = "COMBINED", value = CombinedAnalysis.class),
-		@JsonSubTypes.Type(name = "REST", value = RestAnalysis.class) })
+		@JsonSubTypes.Type(name = "REST", value = RestAnalysis.class),
+                @JsonSubTypes.Type(name = "WSO2", value = Wso2Analysis.class)})
 
 @SQLDelete(sql = "update TB_ANALYSIS set IS_ACTIVE = 0 where PK_ANALYSIS = ?")
 @Where(clause = "IS_ACTIVE = 1")

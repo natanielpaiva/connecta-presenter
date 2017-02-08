@@ -14,6 +14,7 @@ public enum AnalysisTypeEnum {
     WEBSERVICE,
     CSV,
     REST,
-    COMBINED;
+    COMBINED,
+    WSO2;
     
 }
