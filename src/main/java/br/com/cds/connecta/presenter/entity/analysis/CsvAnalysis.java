@@ -1,7 +1,5 @@
 package br.com.cds.connecta.presenter.entity.analysis;
 
-import br.com.cds.connecta.presenter.domain.CSVAnalysisQuoteEnum;
-import br.com.cds.connecta.presenter.domain.CSVAnalysisSeparatorEnum;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,51 +7,55 @@ import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import br.com.cds.connecta.presenter.domain.CSVAnalysisQuoteEnum;
+import br.com.cds.connecta.presenter.domain.CSVAnalysisSeparatorEnum;
+
 /**
  *
  * @author diego
  */
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "TB_CSV_ANALYSIS")
-public class CsvAnalysis extends Analysis{
-    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "TP_SEPARATOR")
-    private CSVAnalysisSeparatorEnum separator;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "TP_QUOTE")
-    private CSVAnalysisQuoteEnum quote;
-    
-    @Lob
-    @Column(name = "BN_CSV")
-    private String binaryFile;
 
-    
-    public CSVAnalysisSeparatorEnum getSeparator() {
-        return separator;
-    }
+public class CsvAnalysis extends Analysis {
 
-    public void setSeparator(CSVAnalysisSeparatorEnum separator) {
-        this.separator = separator;
-    }
+	@Enumerated(EnumType.STRING)
+	@Column(name = "TP_SEPARATOR")
+	private CSVAnalysisSeparatorEnum separator;
 
-    public CSVAnalysisQuoteEnum getQuote() {
-        return quote;
-    }
+	@Enumerated(EnumType.STRING)
+	@Column(name = "TP_QUOTE")
+	private CSVAnalysisQuoteEnum quote;
 
-    public void setQuote(CSVAnalysisQuoteEnum quote) {
-        this.quote = quote;
-    }
+	@Lob
+	@Column(name = "BN_CSV")
+	private String binaryFile;
 
-     public String getBinaryFile() {
-        return binaryFile;
-    }
+	public CSVAnalysisSeparatorEnum getSeparator() {
+		return separator;
+	}
 
-    public void setBinaryFile(String binaryFile) {
-        this.binaryFile = binaryFile;
-    }
-    
-   
+	public void setSeparator(CSVAnalysisSeparatorEnum separator) {
+		this.separator = separator;
+	}
+
+	public CSVAnalysisQuoteEnum getQuote() {
+		return quote;
+	}
+
+	public void setQuote(CSVAnalysisQuoteEnum quote) {
+		this.quote = quote;
+	}
+
+	public String getBinaryFile() {
+		return binaryFile;
+	}
+
+	public void setBinaryFile(String binaryFile) {
+		this.binaryFile = binaryFile;
+
+	}
+
 }

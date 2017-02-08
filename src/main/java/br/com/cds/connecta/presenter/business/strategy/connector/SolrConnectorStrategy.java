@@ -1,26 +1,25 @@
 package br.com.cds.connecta.presenter.business.strategy.connector;
 
-import br.com.cds.connecta.framework.connector2.FusionClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import br.com.cds.connecta.framework.connector2.Request;
 import br.com.cds.connecta.framework.connector2.context.solr.SolrDataContextFactoty;
 import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
-import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
-import br.com.cds.connecta.presenter.business.builder.IQueryBuilderSorl;
 import br.com.cds.connecta.presenter.domain.SolrRequestTypeEnum;
 import br.com.cds.connecta.presenter.entity.analysis.SolrAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.SolrDatasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author diego
  */
 @Service
+@Scope("prototype")
 public class SolrConnectorStrategy extends AbstractConnectorStrategy {
 
     @Autowired

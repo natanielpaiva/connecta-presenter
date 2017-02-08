@@ -1,5 +1,17 @@
 package br.com.cds.connecta.presenter.business.strategy.connector;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
+
 import br.com.cds.connecta.framework.connector2.Request;
 import br.com.cds.connecta.framework.connector2.context.file.FileDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.file.json.JsonDataContextFactory;
@@ -16,19 +28,13 @@ import br.com.cds.connecta.presenter.persistence.RestAnalysisRepository;
 import br.com.cds.connecta.presenter.persistence.RestDatasourceRequestRepository;
 import br.com.cds.connecta.presenter.persistence.specification.RestAnalysisSpecification;
 import br.com.cds.connecta.presenter.persistence.specification.RestDatasourceRequestSpecification;
-import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author diego
  */
 @Service
+@Scope("prototype")
 public class RestConnectorStrategy extends AbstractConnectorStrategy {
     
     @Autowired

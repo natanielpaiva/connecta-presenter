@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import br.com.cds.connecta.presenter.bean.analysis.AnalysisExecuteRequest;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.business.strategy.connector.ConnectorStrategy;
-import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
 
@@ -27,34 +26,6 @@ public class DataExtractorAS implements IDataExtractorAS {
 
     @Autowired
     private ApplicationContext context;
-
-//    @Override
-//    public AnalysisViewerResult getAnalysisViewerResult(AnalysisViewer analysisViewer) {
-//
-//        List<Map<String, Object>> data = getDataProvider(analysisViewer);
-//
-//        AnalysisViewerResult analysViewerResult = new AnalysisViewerResult();
-//        analysViewerResult.setResult((List<Object>) (Object) data);
-//        analysViewerResult.setAnalysisViewer(analysisViewer);
-//
-//        return analysViewerResult;
-//    }
-//
-//    @Override
-//    public List<Map<String, Object>> getDataProvider(AnalysisViewer analysisViewer) {
-//        List<ConnectorColumn> connectorColumns = getConnectorColumn(analysisViewer.getAnalysisViewerColumns());
-//
-//        Long id = connectorColumns.get(0).getId();
-//
-//        Analysis analysis = analysisDao.getByIdColumns(id);
-//      
-//        analysis.setAnalysisColumns(getAnalysisColumn(analysisViewer.getAnalysisViewerColumns()));
-//      
-//        AnalysisExecuteRequest analysisExecuteRequest = new AnalysisExecuteRequest();
-//        analysisExecuteRequest.setAnalysis(analysis);
-//        
-//        return executeAnalysis(analysisExecuteRequest);
-//    }
 
     @Override
     public List<Map<String, Object>> executeAnalysis(AnalysisExecuteRequest analysisExecuteRequest) throws SQLException {
@@ -81,42 +52,4 @@ public class DataExtractorAS implements IDataExtractorAS {
         return possibleValues;
     }
 
-////    @Override
-//    private List<ConnectorColumn> getConnectorColumn(List<AnalysisViewerColumn> analysisViewerColumns) {
-//        List<ConnectorColumn> connectorColumn = new ArrayList<>();
-//
-//        for (AnalysisViewerColumn analysisViewerColumn : analysisViewerColumns) {
-//            ConnectorColumn column = new ConnectorColumn();
-//            column.setId(analysisViewerColumn.getAnalysisColumn().getId());
-//            column.setLabel(analysisViewerColumn.getAnalysisColumn().getLabel());
-//            // column.setType(analysisVwColumn.getAnalysisColumn().getType());
-//            column.setName(analysisViewerColumn.getAnalysisColumn().getName());
-//            column.setFormula(analysisViewerColumn.getAnalysisColumn().getFormula());
-//
-//            connectorColumn.add(column);
-//        }
-//        
-//        return connectorColumn;
-//    }
-//    
-////    @Override
-//    private List<AnalysisColumn> getAnalysisColumn(List<AnalysisViewerColumn> analysisViewerColumns) {
-//
-//        List<AnalysisColumn> analysisColumn = new ArrayList<>();
-//
-//        for (AnalysisViewerColumn analysisViewerColumn : analysisViewerColumns) {
-//
-//            AnalysisColumn column = new AnalysisColumn();
-//            column.setId(analysisViewerColumn.getAnalysisColumn().getId());
-//            column.setLabel(analysisViewerColumn.getAnalysisColumn().getLabel());
-//            // column.setType(analysisVwColumn.getAnalysisColumn().getType());
-//            column.setName(analysisViewerColumn.getAnalysisColumn().getName());
-//            column.setFormula(analysisViewerColumn.getAnalysisColumn().getFormula());
-//
-//            analysisColumn.add(column);
-//        }
-//        
-//        return analysisColumn;
-//    }
-    
 }

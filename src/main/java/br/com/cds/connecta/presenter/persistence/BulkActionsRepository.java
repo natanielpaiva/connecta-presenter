@@ -1,4 +1,4 @@
-package br.com.cds.connecta.presenter.persistence.impl;
+package br.com.cds.connecta.presenter.persistence;
 
 import java.util.List;
 import javax.persistence.EntityManager;

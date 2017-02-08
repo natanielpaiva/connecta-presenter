@@ -16,8 +16,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -40,14 +38,9 @@ import br.com.cds.connecta.presenter.entity.datasource.Datasource;
 @Table(name = "TB_ANALYSIS")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DynamicUpdate
-@NamedQueries({ @NamedQuery(name = "Analysis.findAll", query = "SELECT t FROM Analysis t"),
-		@NamedQuery(name = "Analysis.findById", query = "SELECT t FROM Analysis t "
-				+ "INNER JOIN FETCH t.analysisColumns a " + "LEFT JOIN FETCH t.datasource d WHERE a.id = :id "),
-		@NamedQuery(name = "Analysis.find", query = "SELECT a FROM Analysis a "
-				+ " LEFT JOIN FETCH a.analysisAttributes anAttr " + " LEFT JOIN FETCH anAttr.attribute attr "
-				+ " LEFT OUTER JOIN FETCH a.datasource d WHERE a.id = :id") })
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type", visible = true)
-@JsonSubTypes({ @JsonSubTypes.Type(name = "DATABASE", value = DatabaseAnalysis.class),
+@JsonSubTypes({ 
+		@JsonSubTypes.Type(name = "DATABASE", value = DatabaseAnalysis.class),
 		@JsonSubTypes.Type(name = "ENDECA", value = EndecaAnalysis.class),
 		@JsonSubTypes.Type(name = "HDFS", value = HdfsAnalysis.class),
 		@JsonSubTypes.Type(name = "BI", value = BIAnalysis.class),
@@ -79,7 +72,7 @@ public class Analysis extends AbstractBaseEntity {
 	@JoinColumn(name = "FK_DATASOURCE")
 	private Datasource datasource;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FK_ANALYSIS", nullable = false)
 	private Set<AnalysisColumn> analysisColumns;
 
@@ -87,7 +80,7 @@ public class Analysis extends AbstractBaseEntity {
 	@JoinColumn(name = "FK_ANALYSIS")
 	private Set<AnalysisAttribute> analysisAttributes;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "FK_LEFT_ANALYSIS")
 	private List<AnalysisRelation> analysisRelations;
 
