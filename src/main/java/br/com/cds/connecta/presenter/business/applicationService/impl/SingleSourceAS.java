@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,8 +46,12 @@ public class SingleSourceAS implements ISingleSourceAS {
 	private FileSingleSourceRepository fileSingleSourceRepository;
 
 	@Override
-	public List<SingleSource> list(String domain) {
-		return singleSourceRepository.findAll(SingleSourceSpecification.byDomain(domain));
+	public Iterable<SingleSource> list(SingleSourceFilter filter) {
+		if(filter.hasPagination()){
+			Pageable pageable = filter.makePageable();
+			return singleSourceRepository.findAll(SingleSourceSpecification.byFilter(filter), pageable);			
+		}
+		return singleSourceRepository.findAll(SingleSourceSpecification.byFilter(filter));
 	}
 
 	@Override

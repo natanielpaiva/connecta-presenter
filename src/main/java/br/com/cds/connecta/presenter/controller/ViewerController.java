@@ -23,6 +23,7 @@ import br.com.cds.connecta.framework.amcharts.ChartTemplateType;
 import br.com.cds.connecta.presenter.business.applicationService.IViewerAS;
 import br.com.cds.connecta.presenter.components.viewers.amcharts.provider.ChartProvider;
 import br.com.cds.connecta.presenter.entity.viewer.Viewer;
+import br.com.cds.connecta.presenter.filter.ViewerFilter;
 
 /**
  *
@@ -61,8 +62,10 @@ public class ViewerController {
     @RequestMapping(method = RequestMethod.GET, 
     		produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<List<Viewer>> list(@RequestHeader("Domain") String domain){
-        List<Viewer> list = viewerService.list(domain);
+    public ResponseEntity<Iterable<Viewer>> list(ViewerFilter filter,
+    		@RequestHeader("Domain") String domain){
+    	filter.setDomain(domain);
+        Iterable<Viewer> list = viewerService.list(filter);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

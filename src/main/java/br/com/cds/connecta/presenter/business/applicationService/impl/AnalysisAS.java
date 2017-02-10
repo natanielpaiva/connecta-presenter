@@ -63,15 +63,11 @@ public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS 
 
 	@Override
 	public Iterable<Analysis> list(AnalysisFilter filter) {
-		Iterable<Analysis> analysisList;
-		if (isNull(filter.getPage()) || isNull(filter.getCount())) {
-			analysisList = analysisRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()));
-		} else {
+		if(filter.hasPagination()){
 			Pageable pageable = filter.makePageable();
-			analysisList = analysisRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()), pageable);
+			return analysisRepository.findAll(AnalysisSpecification.byFilter(filter), pageable);
 		}
-
-		return analysisList;
+		return analysisRepository.findAll(AnalysisSpecification.byFilter(filter));
 	}
 
 	@Override
