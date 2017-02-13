@@ -1,6 +1,8 @@
 package br.com.cds.connecta.presenter.business.applicationService;
 
 import br.com.cds.connecta.presenter.entity.viewer.Viewer;
+import br.com.cds.connecta.presenter.filter.ViewerFilter;
+
 import java.util.List;
 
 /**
@@ -13,7 +15,7 @@ public interface IViewerAS {
     
     Viewer getPublic(Long id, boolean initialize);
 
-    List<Viewer> list(String domain);
+    Iterable<Viewer> list(ViewerFilter filter);
 
     Viewer saveOrUpdate(Viewer entity);
 

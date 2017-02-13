@@ -12,6 +12,7 @@ import br.com.cds.connecta.presenter.entity.datasource.Wso2Datasource;
 import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
  * @author diego
  */
 @Service
+@Scope("prototype")
 public class Wso2ConnectorStrategy extends AbstractConnectorStrategy {
 
     @Autowired

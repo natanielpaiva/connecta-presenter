@@ -47,7 +47,7 @@ public class DatasourceAS implements IDatasourceAS {
 	@Override
 	public Iterable<Datasource> list(DatasourceFilter filter) {
 		Pageable pageable = filter.makePageable();
-		return dsRepository.findAll(DataSourceSpecification.byDomain(filter.getDomain()), pageable);
+		return dsRepository.findAll(DataSourceSpecification.byFilter(filter), pageable);
 	}
 
 	@Override

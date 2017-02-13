@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.core.business.aplicationService.common.AbstractBaseAS;
@@ -12,6 +13,7 @@ import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.IViewerAS;
 import br.com.cds.connecta.presenter.business.strategy.viewer.ViewerEntityInitializer;
 import br.com.cds.connecta.presenter.entity.viewer.Viewer;
+import br.com.cds.connecta.presenter.filter.ViewerFilter;
 import br.com.cds.connecta.presenter.persistence.ViewerRepository;
 import br.com.cds.connecta.presenter.persistence.specification.ViewerSpecification;
 
@@ -63,8 +65,12 @@ public class ViewerAS extends AbstractBaseAS<Viewer> implements IViewerAS {
     }
 
     @Override
-    public List<Viewer> list(String domain) {
-        return viewerRepository.findAll(ViewerSpecification.byDomain(domain));
+    public Iterable<Viewer> list(ViewerFilter filter) {
+    	if(filter.hasPagination()){
+    		Pageable pageable = filter.makePageable();
+    		return viewerRepository.findAll(ViewerSpecification.byFilter(filter), pageable);    		
+    	}
+    	return viewerRepository.findAll(ViewerSpecification.byFilter(filter));
     }
 
     @Override
