@@ -31,122 +31,109 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("media")
 public class SingleSourceController {
 
-    @Autowired
-    private ISingleSourceAS mediaService;
+	@Autowired
+	private ISingleSourceAS mediaService;
 
-    @Autowired
-    private HibernateAwareObjectMapper hibernateAwareObjectMapper;
+	@Autowired
+	private HibernateAwareObjectMapper hibernateAwareObjectMapper;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, 
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    protected ResponseEntity<SingleSource> get(@PathVariable Long id,
-    		@RequestHeader("Domain") String domain) {
-        SingleSource singleSource = mediaService.get(id,domain);
-        return new ResponseEntity<>(singleSource, HttpStatus.OK);
-    }
-    
-    @RequestMapping("attribute/{id}")
-    protected ResponseEntity<List<SingleSource>> getByAttribute(@PathVariable("id") Long id) {
-        List<SingleSource> singleSource = mediaService.getByAttributeId(id);
-        return new ResponseEntity<>(singleSource, HttpStatus.OK);
-    }
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	protected ResponseEntity<SingleSource> get(@PathVariable Long id, @RequestHeader("Domain") String domain) {
+		SingleSource singleSource = mediaService.get(id, domain);
+		return new ResponseEntity<>(singleSource, HttpStatus.OK);
+	}
+
+	@RequestMapping("attribute/{id}")
+	protected ResponseEntity<List<SingleSource>> getByAttribute(@PathVariable("id") Long id) {
+		List<SingleSource> singleSource = mediaService.getByAttributeId(id);
+		return new ResponseEntity<>(singleSource, HttpStatus.OK);
+	}
 
     @RequestMapping(method = RequestMethod.GET, 
     		produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    protected ResponseEntity<List<SingleSource>> list(@RequestHeader("Domain") String domain) {
-        List<SingleSource> list = mediaService.list(domain);
+    protected ResponseEntity<Iterable<SingleSource>> list(SingleSourceFilter filter,
+    		@RequestHeader("Domain") String domain) {
+    	filter.setDomain(domain);
+    	Iterable<SingleSource> list = mediaService.list(filter);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-    
-    @RequestMapping("auto-complete")
-    protected ResponseEntity<Iterable<SingleSource>> listAutoComplete(SingleSourceFilter filter,
-    		@RequestHeader("Domain") String domain){
-    	filter.setDomain(domain);
-    	
-        Page<SingleSource> list = mediaService.listAutoComplete(filter);
-        Iterable<SingleSource> content = list.getContent();
-        
-        return new ResponseEntity<>(content, HttpStatus.OK);
-    }
- 
-    @RequestMapping(method = RequestMethod.POST, 
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    protected ResponseEntity<SingleSource> save(@RequestBody SingleSource singleSource) {
-        SingleSource newSingleSource = mediaService.saveOrUpdate(singleSource);
-        return new ResponseEntity<>(newSingleSource, HttpStatus.CREATED);
-    }
 
-    @RequestMapping(value = "file", method = RequestMethod.POST, 
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SingleSource> saveFile(
-            @RequestParam(value = "file", required = false) MultipartFile file,
-            @RequestParam("singlesource") String singleSource
-    ) throws Exception {
+	@RequestMapping("auto-complete")
+	protected ResponseEntity<Iterable<SingleSource>> listAutoComplete(SingleSourceFilter filter,
+			@RequestHeader("Domain") String domain) {
+		filter.setDomain(domain);
 
-        FileSingleSource fileSingleSource = 
-        		hibernateAwareObjectMapper.readValue(singleSource, FileSingleSource.class);
+		Page<SingleSource> list = mediaService.listAutoComplete(filter);
+		Iterable<SingleSource> content = list.getContent();
 
-        mediaService.preValidate(fileSingleSource, file);
-        mediaService.validate(fileSingleSource);
-        SingleSource newSingleSource = mediaService.saveOrUpdate(fileSingleSource);
+		return new ResponseEntity<>(content, HttpStatus.OK);
+	}
 
-        return new ResponseEntity<>(newSingleSource, HttpStatus.CREATED);
-    }
+	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	protected ResponseEntity<SingleSource> save(@RequestBody SingleSource singleSource) {
+		SingleSource newSingleSource = mediaService.save(singleSource);
+		return new ResponseEntity<>(newSingleSource, HttpStatus.CREATED);
+	}
 
-    @RequestMapping(value = "url", method = RequestMethod.POST, 
-    		consumes = MediaType.APPLICATION_JSON_VALUE, 
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SingleSource> saveUrl(@RequestBody UrlSingleSource url) {
+	@RequestMapping(value = "file", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SingleSource> saveFile(@RequestParam(value = "file", required = false) MultipartFile file,
+			@RequestParam("singlesource") String singleSource) throws Exception {
 
-        mediaService.validate(url);
-        SingleSource newSingleSource = mediaService.saveOrUpdate(url);
-        return new ResponseEntity<>(newSingleSource, HttpStatus.CREATED);
-    }
+		FileSingleSource fileSingleSource = hibernateAwareObjectMapper.readValue(singleSource, FileSingleSource.class);
 
-    @RequestMapping(value = "url", method = RequestMethod.PUT, 
-    		consumes = MediaType.APPLICATION_JSON_VALUE, 
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SingleSource> updateUrl(@RequestBody UrlSingleSource url) {
-        SingleSource newSingleSource = mediaService.saveOrUpdate(url);
-        return new ResponseEntity<>(newSingleSource, HttpStatus.OK);
-    }
+		mediaService.preValidate(fileSingleSource, file);
+		mediaService.validate(fileSingleSource);
+		SingleSource newSingleSource = mediaService.save(fileSingleSource);
 
-    @RequestMapping(value = "/{id}", 
-    		method = RequestMethod.DELETE, 
-    		produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    protected ResponseEntity delete(@PathVariable Long id,
-    		@RequestHeader("Domain") String domain) {
-        mediaService.delete(id, domain);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
+		return new ResponseEntity<>(newSingleSource, HttpStatus.CREATED);
+	}
 
-    @RequestMapping("{id}/binary")
-    public void download(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
-        FileSingleSource singleSource = mediaService.getFileWithBinary(id);
+	@RequestMapping(value = "url", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SingleSource> saveUrl(@RequestBody UrlSingleSource url) {
 
-        ByteArrayInputStream bis = new ByteArrayInputStream(singleSource.getBinaryFile().getBinaryFile());
+		mediaService.validate(url);
+		SingleSource newSingleSource = mediaService.save(url);
+		return new ResponseEntity<>(newSingleSource, HttpStatus.CREATED);
+	}
 
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"",
-                singleSource.getName() + "." + singleSource.getFileType().toString().toLowerCase() );
+	@RequestMapping(value = "url", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SingleSource> updateUrl(@RequestBody UrlSingleSource url) {
+		SingleSource newSingleSource = mediaService.save(url);
+		return new ResponseEntity<>(newSingleSource, HttpStatus.OK);
+	}
 
-        response.setContentLength(singleSource.getBinaryFile().getBinaryFile().length);
-        response.setContentType(singleSource.getFileType().getMimeTypes());
-        response.setHeader(headerKey, headerValue);
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	protected ResponseEntity<?> delete(@PathVariable Long id, @RequestHeader("Domain") String domain) {
+		mediaService.delete(id, domain);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
-        IOUtils.copy(bis, response.getOutputStream());
-        response.flushBuffer();
-    }
-    
-    @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity bulkDelete(@RequestBody List<Long> ids,
-    		@RequestHeader("Domain") String domain) {
-        mediaService.deleteAll(ids, domain);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
+	@RequestMapping("{id}/binary")
+	public void download(@PathVariable("id") Long id, HttpServletResponse response) throws Exception {
+		FileSingleSource singleSource = mediaService.getFileWithBinary(id);
+
+		ByteArrayInputStream bis = new ByteArrayInputStream(singleSource.getBinaryFile().getBinaryFile());
+
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"",
+				singleSource.getName() + "." + singleSource.getFileType().toString().toLowerCase());
+
+		response.setContentLength(singleSource.getBinaryFile().getBinaryFile().length);
+		response.setContentType(singleSource.getFileType().getMimeTypes());
+		response.setHeader(headerKey, headerValue);
+
+		IOUtils.copy(bis, response.getOutputStream());
+		response.flushBuffer();
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE)
+	public ResponseEntity<?> bulkDelete(@RequestBody List<Long> ids, @RequestHeader("Domain") String domain) {
+		mediaService.deleteAll(ids, domain);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
 }
