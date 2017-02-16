@@ -9,20 +9,22 @@ import java.util.List;
  */
 public interface IGroupAS {
 
-    Group get(Long id, String domain);
+	Group get(Long id, String domain);
 
-    List<Group> list(String domain);
+	List<Group> list(String domain);
 
-    Group saveOrUpdate(Group entity);
+	void delete(Long id, String domain);
 
-    void delete(Long id, String domain);
+	void delete(Group group);
 
-    void delete(Group group);
-   
-    void preValidate(Group group);
-    
-    Group getSingleSourceByGroupId(Long id);
+	void preValidate(Group group);
 
-    void deleteAll(List<Long> ids, String domain);
-    
+	Group getSingleSourceByGroupId(Long id);
+
+	void deleteAll(List<Long> ids, String domain);
+
+	Group save(Group group);
+
+	Group update(Group group);
+
 }

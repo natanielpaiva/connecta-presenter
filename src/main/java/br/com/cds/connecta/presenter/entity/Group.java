@@ -12,8 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -31,24 +29,7 @@ import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 @Entity
 @Table(name = "TB_GROUP")
 @DynamicUpdate
-@NamedQueries({
-    @NamedQuery(name = "Group.findAll", query = "SELECT t FROM Group t"),
-    @NamedQuery(name = "Group.getByWithSingleSourceId", query = "SELECT g FROM Group g "
-            + "LEFT JOIN FETCH g.singleSourceGroup sgg "
-            + "LEFT JOIN FETCH sgg.singleSource k "
-            + "WHERE g.id = :id"),
-    @NamedQuery(name = "Group.getByWithAttributeId", query = "SELECT g FROM Group g "
-            + "LEFT JOIN FETCH g.groupAttribute sgg "
-            + "LEFT JOIN FETCH sgg.attribute k "
-            + "WHERE g.id = :id"),
-    @NamedQuery(name = "Group.getByWithQueryId", query = "SELECT g FROM Group g "
-            + "LEFT JOIN FETCH g.query q "
-            + "WHERE g.id = :id"),
-    @NamedQuery(name = "Group.getSingleSourceByGroupId", query = "SELECT g FROM Group g "
-            + "INNER JOIN FETCH g.singleSourceGroup ssg "
-            + "INNER JOIN FETCH ssg.singleSource sg "
-            + "WHERE g.id = :id")
-})
+
 public class Group extends AbstractBaseEntity {
 
     private static final long serialVersionUID = 1L;

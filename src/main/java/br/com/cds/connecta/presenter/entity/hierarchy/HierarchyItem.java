@@ -1,8 +1,7 @@
 package br.com.cds.connecta.presenter.entity.hierarchy;
 
-import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
-import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,14 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+
+import br.com.cds.connecta.framework.core.entity.AbstractBaseEntity;
 
 /**
  *
@@ -26,9 +22,6 @@ import org.hibernate.annotations.DynamicUpdate;
  */
 @Entity
 @Table(name = "TB_HIERARCHY_ITEM")
-//@NamedQuery(
-//         name="HierarchyItem.insert", 
-//        query="insert into HierarchyItem (id, name, formula) VALUES (:id , :name, :formula)")
 //@DynamicInsert(true)
 //@DynamicUpdate(true)
 public class HierarchyItem extends AbstractBaseEntity {

@@ -4,12 +4,16 @@ import static br.com.cds.connecta.framework.core.util.Util.isNotNull;
 import static br.com.cds.connecta.framework.core.util.Util.isNull;
 import static org.hibernate.internal.util.collections.CollectionHelper.isNotEmpty;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,177 +29,186 @@ import br.com.cds.connecta.presenter.entity.analysis.AnalysisRelation;
 import br.com.cds.connecta.presenter.entity.analysis.RestAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.RestRequestVariableAnalysis;
 import br.com.cds.connecta.presenter.entity.datasource.RestRequestVariable;
+import br.com.cds.connecta.presenter.entity.viewer.Viewer;
 import br.com.cds.connecta.presenter.filter.AnalysisFilter;
 import br.com.cds.connecta.presenter.persistence.AnalysisRepository;
-import br.com.cds.connecta.presenter.persistence.IAnalysisDAO;
+import br.com.cds.connecta.presenter.persistence.ViewerRepository;
 import br.com.cds.connecta.presenter.persistence.specification.AnalysisSpecification;
-import java.util.HashMap;
-import java.util.Map;
-import org.hibernate.Hibernate;
 
 @Service
 public class AnalysisAS extends AbstractBaseAS<Analysis> implements IAnalysisAS {
 
-    @Autowired
-    private IAnalysisDAO analysisDAO;
+	@Autowired
+	private AnalysisRepository analysisRepository;
 
-    @Autowired
-    private AnalysisRepository analysisRepository;
+	@Autowired
+	private ViewerRepository viewerRepository;
 
-    @PersistenceContext
-    private EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 
-    @Override
-    public Analysis get(Long id, String domain) {
-        Analysis analysis = analysisRepository
-                .findOne(AnalysisSpecification.byIdAndDomainWithCompleteFetch(id, domain));
+	@Override
+	public Analysis get(Long id, String domain) {
+		Analysis analysis = analysisRepository
+				.findOne(AnalysisSpecification.byIdAndDomainWithCompleteFetch(id, domain));
 
-        if (isNull(analysis)) {
-            throw new ResourceNotFoundException(Analysis.class.getSimpleName());
-        }
+		if (isNull(analysis)) {
+			throw new ResourceNotFoundException(Analysis.class.getSimpleName());
+		}
 
-        initializeRelations(analysis);
+		initializeRelations(analysis);
 
-        return analysis;
-    }
+		return analysis;
+	}
 
-    @Override
-    public Iterable<Analysis> list(AnalysisFilter filter) {
-        Iterable<Analysis> analysisList;
-        if (isNull(filter.getPage()) || isNull(filter.getCount())) {
-            analysisList = analysisRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()));
-        } else {
-            Pageable pageable = filter.makePageable();
-            analysisList = analysisRepository.findAll(AnalysisSpecification.byDomain(filter.getDomain()), pageable);
-        }
+	@Override
+	public Iterable<Analysis> list(AnalysisFilter filter) {
+		if(filter.hasPagination()){
+			Pageable pageable = filter.makePageable();
+			return analysisRepository.findAll(AnalysisSpecification.byFilter(filter), pageable);
+		}
+		return analysisRepository.findAll(AnalysisSpecification.byFilter(filter));
+	}
 
-        return analysisList;
-    }
+	@Override
+	public Page<Analysis> listAutoComplete(AnalysisFilter filter) {
+		Pageable pageable = filter.makePageable();
+		String name = filter.getName();
+		if (isNull(name)) {
+			name = "";
+		}
+		Page<Analysis> analysisPage = analysisRepository
+				.findAll(AnalysisSpecification.byNameAndDomainWithSimpleFetch(name, filter.getDomain()), pageable);
 
-    @Override
-    public Page<Analysis> listAutoComplete(AnalysisFilter filter) {
-        Pageable pageable = filter.makePageable();
-        String name = filter.getName();
-        if (isNull(name)) {
-            name = "";
-        }
-        Page<Analysis> analysisPage = analysisRepository
-                .findAll(AnalysisSpecification.byNameAndDomainWithSimpleFetch(name,
-                                filter.getDomain()), pageable);
+		return analysisPage;
+	}
 
-        return analysisPage;
-    }
+	@Override
+	public Analysis saveOrUpdate(Analysis analysis) {
+		refreshAttribute(analysis);
+		refreshRestRequestVariable(analysis);
 
-    @Override
-    public Analysis saveOrUpdate(Analysis analysis) {
-        refreshAttribute(analysis);
-        refreshRestRequestVariable(analysis);
+		if (isNotEmpty(analysis.getAnalysisRelations())) {
 
-        if (isNotEmpty(analysis.getAnalysisRelations())) {
+			AnalysisRelation[] relations = analysis.getAnalysisRelations().toArray(new AnalysisRelation[] {});
 
-            AnalysisRelation[] relations = analysis.getAnalysisRelations().toArray(new AnalysisRelation[]{});
+			analysis.getAnalysisRelations().clear();
 
-            analysis.getAnalysisRelations().clear();
+			analysis = analysisRepository.save(analysis);
+			refreshAnalysisRelations(analysis, relations);
+		}
 
-            analysis = analysisRepository.save(analysis);
-            refreshAnalysisRelations(analysis, relations);
-        }
+		return analysisRepository.save(analysis);
+	}
 
-        return analysisRepository.save(analysis);
-    }
+	@Override
+	public void delete(Long id, String domain) {
+		Analysis analysis = get(id, domain);
+		List<Viewer> findByAnalysis = viewerRepository.findByAnalysis(analysis);
 
-    @Override
-    public void delete(Long id, String domain) {
-        Analysis analysis = get(id, domain);
-        analysisRepository.delete(analysis);
-    }
+		if (!findByAnalysis.isEmpty()) {
+			throw new DataIntegrityViolationException("");
+		}
+		analysisRepository.delete(analysis);
+	}
 
-    @Override
-    public Analysis getByIdColumns(Long id) {
-        return analysisDAO.getByIdColumns(id);
-    }
+	@Override
+	public AnalysisColumn getByIdColumns(Long id) {
+		return analysisRepository.findColumnById(id);
+	}
 
-    @Override
-    public void deleteAll(List<Long> ids, String domain) {
-        List<Analysis> listAnalysis = analysisRepository.findAll(AnalysisSpecification.byIdsAndDomain(ids, domain));
-        analysisRepository.delete(listAnalysis);
-    }
+	@Override
+	public void deleteAll(List<Long> ids, String domain) {
+		List<Analysis> listAnalysis = analysisRepository.findAll(AnalysisSpecification.byIdsAndDomain(ids, domain));
+		for (Analysis analysis : listAnalysis) {
+			List<Viewer> findByAnalysis = viewerRepository.findByAnalysis(analysis);
 
-    private void initializeRelations(Analysis analysis) {
-        List<AnalysisRelation> analysisRelations = analysisRepository.findRelationsById(analysis.getId());
+			if (!findByAnalysis.isEmpty()) {
+				throw new DataIntegrityViolationException("");
+			}
+		}
+		analysisRepository.delete(listAnalysis);
+	}
 
-        for (AnalysisRelation analysisRelation : analysisRelations) {
-            Hibernate.initialize(analysisRelation.getLeftAnalysisColumn());
-            Hibernate.initialize(analysisRelation.getRightAnalysis());
-            Hibernate.initialize(analysisRelation.getRightAnalysisColumn());
-        }
+	private void initializeRelations(Analysis analysis) {
+		List<AnalysisRelation> analysisRelations = analysisRepository.findRelationsById(analysis.getId());
 
-        analysis.setAnalysisRelations(analysisRelations);
-    }
+		for (AnalysisRelation analysisRelation : analysisRelations) {
+			Hibernate.initialize(analysisRelation.getLeftAnalysisColumn());
+			Hibernate.initialize(analysisRelation.getRightAnalysis());
+			Hibernate.initialize(analysisRelation.getRightAnalysisColumn());
+		}
 
-    private void refreshAttribute(Analysis analysis) {
-        if (isNotEmpty(analysis.getAnalysisAttributes())) {
-            for (AnalysisAttribute analysisAttribute : analysis.getAnalysisAttributes()) {
-                if (isNotNull(analysisAttribute.getAttribute()) && isNotNull(analysisAttribute.getAttribute().getId())) {
-                    Attribute merge = em.merge(analysisAttribute.getAttribute());
-                    analysisAttribute.setAttribute(merge);
-                }
-            }
-        }
-    }
+		analysis.setAnalysisRelations(analysisRelations);
+	}
 
-    private void refreshRestRequestVariable(Analysis analysis) {
-        if (analysis.getClass() == RestAnalysis.class) {
-            RestAnalysis restAnalysis = (RestAnalysis) analysis;
-            if (isNotEmpty(restAnalysis.getRequestVariables())) {
-                for (RestRequestVariableAnalysis variableAnalysis : restAnalysis.getRequestVariables()) {
-                    if (isNotNull(variableAnalysis.getVariable()) && isNotNull(variableAnalysis.getVariable().getId())) {
-                        RestRequestVariable merge = em.merge(variableAnalysis.getVariable());
-                        variableAnalysis.setVariable(merge);
+	private void refreshAttribute(Analysis analysis) {
+		if (isNotEmpty(analysis.getAnalysisAttributes())) {
+			for (AnalysisAttribute analysisAttribute : analysis.getAnalysisAttributes()) {
+				if (isNotNull(analysisAttribute.getAttribute())
+						&& isNotNull(analysisAttribute.getAttribute().getId())) {
+					Attribute merge = em.merge(analysisAttribute.getAttribute());
+					analysisAttribute.setAttribute(merge);
+				}
+			}
+		}
+	}
 
-                    }
-                }
-            }
-        }
-    }
+	private void refreshRestRequestVariable(Analysis analysis) {
+		if (analysis.getClass() == RestAnalysis.class) {
+			RestAnalysis restAnalysis = (RestAnalysis) analysis;
+			if (isNotEmpty(restAnalysis.getRequestVariables())) {
+				for (RestRequestVariableAnalysis variableAnalysis : restAnalysis.getRequestVariables()) {
+					if (isNotNull(variableAnalysis.getVariable())
+							&& isNotNull(variableAnalysis.getVariable().getId())) {
+						RestRequestVariable merge = em.merge(variableAnalysis.getVariable());
+						variableAnalysis.setVariable(merge);
 
-    private void refreshAnalysisRelations(Analysis analysis, AnalysisRelation[] relations) {
-        // A única referência que existe no frontend pra colunas novas é o nome da coluna
-        // que deve ser único, por isso é colocado em um mapa para fácil acesso
-        Map<String, AnalysisColumn> map = new HashMap<>(analysis.getAnalysisColumns().size());
-        for (AnalysisColumn analysisColumn : analysis.getAnalysisColumns()) {
-            map.put(analysisColumn.getName(), analysisColumn);
-        }
+					}
+				}
+			}
+		}
+	}
 
-        for (AnalysisRelation analysisRelation : relations) {
-            if (isNotNull(analysisRelation.getLeftAnalysisColumn())
-                    && isNotNull(analysisRelation.getRightAnalysis())
-                    && isNotNull(analysisRelation.getRightAnalysisColumn())) {
+	private void refreshAnalysisRelations(Analysis analysis, AnalysisRelation[] relations) {
+		// A única referência que existe no frontend pra colunas novas é o nome
+		// da coluna
+		// que deve ser único, por isso é colocado em um mapa para fácil acesso
+		Map<String, AnalysisColumn> map = new HashMap<>(analysis.getAnalysisColumns().size());
+		for (AnalysisColumn analysisColumn : analysis.getAnalysisColumns()) {
+			map.put(analysisColumn.getName(), analysisColumn);
+		}
 
-                Analysis rightAnalysis = em.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
-                AnalysisColumn rightAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getRightAnalysisColumn().getId());
+		for (AnalysisRelation analysisRelation : relations) {
+			if (isNotNull(analysisRelation.getLeftAnalysisColumn()) && isNotNull(analysisRelation.getRightAnalysis())
+					&& isNotNull(analysisRelation.getRightAnalysisColumn())) {
 
-                analysisRelation.setRightAnalysis(rightAnalysis);
-                analysisRelation.setRightAnalysisColumn(rightAnalysisColumn);
+				Analysis rightAnalysis = em.find(Analysis.class, analysisRelation.getRightAnalysis().getId());
+				AnalysisColumn rightAnalysisColumn = em.find(AnalysisColumn.class,
+						analysisRelation.getRightAnalysisColumn().getId());
 
-                if (isNull(analysisRelation.getLeftAnalysisColumn().getId())) {
-                    // Caso seja uma coluna nova
-                    AnalysisColumn leftAnalysisColumn = map.get(analysisRelation.getLeftAnalysisColumn().getName());
-                    analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
-                } else {
-                    // Caso seja uma coluna existente
-                    AnalysisColumn leftAnalysisColumn = em.find(AnalysisColumn.class, analysisRelation.getLeftAnalysisColumn().getId());
-                    analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
-                }
+				analysisRelation.setRightAnalysis(rightAnalysis);
+				analysisRelation.setRightAnalysisColumn(rightAnalysisColumn);
 
-                analysis.getAnalysisRelations().add(analysisRelation);
-            }
-        }
-    }
+				if (isNull(analysisRelation.getLeftAnalysisColumn().getId())) {
+					// Caso seja uma coluna nova
+					AnalysisColumn leftAnalysisColumn = map.get(analysisRelation.getLeftAnalysisColumn().getName());
+					analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
+				} else {
+					// Caso seja uma coluna existente
+					AnalysisColumn leftAnalysisColumn = em.find(AnalysisColumn.class,
+							analysisRelation.getLeftAnalysisColumn().getId());
+					analysisRelation.setLeftAnalysisColumn(leftAnalysisColumn);
+				}
 
-    @Override
-    public Iterable<Analysis> listCached() {
-        return analysisRepository.findAll(AnalysisSpecification.isAnalysisCached());
-    }
+				analysis.getAnalysisRelations().add(analysisRelation);
+			}
+		}
+	}
+
+	@Override
+	public Iterable<Analysis> listCached() {
+		return analysisRepository.findAll(AnalysisSpecification.isAnalysisCached());
+	}
 
 }

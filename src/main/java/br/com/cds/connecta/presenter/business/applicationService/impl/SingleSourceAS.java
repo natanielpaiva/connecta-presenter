@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,142 +29,149 @@ import br.com.cds.connecta.presenter.entity.SingleSource;
 import br.com.cds.connecta.presenter.entity.SingleSourceAttribute;
 import br.com.cds.connecta.presenter.entity.UrlSingleSource;
 import br.com.cds.connecta.presenter.filter.SingleSourceFilter;
-import br.com.cds.connecta.presenter.persistence.IFileSingleSourceDAO;
-import br.com.cds.connecta.presenter.persistence.ISingleSourceDAO;
+import br.com.cds.connecta.presenter.persistence.FileSingleSourceRepository;
 import br.com.cds.connecta.presenter.persistence.SingleSourceRepository;
 import br.com.cds.connecta.presenter.persistence.specification.SingleSourceSpecification;
 
 @Service
 public class SingleSourceAS implements ISingleSourceAS {
 
-    @Autowired
-    private SingleSourceRepository singleSourceListRepository;
+	@Autowired
+	private SingleSourceRepository singleSourceRepository;
 
-    @Autowired
-    private ISingleSourceDAO singleSourceDAO;
+	@PersistenceContext
+	private EntityManager em;
 
-    @PersistenceContext
-    private EntityManager em;
+	@Autowired
+	private FileSingleSourceRepository fileSingleSourceRepository;
 
-    @Autowired
-    private IFileSingleSourceDAO fileSingleSourceDAO;
+	@Override
+	public Iterable<SingleSource> list(SingleSourceFilter filter) {
+		if(filter.hasPagination()){
+			Pageable pageable = filter.makePageable();
+			return singleSourceRepository.findAll(SingleSourceSpecification.byFilter(filter), pageable);			
+		}
+		return singleSourceRepository.findAll(SingleSourceSpecification.byFilter(filter));
+	}
 
-    @Override
-    public List<SingleSource> list(String domain) {
-        return singleSourceListRepository.findAll(SingleSourceSpecification.byDomain(domain));
-    }
+	@Override
+	public Page<SingleSource> listAutoComplete(SingleSourceFilter filter) {
+		String name = filter.getName();
+		if (isNull(name)) {
+			name = "";
+		}
 
-    @Override
-    public Page<SingleSource> listAutoComplete(SingleSourceFilter filter) {
-        String name = filter.getName();
-        if (isNull(name)) {
-            name = "";
-        }
+		return singleSourceRepository.findAll(SingleSourceSpecification.byNameAndDomain(name, filter.getDomain()),
+				filter.makePageable());
+	}
 
-        return singleSourceListRepository.findAll
-        		(SingleSourceSpecification.byNameAndDomain(name, filter.getDomain()), 
-        				filter.makePageable());
-    }
+	@Override
+	public SingleSource save(SingleSource singleSource) {
+		refreshAttribute(singleSource);
+		return singleSourceRepository.save(singleSource);
+	}
 
-    @Override
-    public SingleSource saveOrUpdate(SingleSource singleSource){
-        refreshAttribute(singleSource);
-        return singleSourceListRepository.save(singleSource);
-    }
+	private void refreshAttribute(SingleSource singleSource) {
+		if (isNotEmpty(singleSource.getSingleSourceAttributes())) {
+			for (SingleSourceAttribute singleSourceAttribute : singleSource.getSingleSourceAttributes()) {
+				if (isNotNull(singleSourceAttribute.getAttribute())
+						&& isNotNull(singleSourceAttribute.getAttribute().getId())) {
+					Attribute merge = em.merge(singleSourceAttribute.getAttribute());
+					singleSourceAttribute.setAttribute(merge);
+				}
+			}
+		}
+	}
 
-    private void refreshAttribute(SingleSource singleSource) {
-        if (isNotEmpty(singleSource.getSingleSourceAttributes())) {
-            for (SingleSourceAttribute singleSourceAttribute : singleSource.getSingleSourceAttributes()) {
-                if (isNotNull(singleSourceAttribute.getAttribute()) && isNotNull(singleSourceAttribute.getAttribute().getId())) {
-                    Attribute merge = em.merge(singleSourceAttribute.getAttribute());
-                    singleSourceAttribute.setAttribute(merge);
-                }
-            }
-        }
-    }
+	@Override
+	public void delete(Long id, String domain) {
+		SingleSource s = get(id, domain);
+		singleSourceRepository.delete(s);
+	}
 
-    @Override
-    public void delete(Long id, String domain){
-    	SingleSource s = get(id, domain);
-        singleSourceListRepository.delete(s);
-    }
+	@Override
+	public void delete(SingleSource entity, String domain) {
+		throw new UnsupportedOperationException("Not supported yet."); // To
+																		// change
+																		// body
+																		// of
+																		// generated
+																		// methods,
+																		// choose
+																		// Tools
+																		// |
+																		// Templates.
+	}
 
-    @Override
-    public void delete(SingleSource entity, String domain){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	@Override
+	public SingleSource get(Long id, String domain) {
+		SingleSource singlesource = singleSourceRepository
+				.findOne(SingleSourceSpecification.byIdAndDomainWithAttributeFetch(id, domain));
 
-    @Override
-    public SingleSource get(Long id, String domain) {
-    	SingleSource singlesource = singleSourceListRepository
-    			.findOne(SingleSourceSpecification.byIdAndDomainWithAttributeFetch(id, domain));
-        
-    	if(Util.isNull(singlesource)){
-            throw new ResourceNotFoundException(SingleSource.class.getSimpleName());
-        }
+		if (Util.isNull(singlesource)) {
+			throw new ResourceNotFoundException(SingleSource.class.getSimpleName());
+		}
 
-        return singlesource;
-    }
+		return singlesource;
+	}
 
-    @Override
-    public void validate(FileSingleSource fileSingleSource) {
-    }
+	@Override
+	public void validate(FileSingleSource fileSingleSource) {
+	}
 
-    @Override
-    public void validate(UrlSingleSource url) {
-    }
+	@Override
+	public void validate(UrlSingleSource url) {
+	}
 
-    @Override
-    public void preValidate(FileSingleSource fileSingleSource, MultipartFile file) throws IOException {
+	@Override
+	public void preValidate(FileSingleSource fileSingleSource, MultipartFile file) throws IOException {
 
-        //Verifica se é edição, caso si\m ele faz outras verificações
-        if (fileSingleSource.getId() != null) {
-            FileSingleSource fileSingleSourceBD = fileSingleSourceDAO
-                    .getWithBinary(fileSingleSource.getId());
-            //Verifica se o usuário colocou algum arquivo na edição
-            if (file != null) {
+		// Verifica se é edição, caso si\m ele faz outras verificações
+		if (fileSingleSource.getId() != null) {
+			FileSingleSource fileSingleSourceBD = fileSingleSourceRepository.getWithBinary(fileSingleSource.getId());
+			// Verifica se o usuário colocou algum arquivo na edição
+			if (file != null) {
 
-                fileSingleSource.setFileType(FileExtensionEnum.valueOf(
-                        FilenameUtils.getExtension(fileSingleSource.getFilename()).toUpperCase()
-                ));
+				fileSingleSource.setFileType(FileExtensionEnum
+						.valueOf(FilenameUtils.getExtension(fileSingleSource.getFilename()).toUpperCase()));
 
-                //Verifica se o arqruivo que o usuário tem no banco é o mesmo que ele colocou para upar
-                if (Arrays.equals(fileSingleSourceBD.getBinaryFile().getBinaryFile(), file.getBytes())) {
-                    fileSingleSource.setBinaryFile(fileSingleSourceBD.getBinaryFile());
-                } else {
-                    fileSingleSource.setBinaryFile(fileSingleSourceBD.getBinaryFile());
-                    fileSingleSource.getBinaryFile().setBinaryFile(file.getBytes());
-                }
-            } else {
-                fileSingleSource.setBinaryFile(fileSingleSourceBD.getBinaryFile());
-                fileSingleSource.setFileType(fileSingleSourceBD.getFileType());
-            }
+				// Verifica se o arqruivo que o usuário tem no banco é o mesmo
+				// que ele colocou para upar
+				if (Arrays.equals(fileSingleSourceBD.getBinaryFile().getBinaryFile(), file.getBytes())) {
+					fileSingleSource.setBinaryFile(fileSingleSourceBD.getBinaryFile());
+				} else {
+					fileSingleSource.setBinaryFile(fileSingleSourceBD.getBinaryFile());
+					fileSingleSource.getBinaryFile().setBinaryFile(file.getBytes());
+				}
+			} else {
+				fileSingleSource.setBinaryFile(fileSingleSourceBD.getBinaryFile());
+				fileSingleSource.setFileType(fileSingleSourceBD.getFileType());
+			}
 
-        } else {
-            fileSingleSource.setFileType(FileExtensionEnum.valueOf(
-                    FilenameUtils.getExtension(fileSingleSource.getFilename()).toUpperCase()
-            ));
+		} else {
+			fileSingleSource.setFileType(FileExtensionEnum
+					.valueOf(FilenameUtils.getExtension(fileSingleSource.getFilename()).toUpperCase()));
 
-            fileSingleSource.setBinaryFile(new BinaryFile());
-            fileSingleSource.getBinaryFile().setBinaryFile(file.getBytes());
-        }
-    }
+			fileSingleSource.setBinaryFile(new BinaryFile());
+			fileSingleSource.getBinaryFile().setBinaryFile(file.getBytes());
+		}
+	}
 
-    @Override
-    public FileSingleSource getFileWithBinary(Long id) {
-        return fileSingleSourceDAO.getWithBinary(id);
-    }
+	@Override
+	public FileSingleSource getFileWithBinary(Long id) {
+		return fileSingleSourceRepository.getWithBinary(id);
+	}
 
-    @Override
-    public List<SingleSource> getByAttributeId(Long id) {
-        return singleSourceDAO.getByAttributeId(id);
-    }
+	@Override
+	public List<SingleSource> getByAttributeId(Long id) {
+		return singleSourceRepository.getByAttributeId(id);
+	}
 
-    @Override
-    public void deleteAll(List<Long> ids, String domain) {
-    	List<SingleSource> listSingleSource = singleSourceListRepository
-    			.findAll(SingleSourceSpecification.byIdsAndDomain(ids, domain));
-    	singleSourceListRepository.delete(listSingleSource);
-    }
+	@Override
+	public void deleteAll(List<Long> ids, String domain) {
+		List<SingleSource> listSingleSource = singleSourceRepository
+				.findAll(SingleSourceSpecification.byIdsAndDomain(ids, domain));
+		singleSourceRepository.delete(listSingleSource);
+	}
 
 }

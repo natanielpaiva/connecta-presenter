@@ -14,9 +14,9 @@ public interface ISingleSourceAS {
 
     SingleSource get(Long id, String domain);
 
-    List<SingleSource> list(String domain);
+    Iterable<SingleSource> list(SingleSourceFilter filter);
 
-    SingleSource saveOrUpdate(SingleSource entity);
+    SingleSource save(SingleSource entity);
 
     void delete(Long id, String domain);
 

@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IAttributeDAO extends JpaRepository<Attribute, Serializable> {
+public interface AttributeRepository extends JpaRepository<Attribute, Serializable> {
 
 //    @Query(name = "Attribute.findByName")
     @Query("FROM Attribute t WHERE UPPER(t.name) LIKE :name")

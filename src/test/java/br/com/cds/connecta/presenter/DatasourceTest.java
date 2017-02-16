@@ -1,20 +1,37 @@
 package br.com.cds.connecta.presenter;
 
+import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.enumKeyFor;
+import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.peloMenosUmItem;
+import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.todosOsItens;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.isA;
+import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
 import br.com.cds.connecta.framework.core.domain.MessageTypeEnum;
-import static br.com.cds.connecta.framework.core.test.ConnectaMatchers.*;
 import br.com.cds.connecta.presenter.domain.DatabaseDatasourceDriverEnum;
 import br.com.cds.connecta.presenter.domain.DatasourceTypeEnum;
-import org.junit.Test;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  *
  * @author Diego Rego <diego.rego@cds.com.br>
  * @author Vinicius Pires <vinicius.pires@cds.com.br>
  */
+
 public class DatasourceTest extends BaseTest {
 
     static final String RESOURCE = REST_PATH.concat("datasource");
@@ -205,6 +222,12 @@ public class DatasourceTest extends BaseTest {
     }
     
     @Test
+    /**
+     * 
+     * TODO 
+     * 	MODIFY SPECTED STATUS IN TESTE
+     */
+    
     public void bulkDeleteRecords() throws Exception {
         mockMvc().perform(delete(RESOURCE)
                 .contentType(MEDIATYPE_JSON_UTF8)

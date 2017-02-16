@@ -1,6 +1,5 @@
 package br.com.cds.connecta.presenter.entity;
 
-import br.com.cds.connecta.presenter.domain.FileExtensionEnum;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +8,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import br.com.cds.connecta.presenter.domain.FileExtensionEnum;
 
 /**
  * The persistent class for the TB_FILE database table.
@@ -21,81 +23,89 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Table(name = "TB_FILE_SINGLE_SOURCE")
 @DynamicUpdate
-@NamedQueries({
-    @NamedQuery(name = "FileSingleSource.findAll", query = "SELECT t FROM FileSingleSource t"),
-    @NamedQuery(name = "FileSingleSource.getWithBinary", query = "SELECT t FROM FileSingleSource t join fetch t.binaryFile WHERE t.id = :id")
-})
+@SQLDelete(sql = "update TB_FILE_SINGLE_SOURCE set IS_ACTIVE = 0 where PK_SINGLE_SOURCE = ?")
+@Where(clause = "ACTIVE = 1")
 public class FileSingleSource extends SingleSource {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Column(name = "NM_FILE")
-    private String filename;
+	@Column(name = "NM_FILE")
+	private String filename;
 
-    @Column(name = "TP_FILE")
-    @Enumerated(EnumType.STRING)
-    private FileExtensionEnum fileType;
+	@Column(name = "TP_FILE")
+	@Enumerated(EnumType.STRING)
+	private FileExtensionEnum fileType;
 
-    @Column(name = "TXT_USER")
-    private String user;
+	@Column(name = "TXT_USER")
+	private String user;
 
-    @Column(name = "TXT_PASSWORD")
-    private String password;
+	@Column(name = "TXT_PASSWORD")
+	private String password;
 
-    @Column(name = "URL_FILE")
-    private String url;
+	@Column(name = "URL_FILE")
+	private String url;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "FK_BINARY_FILE")
-    private BinaryFile binaryFile;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "FK_BINARY_FILE")
+	private BinaryFile binaryFile;
 
-    public BinaryFile getBinaryFile() {
-        return binaryFile;
-    }
+	@Column(columnDefinition = "tinyint(1) default 1", name = "IS_ACTIVE")
+	private boolean isActive = true;
 
-    public void setBinaryFile(BinaryFile binaryFile) {
-        this.binaryFile = binaryFile;
-    }
+	public BinaryFile getBinaryFile() {
+		return binaryFile;
+	}
 
-    public String getFilename() {
-        return filename;
-    }
+	public void setBinaryFile(BinaryFile binaryFile) {
+		this.binaryFile = binaryFile;
+	}
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
+	public String getFilename() {
+		return filename;
+	}
 
-    public FileExtensionEnum getFileType() {
-        return fileType;
-    }
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 
-    public void setFileType(FileExtensionEnum fileType) {
-        this.fileType = fileType;
-    }
+	public FileExtensionEnum getFileType() {
+		return fileType;
+	}
 
-    
-    public String getUser() {
-        return user;
-    }
+	public void setFileType(FileExtensionEnum fileType) {
+		this.fileType = fileType;
+	}
 
-    public void setUser(String user) {
-        this.user = user;
-    }
+	public String getUser() {
+		return user;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUser(String user) {
+		this.user = user;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 
 }

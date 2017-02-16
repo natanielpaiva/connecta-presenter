@@ -9,5 +9,6 @@ public enum DatabaseDatasourceDriverEnum {
     ORACLE_SNM, // service name
     POSTGRESQL,
     MYSQL,
-    SQLSERVER;
+    SQLSERVER,
+    ORIENTDB;
 }
