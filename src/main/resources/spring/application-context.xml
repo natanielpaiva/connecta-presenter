@@ -17,6 +17,7 @@
 				<value>/binary</value>
 				<value>/config</value>
 				<value>/</value>
+				<value>/analysisSocket</value>
 				<value>/analysisSocket/info</value>
 			</list>
 		</property>

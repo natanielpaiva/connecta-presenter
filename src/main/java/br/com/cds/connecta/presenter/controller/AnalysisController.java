@@ -21,13 +21,13 @@ import br.com.cds.connecta.presenter.business.applicationService.IRestAS;
 import br.com.cds.connecta.presenter.business.applicationService.IRestAStemp;
 import br.com.cds.connecta.presenter.business.applicationService.ISoapAS;
 import br.com.cds.connecta.presenter.business.applicationService.ISolr;
+import br.com.cds.connecta.presenter.business.applicationService.IWso2AS;
 import br.com.cds.connecta.presenter.business.applicationService.dataExtractor.IDataExtractorAS;
 import br.com.cds.connecta.presenter.entity.analysis.Analysis;
 import br.com.cds.connecta.presenter.entity.analysis.AnalysisColumn;
 import br.com.cds.connecta.presenter.entity.analysis.CsvAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.RestAnalysis;
 import br.com.cds.connecta.presenter.entity.analysis.WebserviceAnalysis;
-import br.com.cds.connecta.presenter.entity.datasource.RestDatasourceRequest;
 import br.com.cds.connecta.presenter.entity.querybuilder.Query;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -79,6 +79,9 @@ public class AnalysisController {
 
     @Autowired
     private IDataExtractorAS extractor;
+    
+    @Autowired
+    private IWso2AS wso2Service;
 
     private final JSONValueParser parser = new JSONValueParser();
 
@@ -104,7 +107,7 @@ public class AnalysisController {
     @RequestMapping(
             value = "{id}",
             method = RequestMethod.DELETE)
-    protected ResponseEntity delete(@PathVariable("id") Long id,
+    protected ResponseEntity<Analysis> delete(@PathVariable("id") Long id,
             @RequestHeader("Domain") String domain) {
         analysisService.delete(id, domain);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -190,9 +193,9 @@ public class AnalysisController {
 //    }
     //retorna a análises e suas respectivas colunas
     @RequestMapping(value = "{id}/analysis-columns", method = RequestMethod.GET)
-    public ResponseEntity<Analysis> getAnalysisColumns(
+    public ResponseEntity<AnalysisColumn> getAnalysisColumns(
             @PathVariable Long id) {
-        Analysis analysis = analysisService.getByIdColumns(id);
+        AnalysisColumn analysis = analysisService.getByIdColumns(id);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
     }
 
@@ -381,5 +384,13 @@ public class AnalysisController {
             @RequestHeader("Domain") String domain) {
         Analysis analysis = restService.getRestAnalysis(id);
         return new ResponseEntity<>(analysis, HttpStatus.OK);
+    }
+    
+    
+    @RequestMapping(value = "{id}/tables-wso2", method = RequestMethod.GET)
+    public ResponseEntity<String[]> getTablesWso2(
+            @PathVariable Long id) throws SQLException {
+        String[] tables = wso2Service.getTables(id);
+        return new ResponseEntity<>(tables, HttpStatus.OK);
     }
 }

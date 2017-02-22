@@ -6,6 +6,7 @@ import br.com.cds.connecta.presenter.business.strategy.connector.DatabaseConnect
 import br.com.cds.connecta.presenter.business.strategy.connector.RestConnectorStrategy;
 import br.com.cds.connecta.presenter.business.strategy.connector.RestConnectorStrategyTemp;
 import br.com.cds.connecta.presenter.business.strategy.connector.SolrConnectorStrategy;
+import br.com.cds.connecta.presenter.business.strategy.connector.Wso2ConnectorStrategy;
 
 /**
  *
@@ -20,7 +21,8 @@ public enum DatasourceTypeEnum {
     SOLR(AnalysisTypeEnum.SOLR, SolrConnectorStrategy.class),
     WEBSERVICE(AnalysisTypeEnum.WEBSERVICE, RestConnectorStrategyTemp.class),
     CSV(AnalysisTypeEnum.CSV, CsvConnectorStrategy.class),
-    REST(AnalysisTypeEnum.REST,RestConnectorStrategy.class);
+    REST(AnalysisTypeEnum.REST,RestConnectorStrategy.class),
+    WSO2(AnalysisTypeEnum.WSO2,Wso2ConnectorStrategy.class);
     
     private final AnalysisTypeEnum relatedAnalysisType;
     

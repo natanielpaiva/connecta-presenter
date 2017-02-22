@@ -3,6 +3,7 @@ package br.com.cds.connecta.presenter.business.strategy.connector;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import br.com.cds.connecta.framework.connector2.Request;
@@ -10,6 +11,7 @@ import br.com.cds.connecta.framework.connector2.context.database.ConnectorDriver
 import br.com.cds.connecta.framework.connector2.context.database.DatabaseDataContextFactory;
 import br.com.cds.connecta.framework.connector2.context.database.mysql.MySQLDriver;
 import br.com.cds.connecta.framework.connector2.context.database.oracle.OracleDriver;
+import br.com.cds.connecta.framework.connector2.context.database.orientdb.OrientdbDriver;
 import br.com.cds.connecta.framework.connector2.context.database.postgresql.PostgresqlDriver;
 import br.com.cds.connecta.framework.connector2.context.database.sqlserver.SqlServerDriver;
 import br.com.cds.connecta.framework.connector2.query.QueryBuilder;
@@ -27,6 +29,7 @@ import br.com.cds.connecta.presenter.persistence.DatasourceRepository;
  * @author diego
  */
 @Service
+@Scope("prototype")
 public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
 
     @Autowired
@@ -107,6 +110,9 @@ public class DatabaseConnectorStrategy extends AbstractConnectorStrategy {
             driver = new SqlServerDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
         }
 
+        if (DatabaseDatasourceDriverEnum.ORIENTDB.equals(datasource.getDriver())) {
+            driver = new OrientdbDriver(datasource.getServer(), datasource.getPort().toString(), datasource.getSchema());
+        }
         return driver;
     }
 

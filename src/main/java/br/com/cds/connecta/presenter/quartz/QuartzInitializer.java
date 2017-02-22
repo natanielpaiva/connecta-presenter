@@ -21,9 +21,18 @@ public class QuartzInitializer {
 	private static final String ANALYSIS_DEFAULT_GROUP = "Connecta";
 	private static final int ANALYSIS_DEFAULT_INTERVAL = 10;
 	
-	@Autowired
+	
 	private IQuartzAS quartzService;
 	
+	public IQuartzAS getQuartzService() {
+		return quartzService;
+	}
+	
+	@Autowired
+	public void setQuartzService(IQuartzAS quartzService) {
+		this.quartzService = quartzService;
+	}
+
 	@Autowired
 	private ApplicationContext applicationContext;
 	

@@ -15,6 +15,10 @@ public class ChartJsOptions implements Serializable {
 	private ChartJsHover hover;
 	
 	private ChartJsAnimation animation;
+	
+	private ChartJsLegend legend;
+	
+	private Boolean showAllTooltips;
 
 	public ChartJsAnimation getAnimation() {
 		return animation;
@@ -56,4 +60,20 @@ public class ChartJsOptions implements Serializable {
 		this.elements = elements;
 	}
 	
+	public ChartJsLegend getLegend() {
+		return legend;
+	}
+
+	public void setLegend(ChartJsLegend legend) {
+		this.legend = legend;
+	}
+
+	public Boolean getShowAllTooltips() {
+		return showAllTooltips;
+	}
+
+	public void setShowAllTooltips(Boolean showAllTooltips) {
+		this.showAllTooltips = showAllTooltips;
+	}
+
 }

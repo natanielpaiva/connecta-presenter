@@ -11,7 +11,6 @@ import br.com.cds.connecta.framework.core.util.Util;
 import br.com.cds.connecta.presenter.business.applicationService.IGroupAS;
 import br.com.cds.connecta.presenter.entity.Group;
 import br.com.cds.connecta.presenter.persistence.GroupRepository;
-import br.com.cds.connecta.presenter.persistence.IGroupDAO;
 import br.com.cds.connecta.presenter.persistence.specification.GroupSpecification;
 
 /**
@@ -19,64 +18,64 @@ import br.com.cds.connecta.presenter.persistence.specification.GroupSpecificatio
  * @author Nataniel Paiva
  */
 @Service
-public class GroupAS extends AbstractBaseAS<Group> implements IGroupAS{
-    
-    @Autowired
-    private GroupRepository groupRepository;
+public class GroupAS extends AbstractBaseAS<Group> implements IGroupAS {
 
-    @Autowired
-    private IGroupDAO groupDao;
-    
-    @Override
-    public Group get(Long id,String domain) {
-        Group group = 
-        		groupRepository.findOne(GroupSpecification.byIdAndDomain(id, domain));
-        
-        if(Util.isNull(group)){
-            throw new ResourceNotFoundException(Group.class.getSimpleName());
-        }
-        
-        return group;
-    }
+	@Autowired
+	private GroupRepository groupRepository;
 
-    @Override
-    public List<Group> list(String domain) {
-        return groupRepository.findAll(GroupSpecification.byDomain(domain));
-    }
+	@Override
+	public Group get(Long id, String domain) {
+		Group group = groupRepository.findOne(GroupSpecification.byIdAndDomain(id, domain));
 
-    @Override
-    public Group saveOrUpdate(Group group) {
-        groupDao.refreshAttribute(group);
-        groupDao.refreshSingleSource(group);
-        return groupDao.saveOrUpdate(group);
-    }
+		if (Util.isNull(group)) {
+			throw new ResourceNotFoundException(Group.class.getSimpleName());
+		}
 
-    @Override
-    public void delete(Long id, String domain) {
-    	Group group = get(id, domain);
-    	groupRepository.delete(group);
-    }
+		return group;
+	}
 
-    @Override
-    public void delete(Group entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+	@Override
+	public List<Group> list(String domain) {
+		return groupRepository.findAll(GroupSpecification.byDomain(domain));
+	}
 
-    @Override
-    public void preValidate(Group group) {
-        
-    }
+	@Override
+	public Group save(Group group) {
 
-    @Override
-    public Group getSingleSourceByGroupId(Long id) {
-        return groupDao.getSingleSourceByGroupId(id);
-    }
+		return groupRepository.save(group);
+	}
 
-    @Override
-    public void deleteAll(List<Long> ids, String domain) {
-    	List<Group> listGroups = 
-    			groupRepository.findAll(GroupSpecification.byIdsAndDomain(ids, domain));
-        groupRepository.delete(listGroups);
-    }
-    
+	@Override
+	public void delete(Long id, String domain) {
+		Group group = get(id, domain);
+		groupRepository.delete(group);
+	}
+
+	@Override
+	public void delete(Group entity) {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void preValidate(Group group) {
+
+	}
+
+	@Override
+	public Group getSingleSourceByGroupId(Long id) {
+		return groupRepository.getSingleSourceByGroupId(id);
+	}
+
+	@Override
+	public void deleteAll(List<Long> ids, String domain) {
+		List<Group> listGroups = groupRepository.findAll(GroupSpecification.byIdsAndDomain(ids, domain));
+		groupRepository.delete(listGroups);
+	}
+
+	@Override
+	public Group update(Group group) {
+
+		return groupRepository.save(group);
+	}
+
 }
