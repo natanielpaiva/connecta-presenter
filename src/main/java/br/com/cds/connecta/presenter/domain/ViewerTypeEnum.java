@@ -2,6 +2,7 @@ package br.com.cds.connecta.presenter.domain;
 
 import br.com.cds.connecta.presenter.business.strategy.viewer.AnalysisViewerEntityInitializer;
 import br.com.cds.connecta.presenter.business.strategy.viewer.CombinedViewerEntityInitializer;
+import br.com.cds.connecta.presenter.business.strategy.viewer.GraphViewerEntityInitializer;
 import br.com.cds.connecta.presenter.business.strategy.viewer.SingleSourceGroupViewerEntityInitializer;
 import br.com.cds.connecta.presenter.business.strategy.viewer.SingleSourceViewerEntityInitializer;
 import br.com.cds.connecta.presenter.business.strategy.viewer.TwitterTimelineViewerEntityInitializer;
@@ -16,7 +17,8 @@ public enum ViewerTypeEnum {
     SINGLESOURCE(SingleSourceViewerEntityInitializer.class),
     SINGLESOURCE_GROUP(SingleSourceGroupViewerEntityInitializer.class),
     COMBINED(CombinedViewerEntityInitializer.class),
-    TWITTER_TIMELINE(TwitterTimelineViewerEntityInitializer.class);
+    TWITTER_TIMELINE(TwitterTimelineViewerEntityInitializer.class),
+    GRAPH(GraphViewerEntityInitializer.class);
     
     private final Class<? extends ViewerEntityInitializer> entityInitializer;
 

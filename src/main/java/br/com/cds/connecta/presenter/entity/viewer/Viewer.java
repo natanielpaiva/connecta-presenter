@@ -44,7 +44,8 @@ import br.com.cds.connecta.presenter.domain.ViewerTypeEnum;
 		@JsonSubTypes.Type(value = CombinedViewer.class, name = "COMBINED"),
 		@JsonSubTypes.Type(value = SingleSourceViewer.class, name = "SINGLESOURCE"),
 		@JsonSubTypes.Type(value = SingleSourceGroupViewer.class, name = "SINGLESOURCE_GROUP"),
-		@JsonSubTypes.Type(value = TwitterTimelineViewer.class, name = "TWITTER_TIMELINE") })
+		@JsonSubTypes.Type(value = TwitterTimelineViewer.class, name = "TWITTER_TIMELINE"),
+                @JsonSubTypes.Type(value = GraphViewer.class, name = "GRAPH")})
 @Indexed
 @AnalyzerDef(name = "viewerNameAnalyzer", tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class), filters = {
 		@TokenFilterDef(factory = LowerCaseFilterFactory.class),
